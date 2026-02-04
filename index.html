@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="pt-br" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MEDE Marcenaria | Design & Excelência</title>
+    
+    <!-- 1. CARREGAR TAILWIND PRIMEIRO -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- 2. CONFIGURAR TAILWIND LOGO EM SEGUIDA -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'mede-cream': '#f1e3d3',   /* Bege suave */
+                        'mede-gold': '#f9e4b7',    /* Dourado claro */
+                        'mede-brown': '#5f5549',   /* Marrom Nobre */
+                        'mede-white': '#ffffff',   /* Fundo sofisticado */
+                    },
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    animation: {
+                        'slow-zoom': 'zoomEffect 25s infinite alternate',
+                        'blur-in': 'blurIn 1.5s cubic-bezier(0.23, 1, 0.32, 1) forwards',
+                        'float': 'float 4s ease-in-out infinite',
+                        'spin-slow': 'spin 60s linear infinite',
+                        'spin-reverse': 'spin 40s linear infinite reverse',
+                        'shimmer': 'shimmer 2s linear infinite',
+                    },
+                    keyframes: {
+                        zoomEffect: {
+                            '0%': { transform: 'scale(1)' },
+                            '100%': { transform: 'scale(1.08)' },
+                        },
+                        blurIn: {
+                            '0%': { opacity: '0', filter: 'blur(10px)', transform: 'translateY(30px)' },
+                            '100%': { opacity: '1', filter: 'blur(0)', transform: 'translateY(0)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(10px)' },
+                        },
+                        shimmer: {
+                            '0%': { backgroundPosition: '-1000px 0' },
+                            '100%': { backgroundPosition: '1000px 0' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Fontes Google -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Ícones Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body class="antialiased font-sans">
+
+    <!-- Navbar -->
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-500 py-3 flex flex-col items-center bg-white shadow-md text-mede-brown">
+        <!-- Logo -->
+        <a href="#" class="z-50 relative mb-1 transition-all duration-500">
+            <img src="https://i.ibb.co/Y4N5V4mQ/EDESEMBG.png" alt="MEDE Marcenaria" class="h-16 md:h-28 w-auto object-contain transition-all duration-500 hover:scale-105 drop-shadow-lg">
+        </a>
+
+        <!-- Menu Desktop (Link Projetos Removido) -->
+        <div class="hidden md:flex items-center space-x-8 lg:space-x-12 border-t border-gray-100 pt-2 w-full justify-center bg-white relative z-50">
+            <a href="#inicio" class="text-xs uppercase tracking-[0.2em] hover:text-mede-gold transition-colors font-medium">Início</a>
+            <a href="#sobre" class="text-xs uppercase tracking-[0.2em] hover:text-mede-gold transition-colors font-medium">Conheça-nos</a>
+            <a href="#contato" class="bg-mede-gold text-mede-brown px-6 py-1.5 rounded-sm font-bold text-[10px] uppercase tracking-widest hover:bg-mede-brown hover:text-white transition-all shadow-md transform hover:-translate-y-1">
+                Orçamento
+            </a>
+        </div>
+
+        <!-- Botão Menu Mobile -->
+        <button id="menu-btn" class="md:hidden absolute right-6 top-6 text-mede-brown z-50 focus:outline-none bg-white/80 p-2 rounded">
+            <i data-lucide="menu" class="w-8 h-8"></i>
+        </button>
+    </nav>
+
+    <!-- Menu Mobile -->
+    <div id="mobile-menu" class="fixed inset-0 bg-mede-brown z-40 transform translate-x-full transition-transform duration-500 ease-in-out flex flex-col justify-center items-center space-y-8">
+        <a href="#inicio" class="mobile-link text-3xl font-serif italic text-mede-cream hover:text-white">Início</a>
+        <a href="#sobre" class="mobile-link text-3xl font-serif italic text-mede-cream hover:text-white">Conheça-nos</a>
+        <a href="#contato" class="mobile-link text-xl text-mede-brown bg-mede-gold px-8 py-3 uppercase tracking-widest font-bold">Contato</a>
+    </div>
+
+    <!-- HERO SECTION -->
+    <header id="inicio" class="relative h-screen w-full overflow-hidden flex items-center justify-center">
+        <!-- Background Image -->
+        <div class="absolute inset-0 z-0 bg-mede-brown">
+            <!-- Imagem do Armário (Desktop e Mobile igual) -->
+            <img src="https://i.ibb.co/bjvL3JhJ/fotoarmario-MEDE-JPG.jpg" alt="Interior MEDE Marcenaria" class="w-full h-full object-cover opacity-90 animate-slow-zoom smooth-image">
+        </div>
+        
+        <div class="absolute inset-0 z-10 hero-overlay"></div>
+        <div class="hero-noise"></div>
+
+        <div class="relative z-20 text-center px-4 max-w-4xl mx-auto mt-44">
+            <div class="opacity-0 animate-blur-in">
+                <div class="w-[1px] h-12 bg-mede-gold/60 mx-auto mb-6"></div>
+                <p class="text-mede-gold uppercase tracking-[0.4em] text-xs md:text-sm mb-4 font-bold drop-shadow-md">
+                    Design Sob Medida
+                </p>
+                <h1 class="text-4xl md:text-6xl lg:text-7xl font-serif text-white leading-tight mb-8 drop-shadow-lg">
+                    Há mais de 30 anos<br>
+                    <!-- Efeito Gold Gradient Text aplicado -->
+                    <span class="italic font-light gold-gradient-text block mt-2">entregando excelência</span>
+                </h1>
+                <p class="text-gray-100 font-light text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed drop-shadow-md opacity-90">
+                    Transformamos madeira nobre em ambientes que contam histórias. 
+                    Sofisticação e funcionalidade em cada detalhe.
+                </p>
+                <div class="flex flex-col md:flex-row gap-6 justify-center items-center">
+                    <!-- Botão WhatsApp Hero (SEM RASTRO) -->
+                    <a href="https://wa.me/5521990892815" target="_blank" class="group relative bg-mede-gold/90 backdrop-blur-sm text-mede-brown px-8 py-4 uppercase tracking-[0.1em] text-xs font-bold transition-all duration-300 hover:bg-white hover:scale-105 shadow-[0_0_20px_rgba(249,228,183,0.3)] border border-mede-gold flex items-center gap-3 rounded-sm">
+                        <svg class="w-5 h-5 fill-current relative z-10" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                        <span class="relative z-10">Falar no WhatsApp</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Scroll Indicator Centralizado -->
+        <div class="absolute bottom-10 left-0 w-full z-20 animate-float flex justify-center">
+            <div class="flex flex-col items-center gap-2">
+                <span class="text-[10px] uppercase tracking-widest text-white/60">Descubra</span>
+                <i data-lucide="chevron-down" class="text-mede-gold w-6 h-6 opacity-80"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- SOBRE / CONHEÇA-NOS (3 Blocos) -->
+    <section id="sobre" class="py-16 bg-white relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-1/3 h-full bg-mede-cream opacity-10 -skew-x-12 transform translate-x-20 pointer-events-none"></div>
+
+        <div class="container mx-auto px-6 relative z-10 space-y-16">
+            
+            <!-- BLOCO 1: LEGADO (Imagem esquerda, Texto direita) -->
+            <div class="grid md:grid-cols-2 gap-8 lg:gap-16 items-center">
+                <!-- Imagem Vindo da Esquerda -->
+                <div class="relative h-[450px] group overflow-hidden shadow-2xl rounded-sm reveal-left">
+                    <img src="https://i.ibb.co/nqY5rs73/Chat-GPT-Image-4-de-fev-de-2026-13-07-10.png" alt="Consultoria Exclusiva" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105">
+                </div>
+                <!-- Texto Vindo da Direita -->
+                <div class="space-y-6 reveal-right">
+                    <h3 class="text-3xl md:text-4xl font-serif text-mede-brown">
+                        Legado de <br><span class="italic gold-gradient-text">Excelência</span>
+                    </h3>
+                    <div class="w-12 h-[2px] bg-mede-gold"></div>
+                    <p class="text-gray-600 font-light leading-loose text-justify text-sm md:text-base">
+                        Há mais de três décadas, entregamos o que há de melhor em marcenaria sob medida. Combinamos a experiência da tradição com a precisão da tecnologia para criar móveis que não apenas preenchem espaços, mas realizam sonhos.
+                    </p>
+                    <ul class="space-y-2 text-mede-brown text-sm font-medium pt-2">
+                        <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-mede-gold"></i> Tradição Artesanal</li>
+                        <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-mede-gold"></i> Tecnologia de Ponta</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- BLOCO 2: PROJETOS (Texto esquerda, Vídeo direita) -->
+            <div class="grid md:grid-cols-2 gap-8 lg:gap-16 items-center">
+                <!-- Texto Vindo da Esquerda -->
+                <div class="space-y-6 order-2 md:order-1 reveal-left">
+                    <h3 class="text-3xl md:text-4xl font-serif text-mede-brown">
+                        Projetos que <br><span class="italic gold-gradient-text">Contam Histórias</span>
+                    </h3>
+                    <div class="w-12 h-[2px] bg-mede-gold"></div>
+                    <p class="text-gray-600 font-light leading-loose text-justify text-sm md:text-base">
+                        Não entregamos apenas móveis, criamos cenários para a sua vida. Nossa etapa de consultoria mergulha na sua rotina para desenhar ambientes que unem a estética clássica à funcionalidade moderna. Cada linha é pensada para você.
+                    </p>
+                    <a href="#contato" class="inline-flex items-center gap-2 text-mede-brown uppercase tracking-widest text-xs font-bold border-b border-mede-gold pb-1 hover:text-mede-gold transition-colors mt-2 group">
+                        Iniciar meu Projeto <i data-lucide="arrow-right" class="w-4 h-4 transition-transform group-hover:translate-x-1"></i>
+                    </a>
+                </div>
+                <!-- Vídeo Vindo da Direita -->
+                <div class="relative h-[450px] group overflow-hidden shadow-2xl rounded-sm order-1 md:order-2 reveal-right">
+                    <video class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" autoplay loop muted playsinline poster="fotoheroMEDE.JPG.jpeg">
+                        <source src="https://res.cloudinary.com/dxukdxpzc/video/upload/v1770233777/WhatsApp_Video_2026-02-04_at_15.40.02_jwquu1.mp4" type="video/mp4">
+                        Seu navegador não suporta vídeos.
+                    </video>
+                </div>
+            </div>
+
+            <!-- BLOCO 3: ORÇAMENTO (Imagem esquerda, Texto direita) -->
+            <div class="grid md:grid-cols-2 gap-8 lg:gap-16 items-center">
+                <!-- Imagem Vindo da Esquerda -->
+                <div class="relative h-[450px] group overflow-hidden shadow-2xl rounded-sm reveal-left">
+                    <img src="https://i.ibb.co/N6tRVyt6/IMG-4270-jpg.jpg" alt="Atendimento Personalizado MEDE" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105">
+                </div>
+                <!-- Texto Vindo da Direita -->
+                <div class="space-y-6 reveal-right">
+                    <h3 class="text-3xl md:text-4xl font-serif text-mede-brown">
+                        Vamos Realizar <br><span class="italic gold-gradient-text">Seu Sonho?</span>
+                    </h3>
+                    <div class="w-12 h-[2px] bg-mede-gold"></div>
+                    <p class="text-gray-600 font-light leading-loose text-justify text-sm md:text-base">
+                        Cada detalhe da sua casa merece ser único. Não deixe seu projeto apenas no papel. Nossa equipe está pronta para transformar suas ideias em ambientes sofisticados e funcionais, com um atendimento exclusivo do início ao fim. Descubra como podemos elevar o padrão do seu lar.
+                    </p>
+                    <!-- Botão WhatsApp (SEM RASTRO) -->
+                    <a href="https://wa.me/5521990892815" target="_blank" class="group relative bg-mede-gold/90 backdrop-blur-sm text-mede-brown px-8 py-4 uppercase tracking-[0.1em] text-xs font-bold transition-all duration-300 hover:bg-white hover:scale-105 shadow-[0_0_20px_rgba(249,228,183,0.3)] border border-mede-gold flex items-center gap-3 rounded-sm w-fit mt-4">
+                        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                        <span class="relative z-10">Falar no WhatsApp</span>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer Premium (Compacto) -->
+    <footer id="contato" class="bg-mede-brown text-white py-12 relative overflow-hidden">
+        <div class="hero-noise opacity-10"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent pointer-events-none"></div>
+        
+        <div class="absolute -top-1/2 left-1/2 transform -translate-x-1/2 w-[800px] h-[800px] border border-white/5 rounded-full pointer-events-none animate-spin-slow"></div>
+        <div class="absolute -top-1/2 left-1/2 transform -translate-x-1/2 w-[600px] h-[600px] border border-white/5 rounded-full pointer-events-none animate-spin-reverse"></div>
+
+        <div class="container mx-auto px-6 relative z-10 text-center">
+            
+            <div class="reveal">
+                <p class="text-mede-gold uppercase tracking-[0.3em] text-[10px] font-bold mb-3">Atendimento Exclusivo</p>
+                <h2 class="text-3xl md:text-5xl font-serif mb-6 leading-tight">
+                    Vamos criar algo <br> <span class="italic gold-gradient-text">único juntos?</span>
+                </h2>
+                <p class="text-mede-cream/70 max-w-xl mx-auto mb-8 font-light text-sm md:text-base leading-relaxed">
+                    Entre em contato para agendar uma consultoria ou acompanhe nosso dia a dia e inspirações nas redes sociais.
+                </p>
+            </div>
+
+            <!-- Botões Lado a Lado (SEM RASTRO NO WHATSAPP) -->
+            <div class="flex flex-col md:flex-row justify-center gap-4 items-center mt-8">
+                
+                <!-- Botão WhatsApp -->
+                <a href="https://wa.me/5521990892815" target="_blank" class="group w-full md:w-auto min-w-[260px] relative bg-mede-gold text-mede-brown px-6 py-4 rounded-sm font-bold text-xs uppercase tracking-widest transition-all duration-500 hover:scale-105 hover:shadow-[0_0_30px_rgba(249,228,183,0.4)] flex items-center justify-center gap-4 overflow-hidden">
+                    <svg class="w-5 h-5 relative z-10 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                    <span class="relative z-10">Falar no WhatsApp</span>
+                </a>
+
+                <!-- Botão Instagram -->
+                <a href="https://instagram.com" target="_blank" class="group w-full md:w-auto min-w-[260px] bg-transparent border border-mede-gold/50 text-mede-gold px-6 py-4 rounded-sm font-bold text-xs uppercase tracking-widest transition-all duration-500 hover:bg-mede-gold hover:text-mede-brown hover:border-mede-gold flex items-center justify-center gap-4">
+                    <i data-lucide="instagram" class="w-5 h-5 transition-transform group-hover:rotate-12"></i>
+                    <span>Siga no Instagram</span>
+                </a>
+
+            </div>
+
+            <!-- Rodapé Inferior -->
+            <div class="border-t border-white/5 mt-12 pt-6 flex flex-col gap-6 text-[10px] text-white/30 uppercase tracking-[0.2em] font-medium">
+                <div class="flex flex-col md:flex-row justify-between items-center w-full">
+                    <p>&copy; 2026 MEDE Marcenaria. Todos os direitos reservados.</p>
+                    <span class="opacity-50 mt-2 md:mt-0">Rio de Janeiro, Brasil</span>
+                </div>
+
+                <!-- CRÉDITOS DESTACADOS EMBAIXO DE TUDO -->
+                <div class="w-full text-center border-t border-white/5 pt-4">
+                    <span class="text-mede-gold/60 hover:text-mede-gold transition-colors cursor-default tracking-widest text-[9px]">
+                        Desenvolvido por Caíque Alonso
+                    </span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Script de Funcionalidades -->
+    <script src="script.js"></script>
+</body>
+</html>
