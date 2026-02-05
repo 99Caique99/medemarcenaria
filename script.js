@@ -1,6 +1,6 @@
-// Inicializa ícones
         lucide.createIcons();
 
+        // Menu Mobile Toggle
         const menuBtn = document.getElementById('menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
         const mobileLinks = document.querySelectorAll('.mobile-link');
@@ -8,16 +8,17 @@
 
         function toggleMenu() {
             isMenuOpen = !isMenuOpen;
+            
             if (isMenuOpen) {
-                mobileMenu.classList.remove('translate-x-full');
-                menuBtn.innerHTML = '<i data-lucide="x" class="w-8 h-8 text-white"></i>';
-                menuBtn.classList.remove('bg-white/80', 'text-mede-brown'); 
-                menuBtn.classList.add('text-white');
+                // Abrir
+                mobileMenu.classList.remove('scale-y-0', 'opacity-0');
+                mobileMenu.classList.add('scale-y-100', 'opacity-100');
+                menuBtn.classList.add('active'); // CSS animation class
             } else {
-                mobileMenu.classList.add('translate-x-full');
-                menuBtn.innerHTML = '<i data-lucide="menu" class="w-8 h-8 text-mede-brown"></i>';
-                menuBtn.classList.add('bg-white/80', 'text-mede-brown');
-                menuBtn.classList.remove('text-white');
+                // Fechar
+                mobileMenu.classList.remove('scale-y-100', 'opacity-100');
+                mobileMenu.classList.add('scale-y-0', 'opacity-0');
+                menuBtn.classList.remove('active');
             }
             lucide.createIcons();
         }
@@ -31,6 +32,7 @@
             });
         });
 
+        // Scroll Effect para Navbar
         const navbar = document.getElementById('navbar');
 
         function checkReveal() {
@@ -41,6 +43,9 @@
                 const boxTop = element.getBoundingClientRect().top;
                 if (boxTop < triggerBottom) {
                     element.classList.add('active');
+                    
+                    const line = element.querySelector('.line-reveal');
+                    if (line) line.classList.add('active');
                 }
             });
         }
@@ -52,6 +57,26 @@
                 navbar.classList.remove('nav-scrolled');
             }
             checkReveal();
+            requestAnimationFrame(updateParallax);
         });
 
-        window.addEventListener('load', checkReveal);
+        // Atualiza Parallax no scroll
+        const parallaxImages = document.querySelectorAll('.parallax-img');
+        
+        function updateParallax() {
+            parallaxImages.forEach(img => {
+                const parent = img.parentElement;
+                const parentTop = parent.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                if (parentTop < windowHeight && parentTop > -parent.offsetHeight) {
+                    const speed = 0.15;
+                    const yPos = (parentTop - windowHeight / 2) * speed;
+                    img.style.transform = `translateY(${yPos}px)`;
+                }
+            });
+        }
+        
+        window.addEventListener('load', () => {
+            checkReveal();
+        });

@@ -1,4 +1,3 @@
-/* Estilos Globais Premium */
         body {
             background-color: #ffffff;
             color: #5f5549; 
@@ -39,7 +38,7 @@
             background: linear-gradient(to bottom, rgba(95, 85, 73, 0.2) 0%, rgba(95, 85, 73, 0.4) 50%, rgba(95, 85, 73, 0.9) 100%);
         }
         
-        /* Textura Granulada (Noise) para elegância */
+        /* Textura Granulada (Noise) */
         .hero-noise {
             position: absolute;
             inset: 0;
@@ -63,7 +62,7 @@
             height: 3rem; 
         }
 
-        /* Efeito Reveal Padrão (Cima para Baixo) */
+        /* Efeito Reveal Suave */
         .reveal {
             opacity: 0;
             filter: blur(5px);
@@ -71,7 +70,6 @@
             transition: all 1.5s cubic-bezier(0.19, 1, 0.22, 1);
         }
 
-        /* Efeito Reveal Vindo da Esquerda */
         .reveal-left {
             opacity: 0;
             filter: blur(5px);
@@ -79,7 +77,6 @@
             transition: all 1.5s cubic-bezier(0.19, 1, 0.22, 1);
         }
 
-        /* Efeito Reveal Vindo da Direita */
         .reveal-right {
             opacity: 0;
             filter: blur(5px);
@@ -93,7 +90,15 @@
             transform: translate(0, 0);
         }
         
-        /* Efeito de Texto Dourado Metálico */
+        /* Animação da Linha Dourada */
+        .line-reveal {
+            width: 0;
+            transition: width 1.5s ease-out;
+        }
+        .line-reveal.active {
+            width: 3rem;
+        }
+
         .gold-gradient-text {
             background: linear-gradient(to right, #cba26b, #f9e4b7, #cba26b);
             background-size: 200% auto;
@@ -101,4 +106,27 @@
             -webkit-background-clip: text;
             background-clip: text;
             animation: shimmer 5s linear infinite;
+        }
+
+        /* Otimização de Performance para Parallax */
+        .parallax-img {
+            will-change: transform;
+        }
+
+        /* Estilo do Botão Hamburger Animado */
+        #menu-btn .line {
+            transition: all 0.4s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+        }
+        
+        #menu-btn.active .line-1 {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        
+        #menu-btn.active .line-2 {
+            opacity: 0;
+            transform: translateX(-10px);
+        }
+        
+        #menu-btn.active .line-3 {
+            transform: rotate(-45deg) translate(5px, -5px);
         }
