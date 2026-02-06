@@ -1,3 +1,4 @@
+        // Inicializa ícones
         lucide.createIcons();
 
         // Menu Mobile Toggle
