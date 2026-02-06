@@ -81,3 +81,30 @@
         window.addEventListener('load', () => {
             checkReveal();
         });
+
+  document.addEventListener("DOMContentLoaded", function() {
+    // Seleciona o observer
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          // Quando a seção aparece na tela, busca todos os itens
+          const items = entry.target.querySelectorAll('.feature-item');
+          
+          items.forEach((item, index) => {
+            // Adiciona um pequeno atraso (delay) para cada item criar o efeito cascata
+            setTimeout(() => {
+              item.classList.remove('opacity-0', 'translate-y-12'); // Remove invisibilidade
+              item.classList.add('opacity-100', 'translate-y-0');   // Mostra o item
+            }, index * 150); // 150ms de diferença entre cada um
+          });
+          
+          // Para de observar depois que animou
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 }); // Começa quando 10% da seção estiver visível
+
+    // Começa a observar a seção
+    const section = document.getElementById('features-section');
+    if(section) observer.observe(section);
+  });
