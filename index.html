@@ -84,8 +84,8 @@
             </a>
         </div>
 
-        <!-- Botão Menu Mobile (NOVO DESIGN CIRCULAR) -->
-        <button id="menu-btn" class="md:hidden absolute right-6 top-6 z-50 w-12 h-12 flex flex-col justify-center items-center gap-1.5 bg-white/90 backdrop-blur rounded-full shadow-lg transition-transform duration-300 active:scale-95 border border-gray-100">
+        <!-- Botão Menu Mobile (CORRIGIDO: Centralizado Verticalmente) -->
+        <button id="menu-btn" class="md:hidden absolute right-6 top-1/2 -translate-y-1/2 z-50 w-12 h-12 flex flex-col justify-center items-center gap-1.5 bg-white/90 backdrop-blur rounded-full shadow-lg transition-transform duration-300 active:scale-95 border border-gray-100">
             <span class="line line-1 w-6 h-[2px] bg-mede-brown rounded-full"></span>
             <span class="line line-2 w-6 h-[2px] bg-mede-brown rounded-full"></span>
             <span class="line line-3 w-6 h-[2px] bg-mede-brown rounded-full"></span>
@@ -110,10 +110,7 @@
         <div class="absolute inset-0 z-10 hero-overlay"></div>
         <div class="hero-noise"></div>
 
-        <!-- FIX DESKTOP & MOBILE: 
-             - Reduzi o topo desktop de mt-44 para mt-32 para subir um pouco.
-             - Aumentei o rodapé desktop de pb-0 para pb-20 para o "Descubra" não encostar.
-        -->
+        <!-- FIX MOBILE: Adicionado pb-32 para dar espaço ao 'Descubra' no celular -->
         <div class="relative z-20 text-center px-4 max-w-4xl mx-auto mt-32 md:mt-32 pb-32 md:pb-20">
             <div class="opacity-0 animate-blur-in">
                 <div class="w-[1px] h-12 bg-mede-gold/60 mx-auto mb-6"></div>
@@ -136,7 +133,7 @@
                         <!-- Efeito de Rastro (Slide) -->
                         <div class="absolute inset-0 w-full h-full bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
                         <svg class="w-5 h-5 fill-current relative z-10" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-                        <span class="relative z-10">Faça já seu orçamento</span>
+                        <span class="relative z-10">Faça seu orçamento</span>
                     </a>
                 </div>
             </div>
@@ -151,55 +148,55 @@
         </div>
     </header>
 
-        <!-- SOBRE / CONHEÇA-NOS (3 Blocos com PARALLAX LEVE) -->
-        <section id="sobre" class="py-16 bg-white relative overflow-hidden">
-            <div class="absolute top-0 right-0 w-1/3 h-full bg-mede-cream opacity-10 -skew-x-12 transform translate-x-20 pointer-events-none"></div>
+    <!-- SOBRE / CONHEÇA-NOS (3 Blocos com PARALLAX LEVE) -->
+    <section id="sobre" class="py-16 bg-white relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-1/3 h-full bg-mede-cream opacity-10 -skew-x-12 transform translate-x-20 pointer-events-none"></div>
 
-            <div class="container mx-auto px-6 relative z-10 space-y-16">
-                
-                <!-- BLOCO 1: LEGADO -->
-                <div class="grid md:grid-cols-2 gap-8 lg:gap-16 items-center">
-                    <div class="relative h-[450px] group overflow-hidden shadow-2xl rounded-sm reveal-left">
-                        <img src="https://i.ibb.co/nqY5rs73/Chat-GPT-Image-4-de-fev-de-2026-13-07-10.png" alt="Consultoria Exclusiva" class="parallax-img w-full h-[120%] object-cover absolute top-0 left-0 transition-transform duration-75">
-                    </div>
-                    <div class="space-y-6 reveal-right">
-                        <h3 class="text-3xl md:text-4xl font-serif text-mede-brown">
-                            Legado de <br><span class="italic gold-gradient-text">Excelência</span>
-                        </h3>
-                        <div class="line-reveal h-[2px] bg-mede-gold"></div>
-                        <p class="text-gray-600 font-light leading-loose text-justify text-sm md:text-base">
-                            Há mais de três décadas, entregamos o que há de melhor em marcenaria sob medida. Combinamos a experiência da tradição com a precisão da tecnologia para criar móveis que não apenas preenchem espaços, mas realizam sonhos.
-                        </p>
-                        <ul class="space-y-2 text-mede-brown text-sm font-medium pt-2">
-                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-mede-gold"></i> Tradição Artesanal</li>
-                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-mede-gold"></i> Tecnologia de Ponta</li>
-                        </ul>
-                    </div>
+        <div class="container mx-auto px-6 relative z-10 space-y-16">
+            
+            <!-- BLOCO 1: LEGADO -->
+            <div class="grid md:grid-cols-2 gap-8 lg:gap-16 items-center">
+                <div class="relative h-[450px] group overflow-hidden shadow-2xl rounded-sm reveal-left">
+                    <img src="https://i.ibb.co/nqY5rs73/Chat-GPT-Image-4-de-fev-de-2026-13-07-10.png" alt="Consultoria Exclusiva" class="parallax-img w-full h-[120%] object-cover absolute top-0 left-0 transition-transform duration-75">
                 </div>
-
-                <!-- BLOCO 2: PROJETOS (COM VÍDEO - SEM PARALLAX) -->
-                <div class="grid md:grid-cols-2 gap-8 lg:gap-16 items-center">
-                    <div class="space-y-6 order-2 md:order-1 reveal-left">
-                        <h3 class="text-3xl md:text-4xl font-serif text-mede-brown">
-                            Projetos que <br><span class="italic gold-gradient-text">Contam Histórias</span>
-                        </h3>
-                        <div class="line-reveal h-[2px] bg-mede-gold"></div>
-                        <p class="text-gray-600 font-light leading-loose text-justify text-sm md:text-base">
-                            Não entregamos apenas móveis, criamos cenários para a sua vida. Nossa etapa de consultoria mergulha na sua rotina para desenhar ambientes que unem a estética clássica à funcionalidade moderna. Cada linha é pensada para você.
-                        </p>
-                        <a href="#contato" class="inline-flex items-center gap-2 text-mede-brown uppercase tracking-widest text-xs font-bold border-b border-mede-gold pb-1 hover:text-mede-gold transition-colors mt-2 group">
-                            Iniciar meu Projeto <i data-lucide="arrow-right" class="w-4 h-4 transition-transform group-hover:translate-x-1"></i>
-                        </a>
-                    </div>
-                    <div class="relative h-[450px] group overflow-hidden shadow-2xl rounded-sm order-1 md:order-2 reveal-right">
-                        <video class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" autoplay loop muted playsinline poster="fotoheroMEDE.JPG.jpeg">
-                            <source src="https://res.cloudinary.com/dxukdxpzc/video/upload/v1770233777/WhatsApp_Video_2026-02-04_at_15.40.02_jwquu1.mp4" type="video/mp4">
-                            Seu navegador não suporta vídeos.
-                        </video>
-                    </div>
+                <div class="space-y-6 reveal-right">
+                    <h3 class="text-3xl md:text-4xl font-serif text-mede-brown">
+                        Legado de <br><span class="italic gold-gradient-text">Excelência</span>
+                    </h3>
+                    <div class="line-reveal h-[2px] bg-mede-gold"></div>
+                    <p class="text-gray-600 font-light leading-loose text-justify text-sm md:text-base">
+                        Há mais de três décadas, entregamos o que há de melhor em marcenaria sob medida. Combinamos a experiência da tradição com a precisão da tecnologia para criar móveis que não apenas preenchem espaços, mas realizam sonhos.
+                    </p>
+                    <ul class="space-y-2 text-mede-brown text-sm font-medium pt-2">
+                        <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-mede-gold"></i> Tradição Artesanal</li>
+                        <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-mede-gold"></i> Tecnologia de Ponta</li>
+                    </ul>
                 </div>
+            </div>
 
-                <!-- BLOCO 3: ORÇAMENTO -->
+            <!-- BLOCO 2: PROJETOS (COM VÍDEO - SEM PARALLAX) -->
+            <div class="grid md:grid-cols-2 gap-8 lg:gap-16 items-center">
+                <div class="space-y-6 order-2 md:order-1 reveal-left">
+                    <h3 class="text-3xl md:text-4xl font-serif text-mede-brown">
+                        Projetos que <br><span class="italic gold-gradient-text">Contam Histórias</span>
+                    </h3>
+                    <div class="line-reveal h-[2px] bg-mede-gold"></div>
+                    <p class="text-gray-600 font-light leading-loose text-justify text-sm md:text-base">
+                        Não entregamos apenas móveis, criamos cenários para a sua vida. Nossa etapa de consultoria mergulha na sua rotina para desenhar ambientes que unem a estética clássica à funcionalidade moderna. Cada linha é pensada para você.
+                    </p>
+                    <a href="#contato" class="inline-flex items-center gap-2 text-mede-brown uppercase tracking-widest text-xs font-bold border-b border-mede-gold pb-1 hover:text-mede-gold transition-colors mt-2 group">
+                        Iniciar meu Projeto <i data-lucide="arrow-right" class="w-4 h-4 transition-transform group-hover:translate-x-1"></i>
+                    </a>
+                </div>
+                <div class="relative h-[450px] group overflow-hidden shadow-2xl rounded-sm order-1 md:order-2 reveal-right">
+                    <video class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" autoplay loop muted playsinline poster="fotoheroMEDE.JPG.jpeg">
+                        <source src="https://res.cloudinary.com/dxukdxpzc/video/upload/v1770233777/WhatsApp_Video_2026-02-04_at_15.40.02_jwquu1.mp4" type="video/mp4">
+                        Seu navegador não suporta vídeos.
+                    </video>
+                </div>
+            </div>
+
+            <!-- BLOCO 3: ORÇAMENTO -->
             <div class="grid md:grid-cols-2 gap-8 lg:gap-16 items-center">
                 <div class="relative h-[450px] group overflow-hidden shadow-2xl rounded-sm reveal-left">
                     <img src="https://i.ibb.co/N6tRVyt6/IMG-4270-jpg.jpg" alt="Atendimento Personalizado MEDE" class="parallax-img w-full h-[120%] object-cover absolute top-0 left-0 transition-transform duration-75">
@@ -213,7 +210,7 @@
                         Cada detalhe da sua casa merece ser único. Não deixe seu projeto apenas no papel. Nossa equipe está pronta para transformar suas ideias em ambientes sofisticados e funcionais, com um atendimento exclusivo do início ao fim. Descubra como podemos elevar o padrão do seu lar.
                     </p>
                     
-                    <!-- Botão WhatsApp 2 (COM RASTRO + CENTRALIZADO NO CELULAR) -->
+                    <!-- MUDANÇA AQUI: Adicionado mx-auto md:mx-0 -->
                     <a href="https://wa.me/5521990892815" target="_blank" class="group relative bg-mede-gold/90 backdrop-blur-sm text-mede-brown px-8 py-4 uppercase tracking-[0.1em] text-xs font-bold transition-all duration-300 hover:bg-white hover:scale-105 shadow-[0_0_20px_rgba(249,228,183,0.3)] border border-mede-gold flex items-center gap-3 rounded-sm w-fit mt-4 mx-auto md:mx-0 overflow-hidden">
                         <!-- Efeito de Rastro (Slide) -->
                         <div class="absolute inset-0 w-full h-full bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>

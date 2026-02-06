@@ -112,7 +112,7 @@
         .parallax-img {
             will-change: transform;
         }
-
+        
         /* Estilo do Botão Hamburger Animado */
         #menu-btn .line {
             transition: all 0.4s cubic-bezier(0.68, -0.6, 0.32, 1.6);
