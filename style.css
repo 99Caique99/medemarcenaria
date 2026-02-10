@@ -146,3 +146,36 @@ body {
 #menu-btn.active .line-3 {
     transform: rotate(-45deg) translate(5px, -5px);
 }
+
+/* Previne que o conteúdo da primeira dobra seja cortado em telas curtas (laptops) */
+@media (min-width: 1024px) and (max-height: 750px) {
+    #inicio .relative.z-20 {
+        transform: scale(0.9); /* Reduz levemente o conjunto do texto */
+        margin-top: -2rem;
+    }
+    
+    #inicio h1 {
+        margin-bottom: 1rem;
+    }
+
+    #inicio p {
+        margin-bottom: 1.5rem;
+    }
+}
+
+/* Ajuste específico para Tablets (iPad/Android) em orientação Vertical */
+@media (min-width: 768px) and (max-width: 1024px) {
+    #inicio .relative.z-20 {
+        padding-top: 4rem;
+    }
+    
+    .luxury-30 {
+        line-height: 0.9 !important; /* Melhora o alinhamento do "30" */
+    }
+}
+
+/* Garante que a imagem de fundo não achate */
+.smooth-image {
+    object-position: center center;
+    height: 100% !important;
+}
