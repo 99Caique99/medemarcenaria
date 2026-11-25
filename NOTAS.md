@@ -101,9 +101,29 @@ Como a responsividade foi resolvida:
 - Texto do "Sobre" alinhado à esquerda (sem justificar); negrito em 700.
 - Botão "Fale conosco" do rodapé agora usa o mesmo componente WhatsApp dos demais (componente único).
 
-## Fase 3 — Motion: o móvel 3D montado ao longo da página
+## Fase 3c — Montagem renderizada, estilo página de produto (versão atual)
+
+Histórico desta fase: (a) 3D em tempo real melhorado (commit 3041c03); (b) montagem com as 9 fotos de referência enviadas pelo cliente (commit 406193e), reprovada ("amador"); (c) **atual**: o guarda-roupa foi modelado em 3D e a montagem é renderizada quadro a quadro no Blender (Cycles) e tocada num `<canvas>` conforme a rolagem, como nas páginas de produto da Apple. As fotos de referência guiaram o modelo (carvalho claro, pés metálicos, cabideiro e 2 gavetas à esquerda, prateleiras à direita, LED no topo, 2 portas com puxador longo, sala com luz de janela).
+
+(d) Após o cliente ver no ar ("é esse o resultado?"): a sala renderizada aparecia como uma foto em caixa com bordas borradas sobre a página. Agora o padrão é **estúdio**: fundo transparente, só o móvel e a sombra real no chão (shadow catcher), pousando direto sobre a cor de cada seção. Madeira escura acetinada (tom nogueira/freijó dos projetos da MEDE), puxadores de latão no dourado da marca, 1080 px. A cena antiga com parede e janela continua disponível com `--room`.
+
+(e) Celular: a faixa fixa sob a navbar (meia tela por cima de todo o conteúdo) foi reprovada ("terrível"). Agora o celular/tablet tem um capítulo próprio, `#montagem` ("Do projeto à entrega"), em tela cheia com fundo escuro: a seção tem 420svh e o miolo fica grudado (sticky) enquanto o móvel se monta em 4 etapas com legenda (base, estrutura, interior, acabamento); depois o site segue normal. O móvel é encaixado no vão entre o título e a legenda (area() em src/js/scene/index.js). Os textos das etapas são rascunho, para o cliente revisar.
+
+- Cena: `scripts/render/guarda_roupa.py` (medidas, peças, materiais, luz, câmera e o tempo de cada etapa). Lâmina de carvalho gerada em `scripts/render/madeira.py`, mapeada em metros com o veio no sentido do comprimento de cada peça. Luz: sol entrando por uma janela fora de quadro (desenha a grade na parede) + rebatedor + céu.
+- Etapas: base desce e assenta → laterais → tampo → fundo corre no canal → divisória e prateleiras chegam pelo lado e são empurradas para dentro → prateleira das gavetas, cabideiro e gavetas → portas chegam pelo lado já abertas, encaixam nas dobradiças e fecham com amortecimento → abrem com o LED acendendo. Câmera num arco lento até ficar de frente.
+- Site: `src/js/scene/sequence.js`. 144 quadros WebP (960 px no desktop, 640 px no celular), carregados depois do primeiro scroll em ordem grossa→fina (1 a cada 8 primeiro, então a montagem inteira já funciona; os demais chegam por perto de onde o visitante está). Entre dois quadros há cruzamento suave. Mola criticamente amortecida no progresso (sem tranco).
+- Desktop: coluna fixa à direita, imagem cabe na largura (portas abertas não cortam), bordas dissolvidas no fundo da seção. Celular: faixa sob a navbar (44svh, até 420 px) cobrindo a largura.
+
+## Fase 3 — Motion: o móvel 3D montado ao longo da página (substituído pela 3c)
 
 Histórico: (1) ilustração 2D num rail lateral (commit 75dfdc8) → (2) abertura 3D fixada no hero (99c4552) → (3) a pedido do cliente: o hero volta a ser a foto (aparece de imediato) e o móvel é montado em 3D do "Sobre" até o rodapé, ficando pronto na última dobra (85d6c17) → (4) **versão atual**, a pedido do cliente ("não tá fluido… mais realista… está aparecendo um desenho"): sem as linhas de projeto, sem a etapa de MDF cru, madeira realista desde a primeira peça, montagem contínua e rolagem com inércia no desktop.
+
+**Revisão 5** (pedido do cliente: "mais fluida, mais realista, no celular tá horrível"):
+- Nenhuma peça surge do nada nem fica translúcida: todas entram sólidas, vindas de fora do quadro (descem do alto, ou chegam pelo alto/à frente e são empurradas para dentro), desaceleram como algo carregado com cuidado, balançam um pouco (pêndulo amortecido) e encaixam no último centímetro. Portas fecham com soft-close.
+- Progresso com mola criticamente amortecida no lugar do lerp: sem tranco ao começar/parar de rolar; no celular os saltos do scroll por toque viram movimento contínuo.
+- Câmera num arco único (três quartos do alto → quase de frente), sem vai e vem.
+- Madeira com UV em metros: mesma densidade de veio em todas as peças, veio no sentido do comprimento e bordas com veio fino (antes cada face esticava a textura inteira). Veio mais fino e reto, relevo sutil, tone mapping Neutral (cor fiel), sombras PCF macias quase frontais (caem atrás do móvel).
+- Celular: faixa maior (40svh, até 380px) com a cor da seção que está passando embaixo (sem "caixa" de outra cor), móvel enquadrado na parte sólida da faixa, DPR até 2× com queda automática em degraus se o aparelho não sustentar ~40 fps.
 
 | Seção | Etapa | O que acontece |
 |---|---|---|

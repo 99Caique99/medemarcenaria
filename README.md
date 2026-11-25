@@ -1,7 +1,7 @@
 # MEDE Marcenaria — site
 
-Site estático (HTML + Tailwind v4 + JS vanilla + GSAP + three.js), gerado com Vite.
-Do "Sobre" até o rodapé, um armário planejado em 3D vai sendo montado conforme o visitante rola a página.
+Site estático (HTML + Tailwind v4 + JS vanilla + GSAP), gerado com Vite.
+Do "Sobre" até o rodapé, um guarda-roupa vai sendo montado (sequência renderizada em 3D, tocada pela rolagem) conforme o visitante rola a página.
 
 ## Requisitos
 
@@ -51,9 +51,10 @@ npx lighthouse http://localhost:4173/ --preset=desktop --view
 | Componentes (botões, navbar, reveals) | `src/styles/components.css` |
 | Seções (hero, sobre, diferenciais, depoimentos, rodapé) | `src/styles/sections.css` |
 | Conteúdo | `index.html` |
-| Móvel 3D (peças, materiais, câmera, luzes, etapas) | `src/js/scene/stage.js` |
-| Seção que conduz cada etapa, coluna/faixa e fallbacks | `src/js/scene/index.js` + `src/styles/scene.css` |
-| Textura de madeira | `src/js/scene/wood.js` |
+| Player da montagem (quadros pela rolagem, carregamento, enquadramento) | `src/js/scene/sequence.js` |
+| Seção que conduz a montagem, coluna/faixa e fallbacks | `src/js/scene/index.js` + `src/styles/scene.css` |
+| Cena 3D do guarda-roupa (peças, madeira, luz, câmera, tempo de cada etapa) | `scripts/render/guarda_roupa.py` (Blender como módulo: `pip install bpy numpy scipy pillow`) → `python scripts/render/guarda_roupa.py --out .cache/render --size 960 --frames 144 --samples 32` (~30 s por quadro em 4 núcleos) → `node scripts/build-sequencia.mjs .cache/render` (gera `public/montagem/seq/` e `src/sequencia.json`) |
+| Lâmina de carvalho (gerada, sem imagem externa) | `scripts/render/madeira.py` |
 
 ## Deploy
 
