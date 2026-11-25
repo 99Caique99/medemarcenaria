@@ -118,12 +118,11 @@ Primeira versão (ilustração 2D num rail lateral) foi **substituída** a pedid
 
 - Tudo é função pura do progresso do scroll: funciona igual para frente, para trás e com rolagem rápida.
 - Contador decorativo 01 —— 04 no canto inferior esquerdo (números gerados por CSS).
-- **Fallback = hero clássico** (foto + texto, idêntico à Fase 2): sem JS, sem WebGL, , aparelho com ≤2 núcleos ou <2 GB, ou tela com menos de 500px de altura (celular deitado).
-- O three.js (~139 KB gzip) só é baixado depois do  + ocioso, sem disputar com o LCP. Renderiza só quando algo muda.
+- **Fallback = hero clássico** (foto + texto, idêntico à Fase 2): sem JS, sem WebGL, `prefers-reduced-motion`, aparelho com ≤2 núcleos ou <2 GB, ou tela com menos de 500px de altura (celular deitado).
+- O three.js (~139 KB gzip) só é baixado depois do `load` + ocioso, sem disputar com o LCP. Renderiza só quando algo muda.
 - Desempenho medido (Chrome, CPU 4× mais lenta, rolagem contínua): 75 fps (limite do monitor), p95 13,4 ms, 0 quadros > 33 ms — em 375 e 1440 px.
 - Nenhuma imagem nova: madeira gerada em canvas só com tons da paleta; o final usa a foto original.
-- Gravações:  e  (docs/motion-desktop.gif (93 quadros)
-docs/motion-mobile.gif (93 quadros)).
+- Gravações: `docs/motion-desktop.gif` e `docs/motion-mobile.gif` (`node tests/record-motion.mjs docs`).
 
 ## Próximos passos
 
