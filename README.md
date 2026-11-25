@@ -57,8 +57,14 @@ npx lighthouse http://localhost:4173/ --preset=desktop --view
 
 ## Deploy
 
-1. Preencha `SITE_URL` em `src/config.js` (ex.: `https://www.medemarcenaria.com.br`, sem barra no fim).
-2. `npm run build`
-3. Publique a pasta `dist/` em qualquer hospedagem estática (Netlify, Vercel, Cloudflare Pages, GitHub Pages).
+> ⚠️ O `index.html` da raiz é o código-fonte: aberto direto (duplo clique ou Live Server) ele aparece quebrado, com `{{HERO_PRELOAD}}` e sem estilos. O site final é a pasta `dist/` gerada pelo build. Para ver localmente: `npm run build` e depois `npm run preview`.
 
-O site assume que está na raiz do domínio (`/`).
+**GitHub Pages (automático):** `.github/workflows/deploy.yml` faz o build e publica a cada push no `main`.
+Uma única vez: no repositório, **Settings → Pages → Build and deployment → Source: GitHub Actions**.
+Endereço: `https://99caique99.github.io/medemarcenaria/`.
+
+**Outra hospedagem estática** (Netlify, Vercel, Cloudflare Pages): comando de build `npm run build`, pasta publicada `dist`.
+
+Ao ter o domínio final, preencha `SITE_URL` em `src/config.js` (ex.: `https://www.medemarcenaria.com.br`, sem barra no fim): ativa canonical e a prévia de link (og:image) no WhatsApp.
+
+Os caminhos são relativos (`base: './'`): o mesmo build funciona na raiz de um domínio ou numa subpasta.

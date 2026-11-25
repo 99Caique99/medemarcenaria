@@ -12,10 +12,10 @@ const parseAttrs = (str) => Object.fromEntries([...str.matchAll(attrRe)].map(([,
 function picture({ key, alt, sizes = '100vw', class: cls = '', eager, 'picture-class': picCls = 'contents' }) {
   const img = images[key];
   if (!img) throw new Error(`Imagem desconhecida: ${key}`);
-  const set = (ext) => img.widths.map((w) => `/img/${key}-${w}.${ext} ${w}w`).join(', ');
+  const set = (ext) => img.widths.map((w) => `img/${key}-${w}.${ext} ${w}w`).join(', ');
   const fallback = img.widths.find((w) => w >= 768) ?? img.widths.at(-1);
   const loading = eager ? 'loading="eager" fetchpriority="high"' : 'loading="lazy"';
-  return `<picture class="${picCls}"><source type="image/avif" srcset="${set('avif')}" sizes="${sizes}"><img src="/img/${key}-${fallback}.webp" srcset="${set('webp')}" sizes="${sizes}" alt="${alt}" width="${img.width}" height="${img.height}" ${loading} decoding="async" class="${cls}"></picture>`;
+  return `<picture class="${picCls}"><source type="image/avif" srcset="${set('avif')}" sizes="${sizes}"><img src="img/${key}-${fallback}.webp" srcset="${set('webp')}" sizes="${sizes}" alt="${alt}" width="${img.width}" height="${img.height}" ${loading} decoding="async" class="${cls}"></picture>`;
 }
 
 function seo() {
@@ -42,9 +42,9 @@ function seo() {
     `<meta name="description" content="${description}">`,
     url && `<link rel="canonical" href="${url}/">`,
     '<meta name="theme-color" content="#ffffff">',
-    '<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">',
-    '<link rel="apple-touch-icon" href="/apple-touch-icon.png">',
-    '<link rel="manifest" href="/site.webmanifest">',
+    '<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">',
+    '<link rel="apple-touch-icon" href="apple-touch-icon.png">',
+    '<link rel="manifest" href="site.webmanifest">',
     '<meta property="og:type" content="website">',
     '<meta property="og:locale" content="pt_BR">',
     '<meta property="og:site_name" content="MEDE Marcenaria">',
@@ -70,10 +70,10 @@ function medeHtml() {
     YEAR: String(new Date().getFullYear()),
     HERO_PRELOAD: (() => {
       const h = images.hero;
-      const set = h.widths.map((w) => `/img/hero-${w}.avif ${w}w`).join(', ');
+      const set = h.widths.map((w) => `img/hero-${w}.avif ${w}w`).join(', ');
       return `<link rel="preload" as="image" type="image/avif" imagesrcset="${set}" imagesizes="100vw" fetchpriority="high">`;
     })(),
-    POSTER: `/img/hero-${images.hero.widths.find((w) => w >= 768)}.webp`,
+    POSTER: `img/hero-${images.hero.widths.find((w) => w >= 768)}.webp`,
   };
   return {
     name: 'mede-html',
@@ -90,7 +90,10 @@ function medeHtml() {
   };
 }
 
+// base relativa: o mesmo build funciona na raiz de um domínio ou numa subpasta
+// (ex.: GitHub Pages em /medemarcenaria/).
 export default defineConfig({
+  base: './',
   plugins: [medeHtml(), tailwindcss()],
   build: { target: 'es2020', cssMinify: true, assetsInlineLimit: 0 },
 });
