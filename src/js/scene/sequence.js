@@ -76,7 +76,7 @@ export async function createStage(container, { mobile }) {
     const fw = canvas.width / img.naturalWidth, fh = canvas.height / img.naturalHeight;
     // celular: cobre a faixa. Desktop (coluna em pé): cabe na largura, para as portas
     // abertas não serem cortadas; as bordas se dissolvem no fundo da seção (CSS).
-    const s = mobile ? Math.max(fw, fh) : Math.max(fw * 1.04, fh * 0.8);
+    const s = mobile ? Math.max(fw, fh * 0.86) : Math.max(fw * 1.04, fh * 0.8);
     const w = img.naturalWidth * s, h = img.naturalHeight * s;
     const x = (canvas.width - w) / 2;
     const y = h > canvas.height ? clamp((canvas.height - h) * (mobile ? 0.62 : 0.5), canvas.height - h, 0) : (canvas.height - h) / 2;
