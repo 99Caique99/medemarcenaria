@@ -20,7 +20,7 @@ export function initNav() {
 
   if (!menuBtn || !menu) return;
 
-  const mq = window.matchMedia('(min-width: 768px)');
+  const mq = window.matchMedia('(min-width: 768px) and (min-height: 500px)');
   const isOpen = () => menuBtn.getAttribute('aria-expanded') === 'true';
 
   function setOpen(open, { restoreFocus = true } = {}) {

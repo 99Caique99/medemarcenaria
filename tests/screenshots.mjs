@@ -16,6 +16,7 @@ for (const w of [375, 768, 1280, 1920]) {
       scrollTo(0, y);
       await new Promise((r) => setTimeout(r, 150));
     }
+    document.getElementById('depoimentos')?.scrollIntoView({ behavior: 'instant' });
     await new Promise((r) => setTimeout(r, 6000)); // widget Shapo
     scrollTo({ top: 0, behavior: 'instant' });
     await new Promise((r) => setTimeout(r, 800));

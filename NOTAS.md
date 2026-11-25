@@ -88,8 +88,21 @@ Legenda: ✅ corrigido · ⏳ fase seguinte
 - `text-justify` nos parágrafos do "Sobre" cria espaços irregulares no mobile → será tratado no redesign (Fase 2) com alinhamento à esquerda.
 - A primeira imagem do "Sobre" é gerada por IA (nome do arquivo "ChatGPT Image"). Para uma marca que vende artesanato real, uma foto de projeto entregue transmitiria mais confiança.
 
+## Fase 2 — Redesign (escolhas aprovadas)
+
+Hero editorial à esquerda (desktop) · "Sobre" assimétrico 7/5 com moldura dourada deslocada · navbar com logo central mais leve · diferenciais em cards com ícone circular.
+
+Como a responsividade foi resolvida:
+- **Rail do móvel** (`src/styles/layout.css`): aparece em ≥1280px, ou ≥1024px em paisagem, sempre com ≥560px de altura. A largura é `min(26vw, 26rem, altura útil × 0,68)` — encolhe pela largura e pela altura; o conteúdo reserva exatamente esse espaço (`--rail-space`).
+- **Container queries**: os blocos do "Sobre", os diferenciais e o rodapé respondem à largura real da coluna de conteúdo (que muda com o rail), não à viewport.
+- **Navbar completa** só com ≥768px de largura **e** ≥500px de altura; celulares deitados usam a navbar compacta + menu em tela cheia.
+- **Numeração 01–07** gerada por CSS (`content: attr(data-num) / ""`): não entra no texto da página nem é lida por leitores de tela. Corresponde às 7 etapas do móvel.
+- Imagens com revelação por máscara (clip-path) e zoom suave no hover; sem `filter: blur`.
+- Texto do "Sobre" alinhado à esquerda (sem justificar); negrito em 700.
+- Botão "Fale conosco" do rodapé agora usa o mesmo componente WhatsApp dos demais (componente único).
+
 ## Próximos passos
 
-- Fase 2 — Redesign editorial seção por seção.
+- ~~Fase 2 — Redesign editorial seção por seção.~~ ✅
 - Fase 3 — Motion do móvel (SVG + ScrollTrigger).
 - Fase 4 — Polimento, Lighthouse, Firefox/WebKit, gravação do motion.
