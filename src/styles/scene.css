@@ -1,10 +1,10 @@
 /* ==========================================================================
-   PALCO DA MONTAGEM DO MÓVEL (src/js/scene) — do "Sobre" até o rodapé
+   PALCO DA MONTAGEM DO MÓVEL (src/js/scene) — coluna no computador, capítulo no celular
    .stage-ok é definido no <head> (JS disponível) para reservar o
    espaço já no primeiro paint, sem salto de layout.
-   Manter as media queries em sincronia com COL_MQ / BAND_MQ (src/js/scene/index.js).
+   Manter as media queries em sincronia com COL_MQ / CHAP_MQ (src/js/scene/index.js).
    ========================================================================== */
-:root { --stage-w: 0px; --band-h: clamp(240px, 44svh, 420px); }
+:root { --stage-w: 0px; }
 
 /* Desktop: coluna fixa à direita; o conteúdo (exceto o hero) reserva o espaço */
 @media (width >= 80rem) and (height >= 560px), (width >= 64rem) and (orientation: landscape) and (height >= 560px) {
@@ -15,14 +15,6 @@
     padding-right: calc(var(--gutter) + var(--stage-w));
   }
 }
-
-/* Mobile/tablet: faixa fixa sob a navbar; âncoras não ficam escondidas atrás dela */
-@media (width < 80rem) and (height >= 500px) and (prefers-reduced-motion: no-preference) {
-  .stage-band-on { scroll-padding-top: calc(var(--nav-h, 72px) + var(--band-h)); }
-}
-
-/* Registrada para a cor da faixa poder transicionar entre seções */
-@property --band-bg { syntax: '<color>'; inherits: false; initial-value: #faf7f2; }
 
 @layer components {
   .stage3d {
@@ -40,11 +32,6 @@
     -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 5%, #000 95%, transparent 100%);
     mask-image: linear-gradient(to bottom, transparent 0, #000 5%, #000 95%, transparent 100%);
   }
-  .stage3d--band .montagem__canvas {
-    -webkit-mask-image: linear-gradient(to bottom, #000 88%, transparent 100%);
-    mask-image: linear-gradient(to bottom, #000 88%, transparent 100%);
-  }
-
   .stage3d--col {
     top: var(--nav-h, 136px);
     bottom: 0;
@@ -55,14 +42,67 @@
     mask-image: linear-gradient(to right, transparent 0, #000 14%, #000 92%, transparent 100%);
   }
 
-  .stage3d--band {
-    top: var(--nav-h, 72px);
-    left: 0;
-    right: 0;
-    height: var(--band-h);
-    /* --band-bg: cor da seção logo abaixo (definida em src/js/scene/index.js) */
-    --band-bg: var(--color-mede-paper);
-    background: linear-gradient(to bottom, var(--band-bg) 84%, color-mix(in srgb, var(--band-bg) 0%, transparent));
-    transition-property: opacity, visibility, --band-bg;
+}
+
+/* ==========================================================================
+   Celular/tablet: capítulo "Do projeto à entrega" em tela cheia.
+   A seção é alta (rolagem) e o miolo fica grudado na tela (sticky) enquanto
+   o móvel se monta; depois o site segue normal, sem nada por cima.
+   Manter a media query em sincronia com CHAP_MQ (src/js/scene/index.js).
+   ========================================================================== */
+@layer components {
+  .section-montagem { display: none; }
+  @media (width < 80rem) and (height >= 500px) and (prefers-reduced-motion: no-preference) {
+    .stage-ok .section-montagem { display: block; }
   }
+  /* telas largas em paisagem usam a coluna fixa (COL_MQ), não o capítulo */
+  @media (width >= 80rem) and (height >= 560px), (width >= 64rem) and (orientation: landscape) and (height >= 560px) {
+    .stage-ok .section-montagem { display: none; }
+  }
+  .section-montagem {
+    position: relative;
+    height: 420svh;
+    background: #221e1b;
+    color: var(--color-mede-cream);
+  }
+  .montagem-sticky {
+    position: sticky;
+    top: var(--nav-h, 64px);
+    height: calc(100svh - var(--nav-h, 64px));
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: radial-gradient(120% 70% at 50% 46%, #4a423a 0%, #2b2622 58%, #211d1a 100%);
+  }
+  .montagem-palco { position: absolute; inset: 0; }
+  .montagem-palco .montagem__canvas { opacity: 0; transition: opacity 700ms var(--ease-luxe); }
+  .montagem-palco.is-on .montagem__canvas { opacity: 1; }
+  .montagem-head { position: relative; padding-top: clamp(1rem, 3.5svh, 2rem); text-align: center; }
+  .montagem-eyebrow {
+    font-size: 0.66rem; letter-spacing: 0.28em; text-transform: uppercase; font-weight: 600;
+    color: var(--color-mede-gold-deep);
+  }
+  .montagem-title {
+    margin-top: 0.4rem;
+    font-family: var(--font-serif); font-weight: 400; color: #fff;
+    font-size: clamp(1.55rem, 7vw, 2.2rem); line-height: 1.15;
+  }
+  .montagem-title em { font-style: italic; color: var(--color-mede-gold); }
+  .montagem-etapas {
+    position: relative; margin: auto 0 0; padding: 0 1.75rem; list-style: none;
+    width: 100%; max-width: 30rem; height: 7.4rem; text-align: center;
+  }
+  .montagem-etapas li {
+    position: absolute; inset: 0 1.75rem;
+    opacity: 0; transform: translateY(0.6rem);
+    transition: opacity 450ms var(--ease-luxe), transform 450ms var(--ease-luxe);
+  }
+  .montagem-etapas li.is-on { opacity: 1; transform: none; }
+  .montagem-etapas .n { font-family: var(--font-serif); font-style: italic; font-size: 1.85rem; line-height: 1; color: var(--color-mede-gold-deep); }
+  .montagem-etapas h3 { margin: 0.25rem 0 0.35rem; font-family: var(--font-serif); font-weight: 500; font-size: 1.25rem; color: #fff; }
+  .montagem-etapas p { font-size: 0.8rem; line-height: 1.6; color: var(--color-mede-cream); opacity: 0.85; }
+  .montagem-barra { position: relative; display: flex; gap: 6px; padding: 0.8rem 0 calc(5.4rem + env(safe-area-inset-bottom)); /* acima do botão do WhatsApp */ }
+  .montagem-barra i { width: 2.1rem; height: 2px; background: rgb(255 255 255 / 0.18); }
+  .montagem-barra i.is-on { background: var(--color-mede-gold-deep); }
 }

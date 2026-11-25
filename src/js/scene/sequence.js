@@ -10,9 +10,9 @@ import data from '../../sequencia.json';
 
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 
-export async function createStage(container, { mobile }) {
+export async function createStage(container, { mobile, area }) {
   const N = data.frames;
-  const size = mobile && window.devicePixelRatio < 2.5 ? data.sizes[1] : data.sizes[0];
+  const size = mobile && window.devicePixelRatio < 1.5 ? data.sizes[1] : data.sizes[0];
   const url = (i) => `montagem/seq/${size}/q${String(i).padStart(4, '0')}.webp`;
 
   const canvas = document.createElement('canvas');
@@ -74,13 +74,22 @@ export async function createStage(container, { mobile }) {
   function paint(i, alpha) {
     const img = imgs[i].img;
     const fw = canvas.width / img.naturalWidth, fh = canvas.height / img.naturalHeight;
-    // Quadros com fundo transparente (só o móvel e a sombra): o móvel inteiro cabe no
-    // palco, portas abertas incluídas, e pousa direto sobre a cor da seção. Pode cortar
-    // só a margem vazia do quadro (o móvel ocupa ~92% da largura e ~82% da altura).
-    const s = Math.min(fw / 0.92, fh / 0.82);
+    // Quadros com fundo transparente (só o móvel e a sombra). Coluna (desktop): o móvel
+    // inteiro cabe, portas abertas incluídas (o quadro tem ~8% de margem vazia).
+    // Capítulo (celular): o móvel (~80% da altura do quadro) cabe no vão livre entre o
+    // título e a legenda, informado por area(), sem passar de 1,2× a largura da tela.
+    let s, cy;
+    if (area) {
+      const { top, bottom } = area();
+      s = Math.min(fw * 1.2, ((bottom - top) * dpr) / (img.naturalHeight * 0.8));
+      cy = ((top + bottom) / 2) * dpr;
+    } else {
+      s = Math.min(fw / 0.92, fh / 0.82);
+      cy = canvas.height * 0.5;
+    }
     const w = img.naturalWidth * s, h = img.naturalHeight * s;
     const x = (canvas.width - w) / 2;
-    const y = canvas.height / 2 - h * (mobile ? 0.5 : 0.48);
+    const y = cy - h * 0.48;
     ctx.globalAlpha = alpha;
     ctx.drawImage(img, x, y, w, h);
   }
