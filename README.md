@@ -33,9 +33,9 @@ node tests/record-motion.mjs docs        # GIFs do motion (desktop e mobile)
 | Cores, fontes, espaçamentos, sombras, durações e easings (tokens) | `@theme` em `src/styles/main.css` |
 | Componentes (botões, navbar, reveals) | `src/styles/components.css` |
 | Conteúdo | `index.html` |
-| Desenho do móvel (SVG) | `src/partials/movel.svg` (+ gradientes em `movel-defs.svg`) |
-| Etapas da montagem | `src/js/motion/timeline.js` (animação) e `furniture.js` (seções/checkpoints) |
-| Quando o rail aparece | `src/styles/layout.css` + `RAIL_MQ` em `src/js/breakpoints.js` (manter iguais) |
+| Cena 3D da abertura (peças, câmera, luzes, etapas) | `src/js/scene/stage.js` |
+| Pin, scroll e fallback da abertura | `src/js/scene/index.js` |
+| Textura de madeira | `src/js/scene/wood.js` |
 
 ## Deploy
 

@@ -1,18 +1,10 @@
 /* ==========================================================================
-   LAYOUT — coluna de conteúdo + rail do móvel
-   O rail aparece em telas largas o bastante (≥1280, ou ≥1024 em paisagem) e com
-   altura útil (≥560px). Sua largura é limitada pela largura E pela altura da
-   viewport; o conteúdo reserva exatamente esse espaço à direita.
-   Manter a media query em sincronia com RAIL_MQ (src/js/breakpoints.js).
+   LAYOUT — coluna de conteúdo centralizada
    ========================================================================== */
 :root {
   --gutter: var(--spacing-gutter);
   --content-max: 72rem;
   --nav-h-max: 72px;          /* altura da navbar no topo (sem rolar) */
-  --rail-top: calc(var(--nav-h-max) + 1.5rem);
-  --rail-bottom: 6.75rem;     /* livre para o botão flutuante do WhatsApp */
-  --rail-w: 0px;
-  --rail-space: 0px;
 }
 
 /* Navbar completa (logo + links) só com altura suficiente; celular deitado usa a compacta */
@@ -20,74 +12,17 @@
   :root { --nav-h-max: 136px; }
 }
 
-@media (width >= 80rem) and (height >= 560px), (width >= 64rem) and (orientation: landscape) and (height >= 560px) {
-  :root {
-    --rail-w: min(26vw, 26rem, calc((100svh - var(--rail-top) - var(--rail-bottom)) * 0.68));
-    --rail-space: calc(var(--rail-w) + var(--gutter));
-  }
-}
-
 @layer components {
   .wrap {
     container-type: inline-size;
     width: 100%;
-    max-width: calc(var(--content-max) + var(--rail-space) + var(--gutter) * 2);
+    max-width: calc(var(--content-max) + var(--gutter) * 2);
     margin-inline: auto;
-    padding-inline: var(--gutter) calc(var(--gutter) + var(--rail-space));
+    padding-inline: var(--gutter);
   }
 
   .section {
     position: relative;
     padding-block: var(--spacing-section);
-  }
-
-  /* ---------- Rail (prancha técnica) ---------- */
-  .rail {
-    display: none;
-    position: fixed;
-    z-index: 40;
-    top: var(--rail-top);
-    bottom: var(--rail-bottom);
-    /* Alinha à borda direita da coluna .wrap (que é centralizada) */
-    right: max(var(--gutter), calc((100% - (var(--content-max) + var(--rail-space) + var(--gutter) * 2)) / 2 + var(--gutter)));
-    width: var(--rail-w);
-    align-items: center;
-    pointer-events: none;
-  }
-  @media (width >= 80rem) and (height >= 560px), (width >= 64rem) and (orientation: landscape) and (height >= 560px) {
-    .rail { display: flex; }
-  }
-
-  .rail-sheet {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 0.68;
-    max-height: 100%;
-    border: 1px solid var(--color-mede-line);
-    border-radius: var(--radius-frame);
-    background-color: var(--color-mede-paper);
-    background-image:
-      linear-gradient(color-mix(in srgb, var(--color-mede-gold-deep) 9%, transparent) 1px, transparent 1px),
-      linear-gradient(90deg, color-mix(in srgb, var(--color-mede-gold-deep) 9%, transparent) 1px, transparent 1px);
-    background-size: 24px 24px;
-    background-position: -1px -1px;
-    box-shadow: 0 30px 60px -30px rgb(95 85 73 / 0.45);
-  }
-  /* Marcas de canto, como numa folha de projeto */
-  .rail-sheet::before,
-  .rail-sheet::after {
-    content: "";
-    position: absolute;
-    width: 14px;
-    height: 14px;
-    border-color: var(--color-mede-gold-deep);
-    border-style: solid;
-  }
-  .rail-sheet::before { top: 8px; left: 8px; border-width: 1px 0 0 1px; }
-  .rail-sheet::after { right: 8px; bottom: 8px; border-width: 0 1px 1px 0; }
-
-  .rail-stage {
-    position: absolute;
-    inset: 1.5rem;
   }
 }
