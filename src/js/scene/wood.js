@@ -40,7 +40,7 @@ function makeNoise(rand) {
 
 const rgb = (hex) => [16, 8, 0].map((s) => (parseInt(hex.slice(1), 16) >> s) & 255);
 
-export async function woodTexture({ base, dark, light, seed = 7, size = 1024, rings = 40, vertical = false, shade = 0, maxAnisotropy = 8 }) {
+export async function woodTexture({ base, dark, light, seed = 7, size = 1024, rings = 40, arch = 0.45, wave = 1, vertical = false, shade = 0, maxAnisotropy = 8 }) {
   const rand = rng(seed);
   const { noise, fbm } = makeNoise(rand);
   const B = rgb(base), D = rgb(dark), L = rgb(light);
@@ -58,9 +58,9 @@ export async function woodTexture({ base, dark, light, seed = 7, size = 1024, ri
         const u = (vertical ? y : x) / size, v = (vertical ? x : y) / size;
         const warp = fbm(ox + u * 1.6, oy + v * 2.4) - 0.5;
         // Anéis finos com espaçamento irregular; catedral no meio da lâmina; leve ondulação
-        const arch = (u - 0.5 - warp * 0.35) ** 2 * 0.45;
-        const r = (v + arch + warp * 0.06 + (noise(ox + u * 5, oy + v * 40) - 0.5) * 0.004) * rings
-          + (fbm(ox * 0.5 + u * 0.4, oy + v * 5) - 0.5) * rings * 0.12;
+        const cath = (u - 0.5 - warp * 0.35) ** 2 * arch;
+        const r = (v + cath + warp * 0.06 * wave + (noise(ox + u * 5, oy + v * 40) - 0.5) * 0.004) * rings
+          + (fbm(ox * 0.5 + u * 0.4, oy + v * 5) - 0.5) * rings * 0.12 * wave;
         const n = Math.floor(r), ring = r - n;
         const strength = 0.35 + noise(n * 0.71 + 0.5, oy) * 0.9;           // cada anel com um contraste
         const late = (Math.pow(ring, 6) * 0.8 + Math.pow(ring, 2) * 0.2) * strength; // lenho tardio, mais escuro

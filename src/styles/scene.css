@@ -4,7 +4,7 @@
    espaço já no primeiro paint, sem salto de layout.
    Manter as media queries em sincronia com COL_MQ / BAND_MQ (src/js/scene/index.js).
    ========================================================================== */
-:root { --stage-w: 0px; --band-h: clamp(190px, 34svh, 330px); }
+:root { --stage-w: 0px; --band-h: clamp(220px, 40svh, 380px); }
 
 /* Desktop: coluna fixa à direita; o conteúdo (exceto o hero) reserva o espaço */
 @media (width >= 80rem) and (height >= 560px), (width >= 64rem) and (orientation: landscape) and (height >= 560px) {
@@ -20,6 +20,9 @@
 @media (width < 80rem) and (height >= 500px) and (prefers-reduced-motion: no-preference) {
   .stage-band-on { scroll-padding-top: calc(var(--nav-h, 72px) + var(--band-h)); }
 }
+
+/* Registrada para a cor da faixa poder transicionar entre seções */
+@property --band-bg { syntax: '<color>'; inherits: false; initial-value: #faf7f2; }
 
 @layer components {
   .stage3d {
@@ -48,10 +51,9 @@
     left: 0;
     right: 0;
     height: var(--band-h);
-    background: linear-gradient(to bottom, var(--color-mede-paper) 82%, color-mix(in srgb, var(--color-mede-paper) 0%, transparent));
-    transition-property: opacity, visibility, background;
-  }
-  .stage3d--band.is-dark {
-    background: linear-gradient(to bottom, var(--color-mede-brown) 82%, color-mix(in srgb, var(--color-mede-brown) 0%, transparent));
+    /* --band-bg: cor da seção logo abaixo (definida em src/js/scene/index.js) */
+    --band-bg: var(--color-mede-paper);
+    background: linear-gradient(to bottom, var(--band-bg) 84%, color-mix(in srgb, var(--band-bg) 0%, transparent));
+    transition-property: opacity, visibility, --band-bg;
   }
 }

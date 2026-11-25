@@ -59,7 +59,11 @@ async function mount({ createStage }, mode, reduce) {
     return () => { ro.disconnect(); stage.dispose(); el.remove(); root.classList.remove(`stage-${mode}-on`); };
   }
 
-  const state = { target: 0, current: 0 };
+  // Progresso com mola criticamente amortecida (não um lerp): a montagem ganha e perde
+  // velocidade aos poucos, sem tranco quando a rolagem começa ou para, e os saltos
+  // discretos do scroll por toque (celular) viram movimento contínuo.
+  const state = { target: 0, current: 0, vel: 0 };
+  const OMEGA = mode === 'band' ? 7.5 : 9;
   let last = -1;
 
   // O palco aparece quando o hero já saiu quase todo e fica até o fim da página
@@ -85,19 +89,48 @@ async function mount({ createStage }, mode, reduce) {
     onUpdate: setOn,
     onRefresh: setOn,
   });
-  // Faixa do mobile escurece sobre o rodapé marrom.
-  const tone = mode === 'band'
-    ? ScrollTrigger.create({ trigger: '#contato', start: 'top 45%', end: 'bottom top', toggleClass: { targets: el, className: 'is-dark' } })
-    : null;
+  // Faixa do mobile: assume a cor da seção que está passando logo abaixo dela,
+  // então não aparece como uma caixa de outra cor sobre o conteúdo.
+  let toneKey = '';
+  const bgOf = (n) => {
+    for (; n && n !== document.documentElement; n = n.parentElement) {
+      const c = getComputedStyle(n).backgroundColor;
+      if (c && c !== 'transparent' && !/rgba\(.*,\s*0\)$/.test(c)) return c;
+    }
+    return getComputedStyle(document.body).backgroundColor;
+  };
+  const retone = () => {
+    if (mode !== 'band') return;
+    const r = el.getBoundingClientRect();
+    const hit = document.elementFromPoint(4, Math.min(innerHeight - 1, r.bottom + 2));
+    const sec = hit?.closest('section, footer') ?? hit;
+    if (!sec || sec.id + sec.className === toneKey) return;
+    toneKey = sec.id + sec.className;
+    el.style.setProperty('--band-bg', bgOf(sec));
+  };
+  const tone = mode === 'band' ? ScrollTrigger.create({ start: 0, end: 'max', onUpdate: retone, onRefresh: retone }) : null;
+
+  // Resolução adaptativa: se o aparelho não sustenta ~40 fps durante a montagem,
+  // baixa a densidade de pixels em degraus (nunca abaixo de 1×).
+  let slow = 0, ema = 16.7;
 
   function tick(_, deltaMs) {
     if (!el.classList.contains('is-on')) return; // fora de cena: não renderiza
-    const k = 1 - Math.exp((-deltaMs / 1000) * 6);
-    state.current += (state.target - state.current) * k;
-    if (Math.abs(state.target - state.current) < 1e-4) state.current = state.target;
+    const dt = Math.min(deltaMs, 50) / 1000;
+    const x = state.target - state.current;
+    state.vel += (OMEGA * OMEGA * x - 2 * OMEGA * state.vel) * dt;
+    state.current += state.vel * dt;
+    if (Math.abs(x) < 1e-4 && Math.abs(state.vel) < 1e-3) { state.current = state.target; state.vel = 0; }
+    state.current = Math.min(1, Math.max(0, state.current));
     if (Math.abs(state.current - last) < 1e-5) return;
+    const rendering = last >= 0;
     last = state.current;
     stage.setProgress(state.current);
+    if (rendering && deltaMs < 200) {
+      ema += (deltaMs - ema) * 0.1;
+      slow = ema > 25 ? slow + 1 : 0;
+      if (slow > 45 && stage.pixelRatio() > 1) { stage.setPixelRatio(Math.max(1, stage.pixelRatio() - 0.25)); slow = 0; ema = 16.7; }
+    }
   }
   gsap.ticker.add(tick);
 

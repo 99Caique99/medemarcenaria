@@ -105,6 +105,13 @@ Como a responsividade foi resolvida:
 
 Histórico: (1) ilustração 2D num rail lateral (commit 75dfdc8) → (2) abertura 3D fixada no hero (99c4552) → (3) a pedido do cliente: o hero volta a ser a foto (aparece de imediato) e o móvel é montado em 3D do "Sobre" até o rodapé, ficando pronto na última dobra (85d6c17) → (4) **versão atual**, a pedido do cliente ("não tá fluido… mais realista… está aparecendo um desenho"): sem as linhas de projeto, sem a etapa de MDF cru, madeira realista desde a primeira peça, montagem contínua e rolagem com inércia no desktop.
 
+**Revisão 5** (pedido do cliente: "mais fluida, mais realista, no celular tá horrível"):
+- Nenhuma peça surge do nada nem fica translúcida: todas entram sólidas, vindas de fora do quadro (descem do alto, ou chegam pelo alto/à frente e são empurradas para dentro), desaceleram como algo carregado com cuidado, balançam um pouco (pêndulo amortecido) e encaixam no último centímetro. Portas fecham com soft-close.
+- Progresso com mola criticamente amortecida no lugar do lerp: sem tranco ao começar/parar de rolar; no celular os saltos do scroll por toque viram movimento contínuo.
+- Câmera num arco único (três quartos do alto → quase de frente), sem vai e vem.
+- Madeira com UV em metros: mesma densidade de veio em todas as peças, veio no sentido do comprimento e bordas com veio fino (antes cada face esticava a textura inteira). Veio mais fino e reto, relevo sutil, tone mapping Neutral (cor fiel), sombras PCF macias quase frontais (caem atrás do móvel).
+- Celular: faixa maior (40svh, até 380px) com a cor da seção que está passando embaixo (sem "caixa" de outra cor), móvel enquadrado na parte sólida da faixa, DPR até 2× com queda automática em degraus se o aparelho não sustentar ~40 fps.
+
 | Seção | Etapa | O que acontece |
 |---|---|---|
 | Hero | — | foto do hero, de imediato (sem 3D) |

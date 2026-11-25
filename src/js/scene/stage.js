@@ -4,14 +4,17 @@
 // O canvas é transparente: o móvel aparece sobre o fundo de cada seção.
 // As etapas se sobrepõem de propósito: sempre há uma peça em movimento.
 //
-//   0.00–0.33  Estrutura   rodapé, base, laterais, fundo e tampo chegam e assentam
-//   0.30–0.62  Interior    divisórias e prateleiras são empurradas para dentro
-//   0.58–0.76  Portas      dobradiças, portas penduradas abertas, fecham com amortecimento
+//   0.00–0.33  Estrutura   rodapé, base, laterais, fundo e tampo descem de fora do quadro e assentam
+//   0.30–0.62  Interior    divisórias e prateleiras chegam pela frente e são empurradas para dentro
+//   0.58–0.76  Portas      penduradas abertas nas dobradiças, fecham com amortecimento (soft-close)
 //   0.66–0.86  Detalhes    parafusos (giram), puxadores e fita de LED
 //   0.84–1.00  Entrega     brilho passa pelo verniz, luz quente de contorno
+// Movimento "de mão": nenhuma peça surge do nada nem fica translúcida. Cada uma entra
+// já sólida, vinda de fora do quadro, desacelera como algo carregado com cuidado,
+// balança um pouco (pêndulo amortecido) e encaixa no último centímetro.
 import {
-  ACESFilmicToneMapping, BoxGeometry, CylinderGeometry, DirectionalLight, Group, HemisphereLight, Mesh,
-  MeshBasicMaterial, MeshPhysicalMaterial, MeshStandardMaterial, PCFSoftShadowMap, PMREMGenerator, PerspectiveCamera,
+  NeutralToneMapping, RepeatWrapping, BoxGeometry, CylinderGeometry, DirectionalLight, Group, HemisphereLight, Mesh,
+  MeshBasicMaterial, MeshPhysicalMaterial, MeshStandardMaterial, PCFShadowMap, PMREMGenerator, PerspectiveCamera,
   PlaneGeometry, PointLight, Scene, ShadowMaterial, SpotLight, SRGBColorSpace, Vector3, WebGLRenderer,
 } from 'three';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
@@ -30,22 +33,55 @@ const clamp01 = (v) => Math.min(1, Math.max(0, v));
 const win = (p, a, b) => clamp01((p - a) / (b - a));
 const smooth = (t) => t * t * (3 - 2 * t);
 const E = {
-  travel: gsap.parseEase('power3.out'),
-  settle: gsap.parseEase('back.out(1.1)'),
+  travel: gsap.parseEase('power3.out'),   // entra em movimento e desacelera até parar
+  seat: gsap.parseEase('sine.inOut'),     // último centímetro: encaixe macio
   push: gsap.parseEase('power3.out'),
-  swing: gsap.parseEase('power2.inOut'),
+  close: gsap.parseEase('power3.inOut'),  // porta: embalo e freio do soft-close
+  cam: gsap.parseEase('sine.inOut'),
 };
+
+// Altura (m) de onde as peças descem: acima do topo do quadro em qualquer ângulo da câmera.
+const SKY = 4.2;
+
+// UVs em metros (projeção por face), com o veio sempre no sentido do comprimento
+// da face. Assim a densidade do veio é a mesma em todas as peças e as bordas
+// (fita de borda) mostram o veio fino, como no MDF/lâmina real, em vez de uma
+// textura inteira esmagada em 2 cm. Cada peça usa um trecho diferente da lâmina.
+const TILE = 2.4;
+function woodUV(geo, dims, seed) {
+  const pos = geo.attributes.position, nor = geo.attributes.normal, uv = geo.attributes.uv;
+  const r = (k) => { const x = Math.sin(seed * 12.9898 + k * 78.233) * 43758.5453; return x - Math.floor(x); };
+  const half = dims.map((d) => d / 2);
+  for (let i = 0; i < pos.count; i++) {
+    const n = [Math.abs(nor.getX(i)), Math.abs(nor.getY(i)), Math.abs(nor.getZ(i))];
+    const ax = n[0] > n[1] && n[0] > n[2] ? 0 : n[1] > n[2] ? 1 : 2;
+    const [a, b] = ax === 0 ? [2, 1] : ax === 1 ? [0, 2] : [0, 1];
+    // eixo do veio: a maior dimensão da peça entre os dois eixos da face
+    const [g, c] = dims[a] >= dims[b] ? [a, b] : [b, a];
+    const p = [pos.getX(i), pos.getY(i), pos.getZ(i)];
+    const lg = dims[g] / TILE, lc = dims[c] / TILE;
+    const u = (p[g] + half[g]) / TILE + r(ax + 1) * Math.max(0, 1 - lg);
+    const v = (p[c] + half[c]) / TILE + r(ax + 5) * Math.max(0, 1 - lc);
+    uv.setXY(i, u, v);
+  }
+  uv.needsUpdate = true;
+  return geo;
+}
+const woodBox = (dims, seed, radius = 0.003) =>
+  woodUV(new RoundedBoxGeometry(dims[0], dims[1], dims[2], 3, Math.min(radius, Math.min(...dims) / 3)), dims, seed);
 
 export async function createStage(container, { mobile }) {
   // ---------- Renderer (fundo transparente) ----------
   const renderer = new WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+  const maxDpr = Math.min(window.devicePixelRatio, mobile ? 2 : 1.5);
+  renderer.setPixelRatio(maxDpr);
   renderer.setClearColor(0x000000, 0);
   renderer.outputColorSpace = SRGBColorSpace;
-  renderer.toneMapping = ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.05;
+  renderer.toneMapping = NeutralToneMapping; // cor da madeira fiel, sem o laranja saturado do ACES
+  renderer.toneMappingExposure = 1.0;
   renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = PCFSoftShadowMap;
+  renderer.shadowMap.type = PCFShadowMap;
+  renderer.shadowMap.autoUpdate = true;
   renderer.domElement.setAttribute('aria-hidden', 'true');
   container.append(renderer.domElement);
 
@@ -53,7 +89,7 @@ export async function createStage(container, { mobile }) {
   const pmrem = new PMREMGenerator(renderer);
   const envRT = pmrem.fromScene(new RoomEnvironment(), 0.04);
   scene.environment = envRT.texture;
-  scene.environmentIntensity = 0.5;
+  scene.environmentIntensity = 0.62;
   pmrem.dispose();
   await pause();
 
@@ -61,17 +97,20 @@ export async function createStage(container, { mobile }) {
   const target = new Vector3(0, 1.2, 0);
 
   // ---------- Luz de estúdio ----------
-  scene.add(new HemisphereLight('#fffaf2', '#8a7560', 0.35));
-  const key = new DirectionalLight('#fff1dc', 1.6);
-  key.position.set(1.6, 7.5, 5.5); // de cima e à frente: a sombra cai atrás do móvel
+  scene.add(new HemisphereLight('#fffaf2', '#8a7560', 0.28));
+  // Luz principal de janela: alta, à frente e à direita; sombras macias que
+  // entram no móvel (prateleiras sombreiam o fundo, portas sombreiam o chão).
+  const key = new DirectionalLight('#fff0db', 2.1);
+  key.position.set(1.4, 7, 5.6); // quase frontal: a sombra cai atrás do móvel, não espalhada de lado
   key.castShadow = true;
-  key.shadow.mapSize.set(1024, 1024);
-  Object.assign(key.shadow.camera, { left: -3, right: 3, top: 3.4, bottom: -2.4, near: 1, far: 20 });
-  key.shadow.bias = -0.0004;
-  key.shadow.normalBias = 0.012;
-  key.shadow.radius = 5;
+  key.shadow.mapSize.set(mobile ? 1024 : 2048, mobile ? 1024 : 2048);
+  Object.assign(key.shadow.camera, { left: -2.2, right: 2.2, top: 3.2, bottom: -1.6, near: 2, far: 16 });
+  key.shadow.bias = -0.0003;
+  key.shadow.normalBias = 0.01;
+  key.shadow.radius = mobile ? 3 : 4;
+  key.shadow.blurSamples = mobile ? 8 : 12;
   scene.add(key);
-  const fill = new DirectionalLight('#f1e3d3', 0.4);
+  const fill = new DirectionalLight('#f1e3d3', 0.32);
   fill.position.set(-4, 2.5, 3);
   scene.add(fill);
   const rim = new DirectionalLight(C.goldDeep, 0);
@@ -86,7 +125,7 @@ export async function createStage(container, { mobile }) {
   scene.add(ledLight);
 
   // ---------- Chão: só a sombra (o fundo é a própria seção) ----------
-  const shadowCatcher = new Mesh(new PlaneGeometry(14, 14), new ShadowMaterial({ opacity: 0.2 }));
+  const shadowCatcher = new Mesh(new PlaneGeometry(14, 14), new ShadowMaterial({ opacity: 0.26 }));
   shadowCatcher.rotation.x = -Math.PI / 2;
   shadowCatcher.receiveShadow = true;
   scene.add(shadowCatcher);
@@ -102,31 +141,19 @@ export async function createStage(container, { mobile }) {
   const aniso = Math.min(8, renderer.capabilities.getMaxAnisotropy());
   const size = mobile ? 512 : 1024;
   const tex = {};
-  tex.carcass = await woodTexture({ base: '#74543a', dark: '#3a2a1f', light: '#a27a50', seed: 3, size, rings: 46, maxAnisotropy: aniso });
-  // Mesma imagem girada 90° (veio vertical nas peças em pé), sem custo extra de memória
-  tex.carcassV = tex.carcass.clone();
-  tex.carcassV.center.set(0.5, 0.5);
-  tex.carcassV.rotation = Math.PI / 2;
-  tex.door = await woodTexture({ base: '#6e4c31', dark: '#2f2118', light: '#9c7247', seed: 11, size, rings: 34, vertical: true, maxAnisotropy: aniso });
+  // Lâmina de 2,4 m: veio fino e quase reto (corte radial), com catedrais suaves
+  tex.carcass = await woodTexture({ base: '#74543a', dark: '#3a2a1f', light: '#a27a50', seed: 3, size, rings: 110, arch: 0.12, wave: 0.5, maxAnisotropy: aniso });
+  tex.door = await woodTexture({ base: '#6e4c31', dark: '#2f2118', light: '#9c7247', seed: 11, size, rings: 90, arch: 0.18, wave: 0.6, maxAnisotropy: aniso });
   tex.back = await woodTexture({ base: '#5a4636', dark: '#33281f', light: '#7c5e44', seed: 9, size: 512, rings: 50, vertical: true, shade: 0.45, maxAnisotropy: aniso });
-  const base = {
-    carcass: () => new MeshStandardMaterial({ map: tex.carcass, bumpMap: tex.carcass, bumpScale: 0.12, roughness: 0.55 }),
-    carcassV: () => new MeshStandardMaterial({ map: tex.carcassV, bumpMap: tex.carcassV, bumpScale: 0.12, roughness: 0.55 }),
-    back: () => new MeshStandardMaterial({ map: tex.back, bumpMap: tex.back, bumpScale: 0.1, roughness: 0.72 }),
-    door: () => new MeshPhysicalMaterial({
-      map: tex.door, bumpMap: tex.door, bumpScale: 0.15, roughness: 0.46, clearcoat: 0.4, clearcoatRoughness: 0.28,
+  tex.carcass.wrapS = tex.carcass.wrapT = tex.door.wrapS = tex.door.wrapT = RepeatWrapping;
+  // Materiais compartilhados (opacos): menos programas e trocas de estado na GPU.
+  const mats = {
+    carcass: new MeshStandardMaterial({ map: tex.carcass, bumpMap: tex.carcass, bumpScale: 0.15, roughness: 0.52 }),
+    back: new MeshStandardMaterial({ map: tex.back, bumpMap: tex.back, bumpScale: 0.1, roughness: 0.7 }),
+    // Verniz: reflexo nítido da sala por cima do veio fosco
+    door: new MeshPhysicalMaterial({
+      map: tex.door, bumpMap: tex.door, bumpScale: 0.15, roughness: 0.5, clearcoat: 0.55, clearcoatRoughness: 0.16,
     }),
-  };
-  // Cada peça tem o próprio material (opacidade independente). Transparência só
-  // durante a chegada da peça; depois volta ao pipeline opaco.
-  const fade = (m, o) => {
-    m.opacity = o;
-    m.transparent = o < 0.999;
-  };
-  const own = (kind) => {
-    const m = base[kind]();
-    fade(m, 0);
-    return m;
   };
   const gold = new MeshStandardMaterial({ color: C.goldDeep, metalness: 1, roughness: 0.22, envMapIntensity: 1.4 });
   const ledMat = new MeshStandardMaterial({ color: C.gold, emissive: C.gold, emissiveIntensity: 0 });
@@ -134,30 +161,46 @@ export async function createStage(container, { mobile }) {
   // ---------- Peças ----------
   const pieces = [];
 
-  // from: deslocamento inicial (curto, como na bancada); lift: arco para cima no trajeto
-  function piece(name, dims, pos, kind, { from, rot = [0, 0, 0], lift = 0, a, b, ease = E.settle }) {
-    const mesh = new Mesh(new RoundedBoxGeometry(dims[0], dims[1], dims[2], 3, Math.min(0.003, Math.min(...dims) / 3)), own(kind));
+  // Trajeto de cada peça (tudo relativo à posição final):
+  //   from:  de onde vem, fora do quadro (desce do alto ou chega pelo alto/à frente)
+  //   seat:  o último trecho, ao longo do eixo de montagem (encaixe), em metros
+  //   sway:  balanço inicial (rad) que se amortece até zero, como algo pendurado
+  let seedN = 1;
+  function piece(name, dims, pos, kind, { from, seat = [0, 0.03, 0], sway = [0, 0, 0], a, b }) {
+    // O fundo usa a lâmina inteira (tem a oclusão das bordas "assada" na imagem)
+    const geo = kind === 'back' ? new RoundedBoxGeometry(...dims, 3, 0.003) : woodBox(dims, seedN);
+    seedN++;
+    const mesh = new Mesh(geo, mats[kind]);
     mesh.name = name;
     mesh.receiveShadow = true;
+    mesh.castShadow = true;
     scene.add(mesh);
-    pieces.push({ mesh, final: new Vector3(...pos), from: new Vector3(...from), rot, lift, a, b, ease });
+    const final = new Vector3(...pos);
+    pieces.push({ mesh, final, from: new Vector3(...from), seat: new Vector3(...seat), sway, a, b });
     return mesh;
   }
+  const drop = (y, dx = 0, dz = 0) => [dx, SKY - y, dz]; // desce do alto até a posição final
 
-  // Estrutura
-  piece('rodape', [W - 0.08, PL, D - 0.08], [0, PL / 2, -0.02], 'carcass', { from: [0, 0, 0.5], a: 0, b: 0.07, ease: E.push });
-  piece('base', [W, T, D], [0, PL + T / 2, 0], 'carcass', { from: [0, 0.45, 0.3], lift: 0.1, a: 0.03, b: 0.11 });
-  piece('lateral-esq', [T, H, D], [-(W / 2 - T / 2), PL + H / 2, 0], 'carcassV', { from: [-0.6, 0.2, 0.3], rot: [0, 0, 0.1], lift: 0.08, a: 0.08, b: 0.18 });
-  piece('lateral-dir', [T, H, D], [W / 2 - T / 2, PL + H / 2, 0], 'carcassV', { from: [0.6, 0.2, 0.3], rot: [0, 0, -0.1], lift: 0.08, a: 0.12, b: 0.22 });
-  piece('fundo', [W - 2 * T, INNER_H, 0.012], [0, INNER_Y + INNER_H / 2, -D / 2 + 0.006], 'back', { from: [0, 0.3, -0.6], a: 0.17, b: 0.27, ease: E.push });
-  piece('tampo', [W + 0.03, T, D + 0.03], [0, PL + H + T / 2, 0], 'carcass', { from: [0, 0.6, 0.15], rot: [0.05, 0, 0], a: 0.23, b: 0.33 });
+  // Estrutura: tudo desce de cima, cada peça no seu tempo
+  const yR = PL / 2, yB = PL + T / 2, yS = PL + H / 2, yT = PL + H + T / 2;
+  piece('rodape', [W - 0.08, PL, D - 0.08], [0, yR, -0.02], 'carcass', { from: drop(yR), sway: [0.03, 0, 0.02], a: 0, b: 0.08 });
+  piece('base', [W, T, D], [0, yB, 0], 'carcass', { from: drop(yB), sway: [0.04, 0, -0.025], a: 0.035, b: 0.12 });
+  piece('lateral-esq', [T, H, D], [-(W / 2 - T / 2), yS, 0], 'carcass', { from: drop(yS, -0.12), seat: [-0.03, 0.04, 0], sway: [0, 0, 0.06], a: 0.08, b: 0.18 });
+  piece('lateral-dir', [T, H, D], [W / 2 - T / 2, yS, 0], 'carcass', { from: drop(yS, 0.12), seat: [0.03, 0.04, 0], sway: [0, 0, -0.06], a: 0.12, b: 0.22 });
+  // Fundo: corre de cima para baixo no canal das laterais (sem balanço: está guiado)
+  piece('fundo', [W - 2 * T, INNER_H, 0.012], [0, INNER_Y + INNER_H / 2, -D / 2 + 0.006], 'back', { from: drop(INNER_Y + INNER_H / 2), seat: [0, 0.25, 0], a: 0.17, b: 0.27 });
+  piece('tampo', [W + 0.03, T, D + 0.03], [0, yT, 0], 'carcass', { from: drop(yT), sway: [0.035, 0, 0.02], a: 0.23, b: 0.33 });
 
-  // Interior: tudo empurrado de frente para dentro
-  piece('divisoria-1', [T, INNER_H, D - 0.03], [-DIV_X, INNER_Y + INNER_H / 2, -0.015], 'carcassV', { from: [0, 0, 0.8], a: 0.3, b: 0.39, ease: E.push });
-  piece('divisoria-2', [T, INNER_H, D - 0.03], [DIV_X, INNER_Y + INNER_H / 2, -0.015], 'carcassV', { from: [0, 0, 0.8], a: 0.34, b: 0.43, ease: E.push });
+  // Interior: chega pelo alto, à frente da abertura, e é empurrado para dentro;
+  // as prateleiras descem o último centímetro sobre os pinos.
+  const front = (y, z = 1.1) => [0, Math.max(0.4, SKY - 0.6 - y), z];
+  [-DIV_X, DIV_X].forEach((x, i) => {
+    const y = INNER_Y + INNER_H / 2;
+    piece(`divisoria-${i + 1}`, [T, INNER_H, D - 0.03], [x, y, -0.015], 'carcass', { from: front(y), seat: [0, 0.004, 0.32], sway: [0, 0, 0.03 * (i ? -1 : 1)], a: 0.3 + i * 0.04, b: 0.39 + i * 0.04 });
+  });
   [[0, 0.25], [0, 0.5], [0, 0.75], [-SIDE_X, 0.36], [SIDE_X, 0.36], [-SIDE_X, 0.68], [SIDE_X, 0.68]].forEach(([x, k], i) => {
-    const a = 0.4 + i * 0.025;
-    piece(`prateleira-${i + 1}`, [MOD_W, 0.025, D - 0.05], [x, INNER_Y + INNER_H * k, -0.01], 'carcass', { from: [0, 0, 0.7], a, b: a + 0.07, ease: E.push });
+    const a = 0.4 + i * 0.025, y = INNER_Y + INNER_H * k;
+    piece(`prateleira-${i + 1}`, [MOD_W, 0.025, D - 0.05], [x, y, -0.01], 'carcass', { from: front(y, 0.9), seat: [0, 0.012, 0.3], sway: [0.02, 0, 0.015], a, b: a + 0.075 });
   });
 
   // LED do nicho central
@@ -184,9 +227,9 @@ export async function createStage(container, { mobile }) {
     const pivot = new Group();
     const hingeX = side * (W / 2 - T / 2);
     pivot.position.set(hingeX, PL + T / 2 + DOOR_H / 2 + 0.004, D / 2 + DOOR_T / 2 + 0.002);
-    const mat = own('door');
-    const door = new Mesh(new RoundedBoxGeometry(DOOR_W, DOOR_H, DOOR_T, 3, 0.003), mat);
+    const door = new Mesh(woodBox([DOOR_W, DOOR_H, DOOR_T], 40 + i), mats.door);
     door.receiveShadow = true;
+    door.castShadow = true;
     door.position.x = -side * DOOR_W / 2;
     pivot.add(door);
     const handle = new Mesh(new RoundedBoxGeometry(0.014, 0.42, 0.024, 3, 0.006), gold);
@@ -200,7 +243,7 @@ export async function createStage(container, { mobile }) {
       door.add(hg);
     });
     scene.add(pivot);
-    return { pivot, door, mat, handle, side, final: pivot.position.clone(), a: 0.58 + i * 0.04 };
+    return { pivot, door, handle, side, final: pivot.position.clone(), a: 0.58 + i * 0.04 };
   });
 
   // ---------- Câmera ----------
@@ -215,15 +258,21 @@ export async function createStage(container, { mobile }) {
     camera.updateProjectionMatrix();
     // Distância para o móvel (≈2,4 m de altura + folga de órbita) caber com respiro.
     const vt = Math.tan((camera.fov * Math.PI) / 360);
-    fitDist = Math.max(1.42 / (vt * 0.86), 1.12 / (vt * aspect * 0.86));
+    const fill = mobile ? 0.84 : 0.86;
+    fitDist = Math.max(1.42 / (vt * fill), 1.12 / (vt * aspect * fill));
+    // Na faixa do celular o pé da faixa é um degradê sobre o texto: o móvel sobe
+    // um pouco no quadro para ficar inteiro na parte sólida.
+    if (mobile) camera.setViewOffset(w, h, 0, h * 0.07, w, h);
+    else camera.clearViewOffset();
   }
 
-  // Órbita numa curva só (sem paradas entre trechos): gira de um lado ao outro,
-  // abre menos a cada volta e termina quase de frente.
+  // Câmera de cinema: um único arco lento, sempre no mesmo sentido (sem vai e vem),
+  // de três quartos e do alto até quase de frente, aproximando de leve no fim.
   function placeCamera(p) {
-    const yaw = 0.08 + 0.5 * Math.pow(1 - p, 1.2) * Math.cos(p * Math.PI * 2.2);
-    const pitch = 0.1 + 0.24 * Math.pow(1 - p, 1.5);
-    const dist = fitDist * (1.04 - 0.09 * smooth(p));
+    const e = E.cam(p);
+    const yaw = 0.62 - 0.54 * e;
+    const pitch = 0.3 - 0.2 * e;
+    const dist = fitDist * (1.06 - 0.1 * smooth(p));
     camera.position.set(
       target.x + Math.sin(yaw) * Math.cos(pitch) * dist,
       target.y + Math.sin(pitch) * dist,
@@ -236,27 +285,35 @@ export async function createStage(container, { mobile }) {
   function setProgress(p) {
     for (const pc of pieces) {
       const t = win(p, pc.a, pc.b);
-      const o = smooth(clamp01(t * 2.2));
       pc.mesh.visible = t > 0;
-      pc.mesh.castShadow = o > 0.5;
-      fade(pc.mesh.material, o);
-      const e = pc.ease(t);
-      pc.mesh.position.copy(pc.final).addScaledVector(pc.from, 1 - e);
-      pc.mesh.position.y += Math.sin(Math.PI * t) * pc.lift;
-      pc.mesh.rotation.set(pc.rot[0] * (1 - e), pc.rot[1] * (1 - e), pc.rot[2] * (1 - e));
+      if (!pc.mesh.visible) continue;
+      const travel = 1 - E.travel(win(t, 0, 0.8));
+      const seat = 1 - E.seat(win(t, 0.62, 1));
+      pc.mesh.position.copy(pc.final).addScaledVector(pc.from, travel).addScaledVector(pc.seat, seat);
+      // longe do móvel a sombra projetada seria só uma mancha solta no chão
+      pc.mesh.castShadow = travel < 0.2;
+      // pêndulo amortecido: ~1,5 oscilação, some por completo ao assentar
+      const sw = Math.cos(t * Math.PI * 3) * (1 - t) ** 2;
+      pc.mesh.rotation.set(pc.sway[0] * sw, pc.sway[1] * sw, pc.sway[2] * sw);
     }
     contact.material.opacity = smooth(win(p, 0, 0.14));
 
     for (const d of doors) {
-      const tin = win(p, d.a, d.a + 0.06);
-      const tclose = E.swing(win(p, d.a + 0.05, d.a + 0.14));
-      const o = smooth(clamp01(tin * 2.2));
+      // chega aberta pelo alto, encaixa a dobradiça e fecha com soft-close
+      const tin = win(p, d.a, d.a + 0.07);
       d.pivot.visible = tin > 0;
-      d.door.castShadow = o > 0.5;
-      fade(d.mat, o);
-      const e = E.travel(tin);
-      d.pivot.position.set(d.final.x + d.side * 0.25 * (1 - e), d.final.y + 0.06 * (1 - e), d.final.z + 0.45 * (1 - e));
-      d.pivot.rotation.y = d.side * (Math.PI / 2) * (1 - tclose);
+      const travel = 1 - E.travel(win(tin, 0, 0.8));
+      const seat = 1 - E.seat(win(tin, 0.6, 1));
+      d.door.castShadow = travel < 0.2;
+      d.pivot.position.set(
+        d.final.x + d.side * 0.1 * travel,
+        d.final.y + (SKY - d.final.y) * travel + 0.02 * seat,
+        d.final.z + 0.35 * travel + 0.03 * seat,
+      );
+      const tc = win(p, d.a + 0.06, d.a + 0.15);
+      // embalo, freio hidráulico nos últimos graus e um assentamento mínimo
+      const ang = (Math.PI / 2) * (1 - E.close(tc)) + Math.sin(Math.PI * clamp01((tc - 0.8) / 0.2)) * 0.012;
+      d.pivot.rotation.y = d.side * ang;
       const th = win(p, 0.74, 0.8);
       d.handle.visible = th > 0;
       d.handle.position.z = DOOR_T / 2 + 0.014 + 0.08 * (1 - E.push(th));
@@ -310,5 +367,8 @@ export async function createStage(container, { mobile }) {
     renderer.domElement.remove();
   }
 
-  return { setProgress, resize, dispose };
+  const pixelRatio = () => renderer.getPixelRatio();
+  function setPixelRatio(r) { renderer.setPixelRatio(r); resize(); }
+
+  return { setProgress, resize, dispose, pixelRatio, setPixelRatio };
 }
