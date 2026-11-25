@@ -1,72 +1,57 @@
 /* ==========================================================================
-   CENA 3D DE ABERTURA (src/js/scene) — só existe com a classe .has-scene
+   PALCO 3D DO MÓVEL (src/js/scene) — do "Sobre" até o rodapé
+   .stage-ok é definido no <head> (JS + WebGL disponíveis) para reservar o
+   espaço já no primeiro paint, sem salto de layout.
+   Manter as media queries em sincronia com COL_MQ / BAND_MQ (src/js/scene/index.js).
    ========================================================================== */
+:root { --stage-w: 0px; --band-h: clamp(190px, 34svh, 330px); }
+
+/* Desktop: coluna fixa à direita; o conteúdo (exceto o hero) reserva o espaço */
+@media (width >= 80rem) and (height >= 560px), (width >= 64rem) and (orientation: landscape) and (height >= 560px) {
+  .stage-ok { --stage-w: clamp(22rem, 42vw, 52rem); }
+  .stage-ok main > section .wrap,
+  .stage-ok footer .wrap {
+    max-width: calc(var(--content-max) + var(--gutter) * 2 + var(--stage-w));
+    padding-right: calc(var(--gutter) + var(--stage-w));
+  }
+}
+
+/* Mobile/tablet: faixa fixa sob a navbar; âncoras não ficam escondidas atrás dela */
+@media (width < 80rem) and (height >= 500px) and (prefers-reduced-motion: no-preference) {
+  .stage-band-on { scroll-padding-top: calc(var(--nav-h, 72px) + var(--band-h)); }
+}
+
 @layer components {
-  .hero.has-scene {
-    height: 100vh;
-    height: 100svh;
-    min-height: 0;
-  }
-  .has-scene .hero-image { animation: none; transform-origin: 50% 45%; }
-
-  .hero-stage {
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    opacity: 0;
-  }
-  .hero-stage canvas { display: block; width: 100%; height: 100%; }
-
-  /* Legibilidade do texto sobre a cena (e sobre a foto, no final) */
-  .has-scene .hero-overlay {
-    z-index: 1;
-    background:
-      linear-gradient(to bottom, rgb(52 47 40 / 0.72) 0%, rgb(52 47 40 / 0.2) 38%, transparent 55%),
-      linear-gradient(to top, rgb(52 47 40 / 0.55) 0%, transparent 22%);
-  }
-  @media (width >= 64rem) {
-    .has-scene .hero-overlay {
-      background:
-        linear-gradient(90deg, rgb(52 47 40 / 0.82) 0%, rgb(52 47 40 / 0.4) 34%, transparent 56%),
-        linear-gradient(to top, rgb(52 47 40 / 0.5) 0%, transparent 25%);
-    }
-  }
-
-  /* Contador de etapas 01 —— 04 (decorativo, números gerados por CSS) */
-  .scene-hud {
-    position: absolute;
-    z-index: 3;
-    left: var(--gutter);
-    bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px));
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    opacity: 0;
+  .stage3d {
+    position: fixed;
+    z-index: 30;
     pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 600ms var(--ease-luxe), visibility 0s linear 600ms, background-color 500ms ease;
   }
-  .scene-hud-num::before,
-  .scene-hud-total::before {
-    content: attr(data-num);
-    content: attr(data-num) / "";
-    font-family: var(--font-serif);
-    font-style: italic;
-    color: var(--color-mede-gold);
-    line-height: 1;
+  .stage3d.is-on { opacity: 1; visibility: visible; transition-delay: 0s; }
+  .stage3d canvas { display: block; width: 100%; height: 100%; }
+
+  .stage3d--col {
+    top: var(--nav-h, 136px);
+    bottom: 0;
+    right: max(0px, calc((100% - (var(--content-max) + var(--gutter) * 2 + var(--stage-w))) / 2));
+    width: var(--stage-w);
+    /* Bordas suaves: a sombra do móvel não "corta" no limite da coluna */
+    -webkit-mask-image: linear-gradient(to right, transparent 0, #000 14%, #000 92%, transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0, #000 14%, #000 92%, transparent 100%);
   }
-  .scene-hud-num::before { font-size: 1.5rem; }
-  .scene-hud-total::before { font-size: 0.875rem; opacity: 0.6; }
-  .scene-hud-track {
-    position: relative;
-    width: clamp(4rem, 12vw, 8rem);
-    height: 1px;
-    background: color-mix(in srgb, var(--color-mede-gold) 30%, transparent);
-    overflow: hidden;
+
+  .stage3d--band {
+    top: var(--nav-h, 72px);
+    left: 0;
+    right: 0;
+    height: var(--band-h);
+    background: linear-gradient(to bottom, var(--color-mede-paper) 82%, color-mix(in srgb, var(--color-mede-paper) 0%, transparent));
+    transition-property: opacity, visibility, background;
   }
-  .scene-hud-fill {
-    position: absolute;
-    inset: 0;
-    background: var(--color-mede-gold);
-    transform: scaleX(0);
-    transform-origin: left;
+  .stage3d--band.is-dark {
+    background: linear-gradient(to bottom, var(--color-mede-brown) 82%, color-mix(in srgb, var(--color-mede-brown) 0%, transparent));
   }
 }

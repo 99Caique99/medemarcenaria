@@ -1,169 +1,136 @@
-// Abertura cinematográfica: o hero vira uma cena fixada (pinned) e o móvel é
-// construído em 3D enquanto o visitante rola. Progressive enhancement:
-// sem JS, sem WebGL, aparelho fraco, tela muito baixa ou prefers-reduced-motion
-// → o hero clássico (foto + texto) continua exatamente como está.
+// Palco 3D do móvel, do "Sobre" até o rodapé:
+//   • desktop (coluna): fixo à direita, o conteúdo rola à esquerda
+//   • mobile/tablet (faixa): fixo logo abaixo da navbar, o conteúdo rola embaixo
+// Cada seção avança um trecho da montagem; o móvel fica pronto no rodapé.
+// O hero continua sendo a foto (aparece de imediato). Progressive enhancement:
+// sem JS/WebGL → nada muda; reduced-motion → desktop mostra o móvel pronto, mobile sem faixa.
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 ScrollTrigger.config({ ignoreMobileResize: true });
 
-const SCENE_MQ = '(prefers-reduced-motion: no-preference) and (min-height: 500px)';
-const STAGES = 4;
+// Manter em sincronia com src/styles/scene.css
+const COL_MQ = '(min-width: 1280px) and (min-height: 560px), (min-width: 1024px) and (orientation: landscape) and (min-height: 560px)';
+const BAND_MQ = '(max-width: 1279px) and (min-height: 500px) and (prefers-reduced-motion: no-preference)';
+const REDUCE = '(prefers-reduced-motion: reduce)';
 
-const clamp01 = (v) => Math.min(1, Math.max(0, v));
-const ramp = (p, a, b) => {
-  const t = clamp01((p - a) / (b - a));
-  return t * t * (3 - 2 * t);
-};
+// Trecho da montagem conduzido por cada seção [início, fim] (ver stage.js)
+const SEGMENTS = [
+  { trigger: '[data-stage="2"]', range: [0, 0.3] },
+  { trigger: '[data-stage="3"]', range: [0.3, 0.48] },
+  { trigger: '[data-stage="4"]', range: [0.48, 0.66] },
+  { trigger: '#features-section', range: [0.66, 0.78] },
+  { trigger: '#depoimentos', range: [0.78, 0.9] },
+  { trigger: '#contato', range: [0.9, 1], end: 'clamp(top 35%)' },
+];
 
-function capable() {
-  if ((navigator.hardwareConcurrency || 8) <= 2) return false;
-  if ((navigator.deviceMemory || 8) < 2) return false;
-  try {
-    const c = document.createElement('canvas');
-    return !!(c.getContext('webgl2') || c.getContext('webgl'));
-  } catch {
-    return false;
-  }
-}
+const root = document.documentElement;
 
-// Só carrega o three.js depois do conteúdo (não disputa com o LCP).
 function whenIdle(fn) {
-  const go = () => ('requestIdleCallback' in window ? requestIdleCallback(fn, { timeout: 1200 }) : setTimeout(fn, 200));
+  const go = () => ('requestIdleCallback' in window ? requestIdleCallback(fn, { timeout: 1500 }) : setTimeout(fn, 200));
   document.readyState === 'complete' ? go() : window.addEventListener('load', go, { once: true });
 }
 
-function buildHud() {
-  const hud = document.createElement('div');
-  hud.className = 'scene-hud';
-  hud.setAttribute('aria-hidden', 'true');
-  hud.innerHTML = '<span class="scene-hud-num" data-num="01"></span><span class="scene-hud-track"><span class="scene-hud-fill"></span></span><span class="scene-hud-total" data-num="04"></span>';
-  return hud;
-}
+function mount({ createStage }, mode, reduce) {
+  const el = document.createElement('div');
+  el.className = `stage3d stage3d--${mode}`;
+  el.setAttribute('aria-hidden', 'true');
+  document.body.append(el);
+  root.classList.add(`stage-${mode}-on`);
 
-function mount(hero, { createStage }) {
-  const media = hero.querySelector('.hero-media');
-  const photo = hero.querySelector('.hero-image');
-  const content = hero.querySelector('.hero-content');
-  const cue = hero.querySelector('.scroll-cue');
-  const wide = () => window.innerWidth >= 1024;
+  let stage;
+  try {
+    stage = createStage(el, { mobile: mode === 'band' });
+  } catch {
+    // WebGL indisponível de fato: libera o espaço reservado.
+    el.remove();
+    root.classList.remove('stage-ok', `stage-${mode}-on`);
+    ScrollTrigger.refresh();
+    return () => {};
+  }
 
-  hero.classList.add('has-scene');
-  const holder = document.createElement('div');
-  holder.className = 'hero-stage';
-  media.after(holder);
-  const stage = createStage(holder, { mobile: !wide() });
-  const hud = buildHud();
-  hero.append(hud);
-  const hudNum = hud.querySelector('.scene-hud-num');
-  const hudFill = hud.querySelector('.scene-hud-fill');
+  // Reduced-motion (desktop): móvel pronto e estático.
+  if (reduce) {
+    el.classList.add('is-on');
+    stage.setProgress(1);
+    const ro = new ResizeObserver(() => { stage.resize(); stage.setProgress(1); });
+    ro.observe(el);
+    return () => { ro.disconnect(); stage.dispose(); el.remove(); root.classList.remove(`stage-${mode}-on`); };
+  }
 
-  const state = { target: 0, current: 0, intro: 0, fade: 0, active: true };
+  const state = { target: 0, current: 0 };
   let last = -1;
-  let lastFade = -1;
 
-  const trigger = ScrollTrigger.create({
-    trigger: hero,
-    start: 'top top',
-    end: () => `+=${window.innerHeight * (wide() ? 4 : 3.2)}`,
-    pin: true,
-    pinSpacing: true,
-    anticipatePin: 1,
-    refreshPriority: 1, // o pin vem antes dos demais triggers da página
-    invalidateOnRefresh: true,
-    onUpdate: (self) => { state.target = self.progress; },
-    onToggle: (self) => { state.active = self.isActive || self.progress < 1; },
+  const triggers = [];
+  const segs = SEGMENTS.filter((s) => document.querySelector(s.trigger));
+  // Etapas sequenciais: a soma dos progressos ponderados é a posição na montagem.
+  const sum = () => triggers.reduce((acc, st, i) => acc + st.progress * (segs[i].range[1] - segs[i].range[0]), 0);
+  segs.forEach((s) => {
+    triggers.push(ScrollTrigger.create({
+      trigger: s.trigger,
+      start: 'top 75%',
+      end: s.end ?? 'bottom 60%',
+      onUpdate: () => { state.target = sum(); },
+      onRefresh: () => { state.target = sum(); },
+    }));
   });
 
-  // A animação CSS de entrada (fill-mode both) prenderia a opacidade do texto.
-  content.getAnimations().forEach((a) => a.finish());
-  content.style.animation = 'none';
-
-  // Desktop: a cena aparece sozinha ao lado do texto e as linhas começam a desenhar.
-  // Mobile: a chegada é o hero clássico (foto); a cena entra no primeiro scroll.
-  if (wide()) {
-    gsap.to(state, { fade: 1, duration: 1.4, ease: 'power2.out' });
-    gsap.to(state, { intro: 0.12, duration: 2.6, delay: 0.35, ease: 'power1.inOut' });
-  } else {
-    state.fade = 1;
-  }
-
-  function applyDom(p) {
-    const out = ramp(p, 0.92, 1); // dissolve para a foto real do armário
-    const enter = wide() ? state.fade : ramp(p, 0, 0.05);
-    holder.style.opacity = String(enter * (1 - out));
-    photo.style.transform = `scale(${1.06 - 0.06 * out})`;
-    hudNum.dataset.num = String(Math.min(STAGES, Math.max(1, Math.ceil(p * STAGES - 1e-3)))).padStart(2, '0');
-    hudFill.style.transform = `scaleX(${p})`;
-    hud.style.opacity = String(enter * (1 - ramp(p, 0.9, 0.98)));
-    if (cue) cue.style.opacity = String(1 - ramp(p, 0.005, 0.04));
-    // Mobile/tablet: o texto dá lugar ao móvel e volta sobre a foto no final.
-    if (!wide()) {
-      const vis = 1 - ramp(p, 0.005, 0.05) + ramp(p, 0.93, 1);
-      content.style.opacity = String(vis);
-      content.style.transform = `translateY(${(1 - vis) * -24}px)`;
-      content.style.pointerEvents = vis < 0.5 ? 'none' : '';
-    } else {
-      content.style.opacity = '';
-      content.style.transform = '';
-      content.style.pointerEvents = '';
-    }
-  }
+  // O palco aparece quando o hero já saiu quase todo e fica até o fim da página
+  // (inclusive no último pixel de scroll); some de volta ao subir para o hero.
+  const setOn = (self) => {
+    const on = self.progress > 0;
+    if (on !== el.classList.contains('is-on')) { el.classList.toggle('is-on', on); last = -1; }
+  };
+  const show = ScrollTrigger.create({
+    trigger: '#sobre',
+    start: mode === 'band' ? 'top 30%' : 'top 45%',
+    end: 'bottom top',
+    onUpdate: setOn,
+    onRefresh: setOn,
+  });
+  // Faixa do mobile escurece sobre o rodapé marrom.
+  const tone = mode === 'band'
+    ? ScrollTrigger.create({ trigger: '#contato', start: 'top 45%', end: 'bottom top', toggleClass: { targets: el, className: 'is-dark' } })
+    : null;
 
   function tick(_, deltaMs) {
-    if (!state.active && state.fade === lastFade) return;
-    const k = 1 - Math.exp((-deltaMs / 1000) * 7); // suavização independente de FPS
+    if (!el.classList.contains('is-on')) return; // fora de cena: não renderiza
+    const k = 1 - Math.exp((-deltaMs / 1000) * 6);
     state.current += (state.target - state.current) * k;
     if (Math.abs(state.target - state.current) < 1e-4) state.current = state.target;
-    const p = Math.max(state.current, state.intro);
-    if (Math.abs(p - last) < 1e-5 && state.fade === lastFade) return; // nada mudou: não renderiza
-    last = p;
-    lastFade = state.fade;
-    stage.setProgress(p);
-    applyDom(p);
+    if (Math.abs(state.current - last) < 1e-5) return;
+    last = state.current;
+    stage.setProgress(state.current);
   }
   gsap.ticker.add(tick);
 
-  const ro = new ResizeObserver(() => {
-    stage.resize();
-    last = -1;
-  });
-  ro.observe(hero);
+  const ro = new ResizeObserver(() => { stage.resize(); last = -1; });
+  ro.observe(el);
   ScrollTrigger.refresh();
 
   return () => {
     gsap.ticker.remove(tick);
     ro.disconnect();
-    trigger.kill(true);
+    [...triggers, show, tone].forEach((t) => t?.kill());
     stage.dispose();
-    holder.remove();
-    hud.remove();
-    hero.classList.remove('has-scene');
-    [photo, content, cue].forEach((el) => el && el.removeAttribute('style'));
-    ScrollTrigger.refresh();
+    el.remove();
+    root.classList.remove(`stage-${mode}-on`);
   };
 }
 
-export function initScene() {
-  const hero = document.getElementById('inicio');
-  if (!hero || !capable()) return;
+export function initStage() {
+  if (!root.classList.contains('stage-ok')) return;
+  let modPromise;
+  const load = () => (modPromise ??= import('./stage.js'));
 
-  gsap.matchMedia().add(SCENE_MQ, () => {
+  // 'all' garante que o callback rode mesmo quando só uma condição muda.
+  gsap.matchMedia().add({ all: '(min-width: 0px)', col: COL_MQ, band: BAND_MQ, reduce: REDUCE }, ({ conditions }) => {
+    const mode = conditions.col ? 'col' : conditions.band ? 'band' : null;
+    if (!mode) return;
     let cleanup = () => {};
     let cancelled = false;
-    whenIdle(() => {
-      // Se o visitante já rolou para além do hero, não monta a cena (evita salto).
-      if (cancelled || window.scrollY > hero.offsetHeight * 0.4) return;
-      import('./stage.js')
-        .then((mod) => {
-          if (!cancelled) cleanup = mount(hero, mod);
-        })
-        .catch(() => {}); // sem cena: o hero clássico permanece
-    });
-    return () => {
-      cancelled = true;
-      cleanup();
-    };
+    whenIdle(() => load().then((mod) => { if (!cancelled) cleanup = mount(mod, mode, conditions.reduce); }).catch(() => {}));
+    return () => { cancelled = true; cleanup(); };
   });
 }

@@ -33,8 +33,8 @@ node tests/record-motion.mjs docs        # GIFs do motion (desktop e mobile)
 | Cores, fontes, espaçamentos, sombras, durações e easings (tokens) | `@theme` em `src/styles/main.css` |
 | Componentes (botões, navbar, reveals) | `src/styles/components.css` |
 | Conteúdo | `index.html` |
-| Cena 3D da abertura (peças, câmera, luzes, etapas) | `src/js/scene/stage.js` |
-| Pin, scroll e fallback da abertura | `src/js/scene/index.js` |
+| Móvel 3D (peças, materiais, câmera, luzes, etapas) | `src/js/scene/stage.js` |
+| Seção que conduz cada etapa, coluna/faixa e fallbacks | `src/js/scene/index.js` + `src/styles/scene.css` |
 | Textura de madeira | `src/js/scene/wood.js` |
 
 ## Deploy

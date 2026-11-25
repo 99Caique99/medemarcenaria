@@ -101,33 +101,31 @@ Como a responsividade foi resolvida:
 - Texto do "Sobre" alinhado à esquerda (sem justificar); negrito em 700.
 - Botão "Fale conosco" do rodapé agora usa o mesmo componente WhatsApp dos demais (componente único).
 
-## Fase 3 — Motion: abertura cinematográfica em 3D
+## Fase 3 — Motion: o móvel 3D montado ao longo da página
 
-Primeira versão (ilustração 2D num rail lateral) foi **substituída** a pedido do cliente, que queria o móvel "sendo criado de fato na frente do cliente" (referência: motionsites.org/pt/prompts/plume). Está no histórico do git (commit 75dfdc8).
+Histórico: (1) ilustração 2D num rail lateral (commit 75dfdc8) → (2) abertura 3D fixada no hero (99c4552) → (3) **versão atual**, a pedido do cliente: o hero volta a ser a foto (aparece de imediato) e o móvel é montado em 3D do "Sobre" até o rodapé, ficando pronto na última dobra.
 
-**Como funciona agora**: o hero vira uma cena fixada (pinned) de ~4 telas de scroll (3,2 no mobile). Um armário de 3 módulos em 3D (three.js) é construído em tempo real:
-
-| Scroll | Etapa | O que acontece |
+| Seção | Etapa | O que acontece |
 |---|---|---|
-| chegada | — | desktop: a cena surge ao lado do texto e as linhas começam sozinhas; mobile: chegada é a foto do hero, a cena entra ao primeiro scroll |
-| 0–20% | 01 Projeto | linhas de luz dourada desenham o contorno no espaço |
-| 16–42% | 02 Estrutura | rodapé, base, laterais, tampo e fundo (em MDF cru) voam e encaixam; câmera orbita |
-| 40–75% | 03 Interior e portas | divisórias descem, prateleiras deslizam, portas giram de verdade na dobradiça, puxadores dourados |
-| 68–92% | 04 Acabamento | MDF vira madeira (textura procedural com a paleta), LED do nicho acende, feixe de luz passa |
-| 92–100% | Entrega | a cena se dissolve na **foto real do armário** (imagem original do hero) e o texto volta |
+| Hero | — | foto do hero, de imediato (sem 3D) |
+| Legado de Excelência | Projeto + Estrutura | linhas finas desenham o contorno; rodapé, base, laterais, fundo e tampo chegam em MDF cru e assentam |
+| Projetos que Contam Histórias | Interior | divisórias e prateleiras são empurradas para dentro |
+| Vamos Realizar Seu Sonho? | Portas | dobradiças; portas penduradas abertas a 90° fecham com amortecimento |
+| Diferenciais | Detalhes | puxadores, parafusos (giram) e fita de LED |
+| Depoimentos | Acabamento | o MDF recebe a madeira (veios e poros em relevo, verniz nas portas); um brilho passa |
+| Rodapé | Entrega | móvel pronto, luz quente de contorno, ao lado de "Vamos criar algo único juntos?" |
 
-- Tudo é função pura do progresso do scroll: funciona igual para frente, para trás e com rolagem rápida.
-- Contador decorativo 01 —— 04 no canto inferior esquerdo (números gerados por CSS).
-- **Fallback = hero clássico** (foto + texto, idêntico à Fase 2): sem JS, sem WebGL, `prefers-reduced-motion`, aparelho com ≤2 núcleos ou <2 GB, ou tela com menos de 500px de altura (celular deitado).
-- O three.js (~139 KB gzip) só é baixado depois do `load` + ocioso, sem disputar com o LCP. Renderiza só quando algo muda.
-- Desempenho medido (Chrome, CPU 4× mais lenta, rolagem contínua): 75 fps (limite do monitor), p95 13,4 ms, 0 quadros > 33 ms — em 375 e 1440 px.
-- Nenhuma imagem nova: madeira gerada em canvas só com tons da paleta; o final usa a foto original.
+- **Desktop** (≥1280, ou ≥1024 em paisagem): palco fixo à direita (~42% da largura), canvas transparente sobre o fundo de cada seção, bordas em degradê. O conteúdo reserva o espaço desde o primeiro paint (classe `stage-ok` definida no `<head>`), sem salto de layout.
+- **Mobile/tablet em retrato**: faixa fixa sob a navbar (~34% da altura), fundo papel que escurece para o marrom no rodapé. Âncoras compensam a faixa (`scroll-padding-top`).
+- **Celular deitado** (altura < 500px): sem palco. **reduced-motion**: desktop mostra o móvel pronto e estático; mobile fica sem faixa. **Sem JS/WebGL**: layout original, nada reservado.
+- Tudo é função pura do progresso do scroll (soma ponderada do progresso de cada seção): funciona para frente, para trás, com rolagem rápida e com links de âncora.
+- Fade das peças com `alphaHash` (sem custo de ordenação de transparência). Só renderiza quando o progresso muda e o palco está visível.
+- three.js (~139 KB gzip) carregado depois do `load` + ocioso. Desempenho (CPU 4× mais lenta): 75 fps, 0 quadros > 33 ms.
+- Nenhuma imagem nova: madeira gerada em canvas com tons da paleta.
 - Gravações: `docs/motion-desktop.gif` e `docs/motion-mobile.gif` (`node tests/record-motion.mjs docs`).
 
 ## Próximos passos
 
 - ~~Fase 2 — Redesign editorial seção por seção.~~ ✅
-- ~~Fase 3 — Motion do móvel (abertura 3D).~~ ✅
+- ~~Fase 3 — Motion do móvel 3D.~~ ✅
 - Fase 4 — Polimento, Lighthouse, Firefox/WebKit, entrega final.
-- Fase 3 — Motion do móvel (SVG + ScrollTrigger).
-- Fase 4 — Polimento, Lighthouse, Firefox/WebKit, gravação do motion.
