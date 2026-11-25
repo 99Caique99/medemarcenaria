@@ -1,0 +1,20 @@
+# Netlify: a cada push no main faz o build (Vite) e publica a pasta dist/.
+# O index.html da raiz é código-fonte — o site final é só o resultado do build.
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# Arquivos com hash no nome (JS, CSS, fontes): cache de 1 ano
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Fotos otimizadas: cache de 30 dias
+[[headers]]
+  for = "/img/*"
+  [headers.values]
+    Cache-Control = "public, max-age=2592000"

@@ -59,11 +59,9 @@ npx lighthouse http://localhost:4173/ --preset=desktop --view
 
 > ⚠️ O `index.html` da raiz é o código-fonte: aberto direto (duplo clique ou Live Server) ele aparece quebrado, com `{{HERO_PRELOAD}}` e sem estilos. O site final é a pasta `dist/` gerada pelo build. Para ver localmente: `npm run build` e depois `npm run preview`.
 
-**GitHub Pages (automático):** `.github/workflows/deploy.yml` faz o build e publica a cada push no `main`.
-Uma única vez: no repositório, **Settings → Pages → Build and deployment → Source: GitHub Actions**.
-Endereço: `https://99caique99.github.io/medemarcenaria/`.
+**Netlify (automático):** o `netlify.toml` define o build (`npm run build`, Node 22) e a pasta publicada (`dist`). Cada push no `main` publica sozinho. Se o painel do Netlify tiver comando/pasta preenchidos à mão, o `netlify.toml` tem prioridade.
 
-**Outra hospedagem estática** (Netlify, Vercel, Cloudflare Pages): comando de build `npm run build`, pasta publicada `dist`.
+**Outra hospedagem estática** (Vercel, Cloudflare Pages, GitHub Pages): comando de build `npm run build`, pasta publicada `dist`.
 
 Ao ter o domínio final, preencha `SITE_URL` em `src/config.js` (ex.: `https://www.medemarcenaria.com.br`, sem barra no fim): ativa canonical e a prévia de link (og:image) no WhatsApp.
 
