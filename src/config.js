@@ -1,7 +1,7 @@
 // Fonte única de dados do site. Usado no build (vite.config.js, scripts/) e no navegador.
 
 // Domínio final (sem barra no fim). Enquanto vazio, canonical/og:url não são emitidos.
-export const SITE_URL = '';
+export const SITE_URL = 'https://medemarcenaria.netlify.app';
 
 export const WHATSAPP_NUMBER = '5521990892815';
 export const WHATSAPP_MESSAGE =
