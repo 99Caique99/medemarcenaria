@@ -27,12 +27,22 @@ const SEGMENTS = [
 
 const root = document.documentElement;
 
-function whenIdle(fn) {
-  const go = () => ('requestIdleCallback' in window ? requestIdleCallback(fn, { timeout: 1500 }) : setTimeout(fn, 200));
-  document.readyState === 'complete' ? go() : window.addEventListener('load', go, { once: true });
+// Ninguém vê o móvel antes do "Sobre": o three.js só é carregado quando o visitante
+// começa a rolar/interagir (ou se a página já abriu no meio, por âncora ou restauração).
+function whenNeeded(fn) {
+  const events = ['scroll', 'wheel', 'touchstart', 'keydown', 'pointerdown'];
+  let done = false;
+  const run = () => {
+    if (done) return;
+    done = true;
+    events.forEach((e) => window.removeEventListener(e, run));
+    'requestIdleCallback' in window ? requestIdleCallback(fn, { timeout: 300 }) : setTimeout(fn, 50);
+  };
+  const arm = () => (window.scrollY > 0 ? run() : events.forEach((e) => window.addEventListener(e, run, { passive: true })));
+  document.readyState === 'complete' ? arm() : window.addEventListener('load', arm, { once: true });
 }
 
-function mount({ createStage }, mode, reduce) {
+async function mount({ createStage }, mode, reduce) {
   const el = document.createElement('div');
   el.className = `stage3d stage3d--${mode}`;
   el.setAttribute('aria-hidden', 'true');
@@ -41,7 +51,7 @@ function mount({ createStage }, mode, reduce) {
 
   let stage;
   try {
-    stage = createStage(el, { mobile: mode === 'band' });
+    stage = await createStage(el, { mobile: mode === 'band' });
   } catch {
     // WebGL indisponível de fato: libera o espaço reservado.
     el.remove();
@@ -130,7 +140,13 @@ export function initStage() {
     if (!mode) return;
     let cleanup = () => {};
     let cancelled = false;
-    whenIdle(() => load().then((mod) => { if (!cancelled) cleanup = mount(mod, mode, conditions.reduce); }).catch(() => {}));
+    whenNeeded(() => {
+      if (cancelled) return;
+      load()
+        .then((mod) => mount(mod, mode, conditions.reduce))
+        .then((dispose) => (cancelled ? dispose() : (cleanup = dispose)))
+        .catch(() => {});
+    });
     return () => { cancelled = true; cleanup(); };
   });
 }

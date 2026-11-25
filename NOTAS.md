@@ -124,8 +124,39 @@ Histórico: (1) ilustração 2D num rail lateral (commit 75dfdc8) → (2) abertu
 - Nenhuma imagem nova: madeira gerada em canvas com tons da paleta.
 - Gravações: `docs/motion-desktop.gif` e `docs/motion-mobile.gif` (`node tests/record-motion.mjs docs`).
 
+## Fase 4 — QA final (critérios de aceite)
+
+| Critério | Resultado |
+|---|---|
+| Texto idêntico ao original | ✅ `npm run test:text`: 253 palavras, título e alt/aria-label idênticos (Chrome, Firefox e WebKit). Links alterados só os intencionais: "un"→"um" no WhatsApp, `?igsh=` removido, logo → `#inicio`, "Orçamento" → WhatsApp |
+| Mesmas imagens, vídeo, links e paleta | ✅ mesmas fotos/vídeo (versões otimizadas dos arquivos originais — decisão A1); paleta só com tons da marca e derivados |
+| Móvel se monta de forma contínua em todos os breakpoints | ✅ coluna (≥1280 / ≥1024 paisagem) e faixa (mobile/tablet retrato). Exceção intencional: celular deitado (altura < 500px) fica sem palco |
+| Sem scroll horizontal 320 → 1920 | ✅ 13 tamanhos (retrato e paisagem) × 3 motores |
+| Lighthouse mobile ≥ 90/95/95/100 | ✅ **100 / 100 / 100 / 100** (desktop: 100 / 100 / 100 / 100) |
+| LCP < 2,5 s · CLS < 0,1 · INP < 200 ms | ✅ LCP 1,4 s (mobile, 4G simulado) · CLS 0,001 · INP medido com CPU 4× mais lenta: 40 ms (mobile) / 48 ms (desktop), inclusive enquanto o 3D carrega |
+| Navegação por teclado, foco visível, menu acessível | ✅ todas as paradas de foco com contorno visível e não cobertas pelo palco 3D; menu com Esc, `inert`, trava de scroll e retorno de foco |
+| prefers-reduced-motion | ✅ sem animações contínuas/parallax/scroll suave; desktop mostra o móvel pronto e estático; mobile sem faixa |
+| Chrome, Safari (iOS) e Firefox | ✅ Chrome, Firefox e WebKit (motor do Safari) via Playwright. ⚠️ **iPhone real não testado** — conferir em aparelho |
+| Nenhum erro no console | ✅ 0 erros nos 3 motores (o widget Shapo é de terceiros e não gerou erros nos testes) |
+
+### Nota sobre o desempenho do 3D
+O three.js (~139 KB gzip) só é carregado quando o visitante começa a rolar ou interagir (ninguém vê o móvel antes do "Sobre"). Por isso ele não entra na medição do Lighthouse, que não rola a página. Para não esconder o custo, ele foi medido à parte numa sessão com rolagem real e CPU 4× mais lenta: o palco fica pronto ~3,5–4,5 s depois do primeiro scroll (entra com fade antes de o visitante sair do hero), a maior tarefa longa é de 367 ms no celular (uma única vez, ao processar o three.js) e o INP fica em 40 ms. A montagem é fatiada em etapas com pausas e os shaders compilam em paralelo.
+
+### Pendências com o cliente
+1. **Domínio**: preencher `SITE_URL` em `src/config.js` (ativa canonical, `og:url` e a prévia 1200×630 para o WhatsApp).
+2. **Português**: aprovar (ou não) as duas correções listadas acima.
+3. **Teste em iPhone real** (Safari iOS).
+4. **Widget Shapo**: ajustar fonte/cores no painel do Shapo, se o plano permitir.
+
+## Entregáveis
+
+- Código: `src/` (estilos, JS, cena 3D), `index.html`, `public/` (imagens otimizadas e ícones) → build em `dist/`.
+- `README.md`: como rodar, testar e publicar.
+- Screenshots finais: `docs/screenshots/` — página inteira (375, 768, 1280, 1920) e "jornada" (quadros ao rolar, mostrando o móvel em cada etapa).
+- Gravações do motion: `docs/motion-desktop.gif`, `docs/motion-mobile.gif`.
+
 ## Próximos passos
 
-- ~~Fase 2 — Redesign editorial seção por seção.~~ ✅
-- ~~Fase 3 — Motion do móvel 3D.~~ ✅
-- Fase 4 — Polimento, Lighthouse, Firefox/WebKit, entrega final.
+- Publicar `dist/` (Netlify, Vercel, Cloudflare Pages ou GitHub Pages) após preencher `SITE_URL`.
+- Rodar o Lighthouse de novo no domínio final (CDN e HTTPS reais).
+- Testar no iPhone e num Android intermediário reais.

@@ -48,7 +48,11 @@ function keyed(frames, p) {
   return frames.at(-1)[1];
 }
 
-export function createStage(container, { mobile }) {
+// Montagem fatiada em etapas com pausas (texturas, materiais, shaders) para não
+// gerar tarefas longas no main thread.
+const pause = () => new Promise((r) => (globalThis.scheduler?.yield ? globalThis.scheduler.yield().then(r) : setTimeout(r, 0)));
+
+export async function createStage(container, { mobile }) {
   // ---------- Renderer (fundo transparente) ----------
   const renderer = new WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, mobile ? 1.5 : 1.75));
@@ -67,6 +71,7 @@ export function createStage(container, { mobile }) {
   scene.environment = envRT.texture;
   scene.environmentIntensity = 0.4;
   pmrem.dispose();
+  await pause();
 
   const camera = new PerspectiveCamera(30, 1, 0.1, 60);
   const target = new Vector3(0, 1.2, 0);
@@ -124,11 +129,13 @@ export function createStage(container, { mobile }) {
     };
     return m;
   };
-  const tex = {
-    carcass: woodTexture({ base: '#6a5340', dark: '#43382e', light: C.highlight, seed: 3, size, maxAnisotropy: aniso }),
-    door: woodTexture({ base: '#7a5c42', dark: '#4a3c30', light: '#a07a52', seed: 11, size, vertical: true, maxAnisotropy: aniso }),
-    back: woodTexture({ base: '#4d4137', dark: '#382f27', light: C.brown, seed: 9, size, maxAnisotropy: aniso }),
-  };
+  const tex = {};
+  tex.carcass = woodTexture({ base: '#6a5340', dark: '#43382e', light: C.highlight, seed: 3, size, maxAnisotropy: aniso });
+  await pause();
+  tex.door = woodTexture({ base: '#7a5c42', dark: '#4a3c30', light: '#a07a52', seed: 11, size, vertical: true, maxAnisotropy: aniso });
+  await pause();
+  tex.back = woodTexture({ base: '#4d4137', dark: '#382f27', light: C.brown, seed: 9, size, maxAnisotropy: aniso });
+  await pause();
   const base = {
     carcass: () => withWoodMix(new MeshStandardMaterial({ map: tex.carcass, bumpMap: tex.carcass, bumpScale: 0.6, roughness: 0.58 })),
     back: () => withWoodMix(new MeshStandardMaterial({ map: tex.back, bumpMap: tex.back, bumpScale: 0.4, roughness: 0.75 })),
@@ -328,6 +335,9 @@ export function createStage(container, { mobile }) {
   }
 
   resize();
+  await pause();
+  // Compila os shaders em paralelo (KHR_parallel_shader_compile) antes do 1º quadro.
+  await renderer.compileAsync(scene, camera);
 
   function dispose() {
     scene.traverse((o) => {

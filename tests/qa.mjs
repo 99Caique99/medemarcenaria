@@ -2,7 +2,7 @@
 // overflow horizontal 320→1920 (retrato e paisagem), erros de console e axe (WCAG 2.2 AA).
 //   node tests/qa.mjs [url]
 import AxeBuilder from '@axe-core/playwright';
-import { launch } from './lib.mjs';
+import { launch, engine } from './lib.mjs';
 
 const url = process.argv.slice(2).find((a) => !a.startsWith('--')) ?? 'http://localhost:4173/';
 const sizes = [
@@ -63,6 +63,7 @@ for (const [w, h] of [[375, 812], [1280, 800]]) {
   await page.goto(url, { waitUntil: 'load' });
   await scrollThrough(page);
   await page.waitForTimeout(2000); // espera as transições de reveal terminarem
+  if (engine !== 'chrome') { await ctx.close(); continue; } // axe roda no Chrome
   const res = await new AxeBuilder({ page })
     .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa', 'best-practice'])
     .exclude('[id^="shapo-widget"]')

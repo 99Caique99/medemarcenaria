@@ -1,7 +1,10 @@
-// Utilitários compartilhados pelos testes (Playwright usando o Chrome instalado).
-import { chromium } from 'playwright';
+// Utilitários compartilhados pelos testes.
+// Motor via BROWSER=chrome (padrão, usa o Google Chrome instalado) | firefox | webkit
+import { chromium, firefox, webkit } from 'playwright';
 
-export const launch = () => chromium.launch({ channel: 'chrome' });
+export const engine = process.env.BROWSER ?? 'chrome';
+export const launch = () =>
+  engine === 'firefox' ? firefox.launch() : engine === 'webkit' ? webkit.launch() : chromium.launch({ channel: 'chrome' });
 
 // Texto "de copy" da página: textContent normalizado (independe de CSS como
 // text-transform), sem scripts, estilos, SVGs e sem o conteúdo do widget Shapo
