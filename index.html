@@ -1,171 +1,98 @@
 <!DOCTYPE html>
-<html lang="pt-br" class="scroll-smooth">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>MEDE Marcenaria | Design & Excelência</title>
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'mede-cream': '#f1e3d3',   /* Bege suave */
-                        'mede-gold': '#f9e4b7',    /* Dourado claro */
-                        'mede-brown': '#5f5549',   /* Marrom Nobre (Base) */
-                        'mede-highlight': '#85603f', /* NOVO: Marrom Destaque (Mais visível) */
-                        'mede-white': '#ffffff',   /* Fundo sofisticado */
-                    },
-                    fontFamily: {
-                        sans: ['Montserrat', 'sans-serif'],
-                        serif: ['Playfair Display', 'serif'],
-                    },
-                    animation: {
-                        'slow-zoom': 'zoomEffect 25s infinite alternate',
-                        'blur-in': 'blurIn 1.5s cubic-bezier(0.23, 1, 0.32, 1) forwards',
-                        'float': 'float 4s ease-in-out infinite',
-                        'spin-slow': 'spin 60s linear infinite',
-                        'spin-reverse': 'spin 40s linear infinite reverse',
-                        'shimmer': 'shimmer 2s linear infinite',
-                        'grow-line': 'growLine 1s cubic-bezier(0.22, 1, 0.36, 1) forwards',
-                    },
-                    keyframes: {
-                        zoomEffect: {
-                            '0%': { transform: 'scale(1)' },
-                            '100%': { transform: 'scale(1.08)' },
-                        },
-                        blurIn: {
-                            '0%': { opacity: '0', filter: 'blur(10px)', transform: 'translateY(30px)' },
-                            '100%': { opacity: '1', filter: 'blur(0)', transform: 'translateY(0)' },
-                        },
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(10px)' },
-                        },
-                        shimmer: {
-                            '0%': { backgroundPosition: '-1000px 0' },
-                            '100%': { backgroundPosition: '1000px 0' }
-                        },
-                        growLine: {
-                            '0%': { width: '0' },
-                            '100%': { width: '3rem' }
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-    
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <link rel="stylesheet" href="style.css">
+    <script>document.documentElement.classList.add('js')</script>
+    <!-- @seo -->
+    {{HERO_PRELOAD}}
+    <link rel="dns-prefetch" href="https://res.cloudinary.com">
+    <link rel="dns-prefetch" href="https://cdn.shapo.io">
+    <link rel="stylesheet" href="/src/styles/main.css">
+    <script type="module" src="/src/js/main.js"></script>
 </head>
 <body class="antialiased font-sans">
 
-    <nav id="navbar" class="fixed w-full z-50 transition-all duration-500 py-3 flex flex-col items-center bg-white shadow-md text-mede-brown">
-        <a href="#" class="z-50 relative mb-1 transition-all duration-500">
-            <img src="https://i.ibb.co/Y4N5V4mQ/EDESEMBG.png" alt="MEDE Marcenaria" class="h-16 md:h-28 w-auto object-contain transition-all duration-500 hover:scale-105 drop-shadow-lg">
+    <svg xmlns="http://www.w3.org/2000/svg" hidden>
+        <symbol id="icon-whatsapp" viewBox="0 0 24 24">
+            <path fill="currentColor" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+        </symbol>
+        <!-- Ícones Lucide (ISC) embutidos: arrow-right e instagram -->
+        <symbol id="icon-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+        </symbol>
+        <symbol id="icon-instagram" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
+        </symbol>
+    </svg>
+
+    <nav id="navbar" class="navbar fixed top-0 w-full z-50 py-3 flex flex-col items-center bg-white shadow-md text-mede-brown">
+        <a href="#inicio" class="z-50 relative mb-1">
+            <mede-img key="logo" alt="MEDE Marcenaria" sizes="(min-width: 768px) 123px, 70px" eager class="nav-logo h-16 md:h-28 w-auto object-contain hover:scale-105 drop-shadow-lg"></mede-img>
         </a>
 
-        <div class="hidden md:flex items-center space-x-8 lg:space-x-12 border-t border-gray-100 pt-2 w-full justify-center bg-white relative z-50">
-            <a href="#inicio" class="text-xs uppercase tracking-[0.2em] hover:text-mede-gold transition-colors font-medium">Início</a>
-            <a href="#sobre" class="text-xs uppercase tracking-[0.2em] hover:text-mede-gold transition-colors font-medium">Conheça-nos</a>
-            <a href="#contato" class="bg-mede-gold text-mede-brown px-6 py-1.5 rounded-sm font-bold text-[10px] uppercase tracking-widest hover:bg-mede-brown hover:text-white transition-all shadow-md transform hover:-translate-y-1">
+        <div class="hidden md:flex items-center gap-8 lg:gap-12 border-t border-gray-100 pt-2 w-full justify-center bg-white relative z-50">
+            <a href="#inicio" class="text-xs uppercase tracking-[0.2em] hover:text-mede-highlight transition-colors font-medium">Início</a>
+            <a href="#sobre" class="text-xs uppercase tracking-[0.2em] hover:text-mede-highlight transition-colors font-medium">Conheça-nos</a>
+            <a href="{{WHATSAPP_URL}}" target="_blank" rel="noopener noreferrer" class="bg-mede-gold text-mede-brown px-6 py-1.5 rounded-xs font-bold text-[10px] uppercase tracking-widest hover:bg-mede-brown hover:text-white transition-all shadow-md hover:-translate-y-1">
                 Orçamento
             </a>
         </div>
 
-        <button id="menu-btn" class="md:hidden absolute right-6 top-1/2 -translate-y-1/2 z-50 w-12 h-12 flex flex-col justify-center items-center gap-1.5 bg-white/90 backdrop-blur rounded-full shadow-lg transition-transform duration-300 active:scale-95 border border-gray-100">
+        <button id="menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="mobile-menu" class="md:hidden absolute right-6 top-1/2 -translate-y-1/2 z-50 w-12 h-12 flex flex-col justify-center items-center gap-1.5 bg-white/90 backdrop-blur-sm rounded-full shadow-lg transition-transform duration-300 active:scale-95 border border-gray-100">
             <span class="line line-1 w-6 h-[2px] bg-mede-brown rounded-full"></span>
             <span class="line line-2 w-6 h-[2px] bg-mede-brown rounded-full"></span>
             <span class="line line-3 w-6 h-[2px] bg-mede-brown rounded-full"></span>
         </button>
 
-        <div id="mobile-menu" class="md:hidden absolute top-full left-0 w-full bg-white/95 backdrop-blur-md border-t border-gray-100 shadow-2xl flex flex-col items-center py-8 space-y-6 transform origin-top scale-y-0 opacity-0 transition-all duration-300 ease-out z-40">
-            <a href="#inicio" class="mobile-link text-lg font-serif italic text-mede-brown hover:text-mede-gold transition-colors">Início</a>
-            <a href="#sobre" class="mobile-link text-lg font-serif italic text-mede-brown hover:text-mede-gold transition-colors">Conheça-nos</a>
-            <a href="#contato" class="mobile-link text-lg font-serif italic text-mede-brown hover:text-mede-gold transition-colors">Orçamento</a>
+        <div id="mobile-menu" inert class="mobile-menu md:hidden absolute top-full left-0 w-full bg-white/95 backdrop-blur-md border-t border-gray-100 shadow-2xl flex flex-col items-center py-8 gap-6 z-40">
+            <a href="#inicio" class="mobile-link text-lg font-serif italic text-mede-brown hover:text-mede-highlight transition-colors">Início</a>
+            <a href="#sobre" class="mobile-link text-lg font-serif italic text-mede-brown hover:text-mede-highlight transition-colors">Conheça-nos</a>
+            <a href="{{WHATSAPP_URL}}" target="_blank" rel="noopener noreferrer" class="mobile-link text-lg font-serif italic text-mede-brown hover:text-mede-highlight transition-colors">Orçamento</a>
         </div>
     </nav>
-<header id="inicio" class="relative h-screen w-full overflow-hidden flex items-center justify-center">
-    <style>
-        @keyframes cinematicFocus {
-            0% { opacity: 0; filter: blur(15px); transform: scale(1.1) translateY(10px); }
-            100% { opacity: 1; filter: blur(0); transform: scale(1) translateY(0); }
-        }
-        @keyframes softGoldShimmer {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        /* Animação suave para a seta */
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(10px); }
-        }
-        .animate-float {
-            animation: float 2s ease-in-out infinite;
-        }
-        .luxury-30 {
-            display: inline-block;
-            background: linear-gradient(90deg, #cfaa72 0%, #f9e4b7 40%, #ffffff 50%, #f9e4b7 60%, #cfaa72 100%);
-            background-size: 300% auto;
-            color: transparent;
-            -webkit-background-clip: text;
-            background-clip: text;
-            padding: 0.35em 0; 
-            line-height: 0.7;
-            animation: cinematicFocus 1.8s cubic-bezier(0.25, 1, 0.5, 1) forwards,
-                        softGoldShimmer 4s linear infinite 2s;
-            opacity: 0;
-            will-change: transform, filter, opacity;
-        }
-    </style>
 
+<main>
+<header id="inicio" class="hero on-dark relative w-full overflow-hidden flex items-center justify-center">
     <div class="absolute inset-0 z-0 bg-mede-brown">
-        <img src="https://i.ibb.co/bjvL3JhJ/fotoarmario-MEDE-JPG.jpg" alt="Interior MEDE Marcenaria" class="w-full h-full object-cover opacity-90 animate-slow-zoom smooth-image">
+        <mede-img key="hero" alt="Interior MEDE Marcenaria" sizes="100vw" eager class="hero-image w-full h-full object-cover opacity-90 animate-slow-zoom"></mede-img>
     </div>
     <div class="absolute inset-0 z-10 hero-overlay"></div>
 
-    <div class="relative z-20 text-center px-2 max-w-7xl mx-auto -mt-10 md:mt-0">
-        <div class="opacity-0 animate-blur-in">
+    <div class="hero-content relative z-20 text-center px-2 max-w-7xl mx-auto">
+        <div class="animate-fade-up">
             <div class="w-[1px] h-12 md:h-16 bg-mede-gold/60 mx-auto mb-4 md:mb-6"></div>
-            
+
             <p class="text-mede-gold uppercase tracking-[0.5em] text-[10px] md:text-base mb-4 font-bold">
                 Design Sob Medida
             </p>
-            
-           <h1 class="font-serif text-white mb-4 md:mb-6 flex flex-col items-center w-full">
-    <div class="flex flex-wrap items-baseline justify-center gap-2 md:gap-4 w-full leading-tight overflow-visible">
-        <span class="text-[clamp(1.8rem,5vw,3.5rem)] lg:text-[clamp(2.1rem,4vw,4.2rem)] font-normal whitespace-nowrap">Há mais de</span>
-        <span class="luxury-30 font-extrabold text-[clamp(4rem,10vw,6rem)] lg:text-[clamp(4.8rem,8vw,6.5rem)]">30</span>
-        <span class="text-[clamp(1.8rem,5vw,3.5rem)] lg:text-[clamp(2.1rem,4vw,4.2rem)] font-normal">anos</span>
-    </div>
-    <span class="italic font-light gold-gradient-text text-[clamp(1.8rem,7vw,4rem)] lg:text-[clamp(2.3rem,6vw,4.8rem)] block -mt-2 md:-mt-6 lg:-mt-8 leading-tight whitespace-nowrap tracking-tight px-2">
-        entregando excelência
-    </span>
-</h1>
 
-<p class="text-gray-100 font-light text-[clamp(0.95rem,1.5vw,1.2rem)] max-w-2xl lg:max-w-3xl mx-auto mb-6 md:mb-10 lg:mb-14 leading-relaxed px-4">
-    Transformamos ambientes com mobiliários de alto padrão que entregam exclusividade. Com sofisticação e personalização em cada detalhe!
-</p>
+            <h1 class="font-serif text-white mb-4 md:mb-6 flex flex-col items-center w-full">
+                <span class="flex flex-wrap items-baseline justify-center gap-2 md:gap-4 w-full leading-tight overflow-visible">
+                    <span class="text-[clamp(1.8rem,5vw,3.5rem)] lg:text-[clamp(2.1rem,4vw,4.2rem)] font-normal whitespace-nowrap">Há mais de</span>
+                    <span class="luxury-30 font-extrabold text-[clamp(4rem,10vw,6rem)] lg:text-[clamp(4.8rem,8vw,6.5rem)]">30</span>
+                    <span class="text-[clamp(1.8rem,5vw,3.5rem)] lg:text-[clamp(2.1rem,4vw,4.2rem)] font-normal">anos</span>
+                </span>
+                <span class="italic font-light gold-gradient-text text-[clamp(1.6rem,7vw,4rem)] lg:text-[clamp(2.3rem,6vw,4.8rem)] block -mt-2 md:-mt-6 lg:-mt-8 leading-tight whitespace-nowrap tracking-tight px-2">
+                    entregando excelência
+                </span>
+            </h1>
+
+            <p class="hero-lead text-gray-100 font-light text-[clamp(0.95rem,1.5vw,1.2rem)] max-w-2xl lg:max-w-3xl mx-auto mb-6 md:mb-10 lg:mb-14 leading-relaxed px-4">
+                Transformamos ambientes com mobiliários de alto padrão que entregam exclusividade. Com sofisticação e personalização em cada detalhe!
+            </p>
 
             <div class="flex flex-col md:flex-row gap-6 justify-center items-center">
-                 <a href="https://wa.me/5521990892815?text=Olá!%20Tudo%20bem?%20Gostaria%20de%20solicitar%20um%20orçamento%20para%20um%20projeto%20de%20marcenaria%20sob%20medida.%20Como%20posso%20enviar%20os%20detalhes%20e%20as%20especificações%20para%20que%20vocês%20façam%20uma%20avaliação?" target="_blank" class="group relative inline-flex items-center gap-3 bg-[#25D366] backdrop-blur-sm text-white px-8 py-4 uppercase tracking-[0.1em] text-xs font-bold transition-all duration-300 hover:bg-[#128C7E] hover:scale-105 shadow-[0_0_20px_rgba(37,211,102,0.3)] border border-[#25D366] rounded-sm overflow-hidden">
-                    <div class="absolute inset-0 w-full h-full bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
-                    <svg class="w-5 h-5 fill-current relative z-10" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
-                    </svg>
-                    <span class="relative z-10 text-white">Faça seu orçamento</span>
+                <a href="{{WHATSAPP_URL}}" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp">
+                    <svg class="icon" aria-hidden="true"><use href="#icon-whatsapp"/></svg>
+                    <span>Faça seu orçamento</span>
                 </a>
             </div>
         </div>
     </div>
 
-    <div class="absolute bottom-10 left-0 w-full z-20 flex justify-center animate-float">
+    <div class="absolute bottom-10 left-0 w-full z-20 flex justify-center animate-float" aria-hidden="true">
         <div class="flex flex-col items-center gap-2">
             <span class="text-[10px] uppercase tracking-[0.4em] text-white/70 font-light">Descubra</span>
             <svg class="w-6 h-6 text-mede-gold/80" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -174,31 +101,29 @@
         </div>
     </div>
 </header>
+
 <section id="sobre" class="py-16 bg-white relative overflow-hidden">
-    
-    <div class="absolute top-0 right-0 w-1/3 h-full bg-mede-cream opacity-10 -skew-x-12 transform translate-x-20 pointer-events-none"></div>
+
+    <div class="absolute top-0 right-0 w-1/3 h-full bg-mede-cream opacity-10 -skew-x-12 translate-x-20 pointer-events-none"></div>
 
     <div class="container mx-auto px-6 relative z-10 space-y-16">
-        
+
         <div class="grid md:grid-cols-2 gap-8 lg:gap-16 items-center">
-            <div class="relative h-[450px] group overflow-hidden shadow-2xl rounded-sm reveal-left">
-                <img src="https://i.ibb.co/nqY5rs73/Chat-GPT-Image-4-de-fev-de-2026-13-07-10.png" alt="Consultoria Exclusiva" class="parallax-img w-full h-[120%] object-cover absolute top-0 left-0 transition-transform duration-75">
+            <div class="parallax-frame h-[450px] shadow-2xl rounded-xs reveal-left">
+                <mede-img key="sobre1" alt="Consultoria Exclusiva" sizes="(min-width: 768px) 50vw, 100vw" class="parallax-img"></mede-img>
             </div>
             <div class="space-y-6 reveal-right">
-                <h3 class="text-3xl md:text-4xl font-serif text-mede-brown">
+                <h2 class="text-3xl md:text-4xl font-serif text-mede-brown">
                     Legado de <br><span class="italic gold-gradient-text">Excelência</span>
-                </h3>
+                </h2>
                 <div class="line-reveal h-[2px] bg-mede-gold"></div>
                 <p class="text-gray-600 font-light leading-loose text-justify text-sm md:text-base">
-                    Há mais de três décadas entregamos o que há de <strong class="font-black text-[#85603f]">melhor em móveis planejados.</strong> Qualidade e personalização é a nossa <strong class="font-black text-[#85603f]">tradição.</strong>
+                    Há mais de três décadas entregamos o que há de <strong class="font-black text-mede-highlight">melhor em móveis planejados.</strong> Qualidade e personalização é a nossa <strong class="font-black text-mede-highlight">tradição.</strong>
                 </p>
                 <div class="flex justify-center md:justify-start">
-                    <a href="https://wa.me/5521990892815?text=Olá!%20Tudo%20bem?%20Gostaria%20de%20solicitar%20um%20orçamento%20para%20um%20projeto%20de%20marcenaria%20sob%20medida.%20Como%20posso%20enviar%20os%20detalhes%20e%20as%20especificações%20para%20que%20vocês%20façam%20uma%20avaliação?" target="_blank" class="group relative inline-flex items-center gap-3 bg-[#25D366] backdrop-blur-sm text-white px-8 py-4 uppercase tracking-[0.1em] text-xs font-bold transition-all duration-300 hover:bg-[#128C7E] hover:scale-105 shadow-[0_0_20px_rgba(37,211,102,0.3)] border border-[#25D366] rounded-sm overflow-hidden">
-                        <div class="absolute inset-0 w-full h-full bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
-                        <svg class="w-5 h-5 fill-current relative z-10" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
-                        </svg>
-                        <span class="relative z-10 text-white">Faça seu orçamento</span>
+                    <a href="{{WHATSAPP_URL}}" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp">
+                        <svg class="icon" aria-hidden="true"><use href="#icon-whatsapp"/></svg>
+                        <span>Faça seu orçamento</span>
                     </a>
                 </div>
             </div>
@@ -206,52 +131,48 @@
 
         <div class="grid md:grid-cols-2 gap-8 lg:gap-16 items-center">
             <div class="space-y-6 order-2 md:order-1 reveal-left">
-                <h3 class="text-3xl md:text-4xl font-serif text-mede-brown">
+                <h2 class="text-3xl md:text-4xl font-serif text-mede-brown">
                     Projetos que <br><span class="italic gold-gradient-text">Contam Histórias</span>
-                </h3>
+                </h2>
                 <div class="line-reveal h-[2px] bg-mede-gold"></div>
                 <p class="text-gray-600 font-light leading-loose text-justify text-sm md:text-base">
-                    Nossos mobiliários retratam a <strong class="font-black text-[#85603f]">sua história, sua personalidade.</strong> Você tem parte em todos os processos, cada linha e medida é <strong class="font-black text-[#85603f]">pensada para você.</strong>
+                    Nossos mobiliários retratam a <strong class="font-black text-mede-highlight">sua história, sua personalidade.</strong> Você tem parte em todos os processos, cada linha e medida é <strong class="font-black text-mede-highlight">pensada para você.</strong>
                 </p>
                 <div class="flex justify-center md:justify-start">
-                    <a href="#contato" class="group relative inline-flex items-center justify-center gap-3 bg-mede-gold text-mede-brown px-8 py-4 uppercase tracking-[0.15em] text-xs font-bold transition-all duration-300 hover:bg-white hover:scale-105 shadow-[0_0_20px_rgba(249,228,183,0.3)] border border-mede-gold rounded-sm overflow-hidden mt-4">
-                        <div class="absolute inset-0 w-full h-full bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
-                        <span class="relative z-10 border-b border-mede-brown/20 pb-0.5 group-hover:border-mede-brown transition-colors">
+                    <a href="#contato" class="btn btn-gold mt-4">
+                        <span class="border-b border-mede-brown/20 pb-0.5">
                             Iniciar meu Projeto
                         </span>
-                        <i data-lucide="arrow-right" class="w-5 h-5 relative z-10 transition-transform group-hover:translate-x-1.5"></i>
+                        <svg class="icon icon-arrow" aria-hidden="true"><use href="#icon-arrow-right"/></svg>
                     </a>
                 </div>
             </div>
-            <div class="relative h-[450px] group overflow-hidden shadow-2xl rounded-sm order-1 md:order-2 reveal-right">
-                <video class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" autoplay loop muted playsinline poster="fotoheroMEDE.JPG.jpeg">
-                    <source src="https://res.cloudinary.com/dxukdxpzc/video/upload/v1770233777/WhatsApp_Video_2026-02-04_at_15.40.02_jwquu1.mp4" type="video/mp4">
+            <div class="relative h-[450px] group overflow-hidden shadow-2xl rounded-xs order-1 md:order-2 reveal-right">
+                <video class="lazy-video w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" loop muted playsinline preload="none" poster="{{POSTER}}" width="464" height="832">
+                    <source data-src="{{VIDEO_URL}}" type="video/mp4">
                     Seu navegador não suporta vídeos.
                 </video>
             </div>
         </div>
 
         <div class="grid md:grid-cols-2 gap-8 lg:gap-16 items-center">
-            <div class="relative h-[450px] group overflow-hidden shadow-2xl rounded-sm reveal-left">
-                <img src="https://i.ibb.co/N6tRVyt6/IMG-4270-jpg.jpg" alt="Atendimento Personalizado MEDE" class="parallax-img w-full h-[120%] object-cover absolute top-0 left-0 transition-transform duration-75">
+            <div class="parallax-frame h-[450px] shadow-2xl rounded-xs reveal-left">
+                <mede-img key="sobre3" alt="Atendimento Personalizado MEDE" sizes="(min-width: 768px) 50vw, 100vw" class="parallax-img"></mede-img>
             </div>
             <div class="space-y-6 reveal-right">
-                <h3 class="text-3xl md:text-4xl font-serif text-mede-brown">
+                <h2 class="text-3xl md:text-4xl font-serif text-mede-brown">
                     Vamos Realizar <br><span class="italic gold-gradient-text">Seu Sonho?</span>
-                </h3>
+                </h2>
                 <div class="line-reveal h-[2px] bg-mede-gold"></div>
                 <p class="text-gray-600 font-light leading-loose text-justify text-sm md:text-base">
-                    Cada detalhe do seu lar merece ser <strong class="font-black text-[#85603f]">único.</strong> Nossa equipe é preparada para transformar seu projeto em <strong class="font-black text-[#85603f]">ambientes funcionais e sofisticados.</strong>
-                    Com atendimento <strong class="font-black text-[#85603f]">exclusivo</strong> do início ao fim.
+                    Cada detalhe do seu lar merece ser <strong class="font-black text-mede-highlight">único.</strong> Nossa equipe é preparada para transformar seu projeto em <strong class="font-black text-mede-highlight">ambientes funcionais e sofisticados.</strong>
+                    Com atendimento <strong class="font-black text-mede-highlight">exclusivo</strong> do início ao fim.
                 </p>
                 <div class="flex justify-center md:justify-start">
-                        <a href="https://wa.me/5521990892815?text=Olá!%20Tudo%20bem?%20Gostaria%20de%20solicitar%20um%20orçamento%20para%20um%20projeto%20de%20marcenaria%20sob%20medida.%20Como%20posso%20enviar%20os%20detalhes%20e%20as%20especificações%20para%20que%20vocês%20façam%20uma%20avaliação?" target="_blank" class="group relative inline-flex items-center gap-3 bg-[#25D366] backdrop-blur-sm text-white px-8 py-4 uppercase tracking-[0.1em] text-xs font-bold transition-all duration-300 hover:bg-[#128C7E] hover:scale-105 shadow-[0_0_20px_rgba(37,211,102,0.3)] border border-[#25D366] rounded-sm overflow-hidden">
-                            <div class="absolute inset-0 w-full h-full bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
-                            <svg class="w-5 h-5 fill-current relative z-10" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
-                            </svg>
-                            <span class="relative z-10 text-white">Faça seu orçamento</span>
-                        </a>
+                    <a href="{{WHATSAPP_URL}}" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp">
+                        <svg class="icon" aria-hidden="true"><use href="#icon-whatsapp"/></svg>
+                        <span>Faça seu orçamento</span>
+                    </a>
                 </div>
             </div>
         </div>
@@ -259,147 +180,131 @@
     </div>
 </section>
 
- <section id="features-section" class="py-16 bg-[#f1e3d3] overflow-hidden">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+<section id="features-section" class="py-16 bg-mede-cream overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
+        <div class="features-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
 
-      <div class="feature-item opacity-0 translate-y-12 transition-all duration-700 ease-out flex flex-col items-center text-center group hover:-translate-y-2 delay-100">
-        <div class="mb-4 p-4 bg-white rounded-full text-[#85603f] shadow-sm flex items-center justify-center transform transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 24 24" fill="currentColor">
-               <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-            </svg>
-        </div>
-        <h3 class="text-xl font-bold text-[#85603f] mb-2">Exclusividade</h3>
-        <p class="text-[#85603f]/80 text-base leading-relaxed">
-        Somos especialistas em produzir mobiliários exclusivos e personalizados de alto padrão.
-        </p>
-      </div>
-      
-      <div class="feature-item opacity-0 translate-y-12 transition-all duration-700 ease-out flex flex-col items-center text-center group hover:-translate-y-2">
-        <div class="mb-4 p-4 bg-white rounded-full text-[#85603f] shadow-sm flex items-center justify-center transform transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M5 3H19C20.1046 3 21 3.89543 21 5V8C21 10.2974 19.4684 12.2339 17.3741 12.8187C16.2618 15.305 14.3263 17.37 12 18.5635V21H16V23H8V21H12V18.5635C9.67374 17.37 7.73821 15.305 6.62592 12.8187C4.53165 12.2339 3 10.2974 3 8V5C3 3.89543 3.89543 3 5 3ZM17 11.2202C18.1834 10.6968 19 9.45632 19 8V5H17V11.2202ZM7 11.2202V5H5V8C5 9.45632 5.81664 10.6968 7 11.2202ZM12 16.8301C14.3362 15.7572 15.8915 13.4838 16.4786 11H7.5214C8.1085 13.4838 9.6638 15.7572 12 16.8301Z"/>
-            </svg>
-        </div>
-        <h3 class="text-xl font-bold text-[#85603f] mb-2">+ De 30 Anos de História</h3>
-        <p class="text-[#85603f]/80 text-base leading-relaxed">
-        Tradição e excelência em cada projeto executado no Rio de Janeiro.
-        </p>
-      </div>
-
-      
-      <div class="feature-item opacity-0 translate-y-12 transition-all duration-700 ease-out flex flex-col items-center text-center group hover:-translate-y-2 delay-300">
-        <div class="mb-4 p-4 bg-white rounded-full text-[#85603f] shadow-sm flex items-center justify-center transform transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"/>
-            </svg>
-        </div>
-        <h3 class="text-xl font-bold text-[#85603f] mb-2">3 Anos de Garantia</h3>
-        <p class="text-[#85603f]/80 text-base leading-relaxed">
-        Segurança total na tecnologia de construção, com materiais de excelência e acabamento perfeito. 
-        </p>
-      </div>
-
-      <div class="feature-item opacity-0 translate-y-12 transition-all duration-700 ease-out flex flex-col items-center text-center group hover:-translate-y-2 delay-200">
-        <div class="mb-4 p-4 bg-white rounded-full text-[#85603f] shadow-sm flex items-center justify-center transform transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/>
-            </svg>
-        </div>
-        <h3 class="text-xl font-bold text-[#85603f] mb-2">Transparência</h3>
-        <p class="text-[#85603f]/80 text-base leading-relaxed">
-        Aqui você acompanha o andamento do seu projeto em todas as etapas de fabricação. Do projeto à entrega.
-        </p>
-      </div>
-
-
-    </div>
-  </div>
-</section>
-
-
-    <section class="py-20 bg-gray-50 relative overflow-hidden">
-        <div class="hero-noise opacity-5"></div>
-        
-        <div class="container mx-auto px-6 relative z-10">
-            <div class="text-center mb-10 reveal">
-                <p class="text-mede-gold uppercase tracking-[0.3em] text-[10px] font-bold mb-3">Depoimentos</p>
-                <h2 class="text-3xl md:text-4xl font-serif text-mede-brown">O que dizem nossos clientes</h2>
-                <div class="w-12 h-[2px] bg-mede-gold mx-auto mt-4"></div>
-            </div>
-
-            <div class="reveal delay-100">
-                <div id="shapo-widget-90902cd202d1d30c8685"></div>
-                <script id="shapo-embed-js" type="text/javascript" src="https://cdn.shapo.io/js/embed.js" defer></script>
-            </div>
-        </div>
-    </section>
-
-
-    <footer id="contato" class="bg-mede-brown text-white py-12 relative overflow-hidden">
-        <div class="hero-noise opacity-10"></div>
-        <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent pointer-events-none"></div>
-        
-        <div class="absolute -top-1/2 left-1/2 transform -translate-x-1/2 w-[800px] h-[800px] border border-white/5 rounded-full pointer-events-none animate-spin-slow"></div>
-        <div class="absolute -top-1/2 left-1/2 transform -translate-x-1/2 w-[600px] h-[600px] border border-white/5 rounded-full pointer-events-none animate-spin-reverse"></div>
-
-        <div class="container mx-auto px-6 relative z-10 text-center">
-            
-            <div class="reveal">
-                <p class="text-mede-gold uppercase tracking-[0.3em] text-[10px] font-bold mb-3">Atendimento Exclusivo</p>
-                <h2 class="text-3xl md:text-5xl font-serif mb-6 leading-tight">
-                    Vamos criar algo <br> <span class="italic gold-gradient-text">único juntos?</span>
-                </h2>
-                <p class="text-mede-cream/70 max-w-xl mx-auto mb-8 font-light text-sm md:text-base leading-relaxed">
-                    Entre em contato para agendar um atendimento ou acompanhe nosso dia a dia e inspirações nas redes sociais.
+            <div class="feature-item flex flex-col items-center text-center" style="--i: 0">
+                <div class="feature-icon mb-4 p-4 bg-white rounded-full text-mede-highlight shadow-xs flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-mede-highlight mb-2">Exclusividade</h3>
+                <p class="text-mede-brown text-base leading-relaxed">
+                    Somos especialistas em produzir mobiliários exclusivos e personalizados de alto padrão.
                 </p>
             </div>
 
-            <div class="flex flex-col md:flex-row justify-center gap-4 items-center mt-8">
-                
-                <a href="https://wa.me/5521990892815?text=Olá!%20Tudo%20bem?%20Gostaria%20de%20solicitar%20um%20orçamento%20para%20um%20projeto%20de%20marcenaria%20sob%20medida.%20Como%20posso%20enviar%20os%20detalhes%20e%20as%20especificações%20para%20que%20vocês%20façam%20uma%20avaliação?" target="_blank" class="group w-full md:w-auto min-w-[260px] relative bg-mede-gold text-mede-brown px-6 py-4 rounded-sm font-bold text-xs uppercase tracking-widest transition-all duration-500 hover:scale-105 hover:shadow-[0_0_30px_rgba(249,228,183,0.4)] flex items-center justify-center gap-4 overflow-hidden">
-    <div class="absolute inset-0 w-full h-full bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
-    <svg class="w-5 h-5 relative z-10 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-    <span class="relative z-10">Fale conosco</span>
-</a>
-                <a href="https://www.instagram.com/medemarcenaria?igsh=MW9lYnd2d280dmZicA==" target="_blank" class="group w-full md:w-auto min-w-[260px] relative bg-transparent border border-mede-gold/50 text-mede-gold px-6 py-4 rounded-sm font-bold text-xs uppercase tracking-widest transition-all duration-500 hover:text-mede-brown hover:border-mede-gold flex items-center justify-center gap-4 overflow-hidden">
-                    <div class="absolute inset-0 w-full h-full bg-mede-gold translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
-                    <i data-lucide="instagram" class="w-5 h-5 transition-transform group-hover:rotate-12 relative z-10"></i>
-                    <span class="relative z-10">Siga no Instagram</span>
-                </a>
-
+            <div class="feature-item flex flex-col items-center text-center" style="--i: 1">
+                <div class="feature-icon mb-4 p-4 bg-white rounded-full text-mede-highlight shadow-xs flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path d="M5 3H19C20.1046 3 21 3.89543 21 5V8C21 10.2974 19.4684 12.2339 17.3741 12.8187C16.2618 15.305 14.3263 17.37 12 18.5635V21H16V23H8V21H12V18.5635C9.67374 17.37 7.73821 15.305 6.62592 12.8187C4.53165 12.2339 3 10.2974 3 8V5C3 3.89543 3.89543 3 5 3ZM17 11.2202C18.1834 10.6968 19 9.45632 19 8V5H17V11.2202ZM7 11.2202V5H5V8C5 9.45632 5.81664 10.6968 7 11.2202ZM12 16.8301C14.3362 15.7572 15.8915 13.4838 16.4786 11H7.5214C8.1085 13.4838 9.6638 15.7572 12 16.8301Z"/>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-mede-highlight mb-2">+ De 30 Anos de História</h3>
+                <p class="text-mede-brown text-base leading-relaxed">
+                    Tradição e excelência em cada projeto executado no Rio de Janeiro.
+                </p>
             </div>
 
-            <div class="border-t border-white/5 mt-12 pt-6 flex flex-col gap-6 text-[10px] text-white/30 uppercase tracking-[0.2em] font-medium">
-                <div class="flex flex-col md:flex-row justify-between items-center w-full gap-4 md:gap-0">
-                    <div class="flex flex-col md:flex-row gap-2 md:gap-6 items-center">
-                        <p>&copy; 2026 MEDE Marcenaria. Todos os direitos reservados.</p>
-                        <span class="opacity-50">CNPJ: 16.813.885/0001-88</span>
-                    </div>
-                    <span class="opacity-50">Rio de Janeiro, Brasil</span>
+            <div class="feature-item flex flex-col items-center text-center" style="--i: 2">
+                <div class="feature-icon mb-4 p-4 bg-white rounded-full text-mede-highlight shadow-xs flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"/>
+                    </svg>
                 </div>
+                <h3 class="text-xl font-bold text-mede-highlight mb-2">3 Anos de Garantia</h3>
+                <p class="text-mede-brown text-base leading-relaxed">
+                    Segurança total na tecnologia de construção, com materiais de excelência e acabamento perfeito.
+                </p>
+            </div>
 
-                <div class="w-full text-center border-t border-white/5 pt-4">
-                    <span class="text-mede-gold/60 hover:text-mede-gold transition-colors cursor-default tracking-widest text-[9px]">
-                        Desenvolvido por Caíque Alonso
-                    </span>
+            <div class="feature-item flex flex-col items-center text-center" style="--i: 3">
+                <div class="feature-icon mb-4 p-4 bg-white rounded-full text-mede-highlight shadow-xs flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/>
+                    </svg>
                 </div>
+                <h3 class="text-xl font-bold text-mede-highlight mb-2">Transparência</h3>
+                <p class="text-mede-brown text-base leading-relaxed">
+                    Aqui você acompanha o andamento do seu projeto em todas as etapas de fabricação. Do projeto à entrega.
+                </p>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section id="depoimentos" class="py-20 bg-gray-50 relative overflow-hidden">
+    <div class="hero-noise opacity-5"></div>
+
+    <div class="container mx-auto px-6 relative z-10">
+        <div class="text-center mb-10 reveal">
+            <p class="text-mede-highlight uppercase tracking-[0.3em] text-[10px] font-bold mb-3">Depoimentos</p>
+            <h2 class="text-3xl md:text-4xl font-serif text-mede-brown">O que dizem nossos clientes</h2>
+            <div class="w-12 h-[2px] bg-mede-gold-deep mx-auto mt-4"></div>
+        </div>
+
+        <div class="shapo-slot reveal" style="--reveal-delay: 100ms">
+            <div id="shapo-widget-90902cd202d1d30c8685"></div>
+        </div>
+    </div>
+</section>
+</main>
+
+<footer id="contato" class="on-dark bg-mede-brown text-white py-12 relative overflow-hidden">
+    <div class="hero-noise opacity-10"></div>
+    <div class="absolute inset-0 bg-linear-to-t from-black/40 to-transparent pointer-events-none"></div>
+
+    <div class="absolute -top-1/2 left-1/2 -translate-x-1/2 w-[800px] h-[800px] border border-white/5 rounded-full pointer-events-none animate-spin-slow"></div>
+    <div class="absolute -top-1/2 left-1/2 -translate-x-1/2 w-[600px] h-[600px] border border-white/5 rounded-full pointer-events-none animate-spin-reverse"></div>
+
+    <div class="container mx-auto px-6 relative z-10 text-center">
+
+        <div class="reveal">
+            <p class="text-mede-gold uppercase tracking-[0.3em] text-[10px] font-bold mb-3">Atendimento Exclusivo</p>
+            <h2 class="text-3xl md:text-5xl font-serif mb-6 leading-tight">
+                Vamos criar algo <br> <span class="italic gold-gradient-text">único juntos?</span>
+            </h2>
+            <p class="text-mede-ink-soft max-w-xl mx-auto mb-8 font-light text-sm md:text-base leading-relaxed">
+                Entre em contato para agendar um atendimento ou acompanhe nosso dia a dia e inspirações nas redes sociais.
+            </p>
+        </div>
+
+        <div class="flex flex-col md:flex-row justify-center gap-4 items-center mt-8">
+            <a href="{{WHATSAPP_URL}}" target="_blank" rel="noopener noreferrer" class="btn btn-gold btn-footer">
+                <svg class="icon" aria-hidden="true"><use href="#icon-whatsapp"/></svg>
+                <span>Fale conosco</span>
+            </a>
+            <a href="{{INSTAGRAM_URL}}" target="_blank" rel="noopener noreferrer" class="btn btn-outline-gold btn-footer">
+                <svg class="icon" aria-hidden="true"><use href="#icon-instagram"/></svg>
+                <span>Siga no Instagram</span>
+            </a>
+        </div>
+
+        <div class="border-t border-white/10 mt-12 pt-6 flex flex-col gap-6 text-[10px] text-mede-ink-soft uppercase tracking-[0.2em] font-medium">
+            <div class="flex flex-col md:flex-row justify-between items-center w-full gap-4 md:gap-0">
+                <div class="flex flex-col md:flex-row gap-2 md:gap-6 items-center">
+                    <p>&copy; <span data-year>{{YEAR}}</span> MEDE Marcenaria. Todos os direitos reservados.</p>
+                    <span>CNPJ: 16.813.885/0001-88</span>
+                </div>
+                <span>Rio de Janeiro, Brasil</span>
+            </div>
+
+            <div class="w-full text-center border-t border-white/10 pt-4">
+                <span class="text-mede-gold-soft tracking-widest text-[9px]">
+                    Desenvolvido por Caíque Alonso
+                </span>
             </div>
         </div>
-    </footer>
-<a href="https://wa.me/5521990892815?text=Olá!%20Tudo%20bem?%20Gostaria%20de%20solicitar%20um%20orçamento%20para%20un%20projeto%20de%20marcenaria%20sob%20medida.%20Como%20posso%20enviar%20os%20detalhes%20e%20as%20especificações%20para%20que%20vocês%20façam%20uma%20avaliação?" 
-   target="_blank" 
-   class="fixed bottom-6 right-6 z-50 bg-[#25D366] text-white p-3 md:p-4 rounded-full shadow-[0_4px_14px_rgba(37,211,102,0.4)] transition-all duration-300 hover:scale-110 hover:shadow-[0_6px_20px_rgba(37,211,102,0.6)] flex items-center justify-center group" 
-   aria-label="Falar no WhatsApp">
-    
-    <div class="absolute inset-0 rounded-full bg-[#25D366] animate-ping opacity-20 group-hover:opacity-40"></div>
-    
-    <svg class="w-6 h-6 md:w-8 md:h-8 fill-current relative z-10" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
-    </svg>
-</a>
-    <script src="script.js"></script>
+    </div>
+
+    <a href="{{WHATSAPP_URL}}" target="_blank" rel="noopener noreferrer" class="whatsapp-float" aria-label="Falar no WhatsApp">
+        <svg class="icon relative" aria-hidden="true"><use href="#icon-whatsapp"/></svg>
+    </a>
+</footer>
+
 </body>
 </html>

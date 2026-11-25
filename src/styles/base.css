@@ -1,0 +1,41 @@
+@layer base {
+  html {
+    /* Atualizado via JS com a altura real da navbar */
+    scroll-padding-top: var(--nav-h, 120px);
+    scrollbar-color: var(--color-mede-gold-deep) var(--color-mede-cream);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html { scroll-behavior: smooth; }
+  }
+
+  body {
+    background-color: var(--color-mede-white);
+    color: var(--color-mede-brown);
+    overflow-x: clip;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-mede-highlight);
+    outline-offset: 3px;
+  }
+  .on-dark :focus-visible,
+  .on-dark:focus-visible {
+    outline-color: var(--color-mede-gold);
+  }
+
+  ::selection {
+    background-color: var(--color-mede-brown);
+    color: var(--color-mede-gold);
+  }
+
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: var(--color-mede-cream); }
+  ::-webkit-scrollbar-thumb { background: var(--color-mede-gold-deep); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--color-mede-highlight); }
+}
