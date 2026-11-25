@@ -13,7 +13,7 @@
 
 ## Pendências que dependem do cliente
 
-- **Domínio final**: preencher `SITE_URL` em `src/config.js`. Enquanto vazio, não são emitidos `canonical`, `og:url` nem a imagem de prévia 1200×630 (o `og:image` usa a foto original do hero, retrato).
+- **Domínio**: ✅ `SITE_URL = https://medemarcenaria.netlify.app` (canonical, `og:url` e prévia 1200×630 ativos). Se houver domínio próprio, trocar em `src/config.js`.
 - **Texto novo invisível adicionado**: `aria-label="Menu"` no botão do menu mobile (obrigatório para leitores de tela). Confirmar ou sugerir outro.
 - **Widget Shapo**: fonte (Nunito), estrelas amarelas e "Powered by Shapo" vêm do próprio widget; ajustar no painel do Shapo para combinar com a paleta, se o plano permitir.
 
@@ -144,7 +144,7 @@ Histórico: (1) ilustração 2D num rail lateral (commit 75dfdc8) → (2) abertu
 O three.js (~139 KB gzip) só é carregado quando o visitante começa a rolar ou interagir (ninguém vê o móvel antes do "Sobre"). Por isso ele não entra na medição do Lighthouse, que não rola a página. Para não esconder o custo, ele foi medido à parte numa sessão com rolagem real e CPU 4× mais lenta: o palco fica pronto ~3,5–4,5 s depois do primeiro scroll (entra com fade antes de o visitante sair do hero), a maior tarefa longa é de 367 ms no celular (uma única vez, ao processar o three.js) e o INP fica em 40 ms. A montagem é fatiada em etapas com pausas e os shaders compilam em paralelo.
 
 ### Pendências com o cliente
-1. **Domínio**: preencher `SITE_URL` em `src/config.js` (ativa canonical, `og:url` e a prévia 1200×630 para o WhatsApp).
+1. **Domínio próprio** (opcional): trocar `SITE_URL` em `src/config.js` e configurar o domínio no Netlify.
 2. **Português**: aprovar (ou não) as duas correções listadas acima.
 3. **Teste em iPhone real** (Safari iOS).
 4. **Widget Shapo**: ajustar fonte/cores no painel do Shapo, se o plano permitir.
@@ -158,6 +158,6 @@ O three.js (~139 KB gzip) só é carregado quando o visitante começa a rolar ou
 
 ## Próximos passos
 
-- Publicar `dist/` (Netlify, Vercel, Cloudflare Pages ou GitHub Pages) após preencher `SITE_URL`.
+- Publicado no Netlify (https://medemarcenaria.netlify.app): `netlify.toml` faz o build e publica `dist/` a cada push no `main`.
 - Rodar o Lighthouse de novo no domínio final (CDN e HTTPS reais).
 - Testar no iPhone e num Android intermediário reais.
