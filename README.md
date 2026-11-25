@@ -1,7 +1,7 @@
 # MEDE Marcenaria — site
 
-Site estático (HTML + Tailwind v4 + JS vanilla + GSAP + three.js), gerado com Vite.
-Do "Sobre" até o rodapé, um armário planejado em 3D vai sendo montado conforme o visitante rola a página.
+Site estático (HTML + Tailwind v4 + JS vanilla + GSAP), gerado com Vite.
+Do "Sobre" até o rodapé, um guarda-roupa vai sendo montado (a partir de 9 fotos das etapas) conforme o visitante rola a página.
 
 ## Requisitos
 
@@ -51,9 +51,9 @@ npx lighthouse http://localhost:4173/ --preset=desktop --view
 | Componentes (botões, navbar, reveals) | `src/styles/components.css` |
 | Seções (hero, sobre, diferenciais, depoimentos, rodapé) | `src/styles/sections.css` |
 | Conteúdo | `index.html` |
-| Móvel 3D (peças, materiais, câmera, luzes, etapas) | `src/js/scene/stage.js` |
-| Seção que conduz cada etapa, coluna/faixa e fallbacks | `src/js/scene/index.js` + `src/styles/scene.css` |
-| Textura de madeira | `src/js/scene/wood.js` |
+| Animação da montagem (etapas, movimentos das peças, enquadramento) | `src/js/scene/photo.js` |
+| Seção que conduz a montagem, coluna/faixa e fallbacks | `src/js/scene/index.js` + `src/styles/scene.css` |
+| Fotos das etapas | `assets/montagem/etapa-0N.png` → `python3 scripts/montagem.py` (alinha e recorta as peças; precisa de `pip install opencv-python-headless numpy`) → `node scripts/build-montagem.mjs` (gera `public/montagem/` e `src/montagem.json`) |
 
 ## Deploy
 

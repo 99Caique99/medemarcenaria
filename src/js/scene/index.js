@@ -3,7 +3,7 @@
 //   • mobile/tablet (faixa): fixo logo abaixo da navbar, o conteúdo rola embaixo
 // A montagem avança continuamente com a rolagem; o móvel fica pronto no rodapé.
 // O hero continua sendo a foto (aparece de imediato). Progressive enhancement:
-// sem JS/WebGL → nada muda; reduced-motion → desktop mostra o móvel pronto, mobile sem faixa.
+// sem JS → nada muda; reduced-motion → desktop mostra o móvel pronto, mobile sem faixa.
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -17,7 +17,7 @@ const REDUCE = '(prefers-reduced-motion: reduce)';
 
 const root = document.documentElement;
 
-// Ninguém vê o móvel antes do "Sobre": o three.js só é carregado quando o visitante
+// Ninguém vê o móvel antes do "Sobre": as fotos da montagem só são carregadas quando o visitante
 // começa a rolar/interagir (ou se a página já abriu no meio, por âncora ou restauração).
 function whenNeeded(fn) {
   const events = ['scroll', 'wheel', 'touchstart', 'keydown', 'pointerdown'];
@@ -43,7 +43,7 @@ async function mount({ createStage }, mode, reduce) {
   try {
     stage = await createStage(el, { mobile: mode === 'band' });
   } catch {
-    // WebGL indisponível de fato: libera o espaço reservado.
+    // Imagens indisponíveis: libera o espaço reservado.
     el.remove();
     root.classList.remove('stage-ok', `stage-${mode}-on`);
     ScrollTrigger.refresh();
@@ -110,10 +110,6 @@ async function mount({ createStage }, mode, reduce) {
   };
   const tone = mode === 'band' ? ScrollTrigger.create({ start: 0, end: 'max', onUpdate: retone, onRefresh: retone }) : null;
 
-  // Resolução adaptativa: se o aparelho não sustenta ~40 fps durante a montagem,
-  // baixa a densidade de pixels em degraus (nunca abaixo de 1×).
-  let slow = 0, ema = 16.7;
-
   function tick(_, deltaMs) {
     if (!el.classList.contains('is-on')) return; // fora de cena: não renderiza
     const dt = Math.min(deltaMs, 50) / 1000;
@@ -123,18 +119,12 @@ async function mount({ createStage }, mode, reduce) {
     if (Math.abs(x) < 1e-4 && Math.abs(state.vel) < 1e-3) { state.current = state.target; state.vel = 0; }
     state.current = Math.min(1, Math.max(0, state.current));
     if (Math.abs(state.current - last) < 1e-5) return;
-    const rendering = last >= 0;
     last = state.current;
     stage.setProgress(state.current);
-    if (rendering && deltaMs < 200) {
-      ema += (deltaMs - ema) * 0.1;
-      slow = ema > 25 ? slow + 1 : 0;
-      if (slow > 45 && stage.pixelRatio() > 1) { stage.setPixelRatio(Math.max(1, stage.pixelRatio() - 0.25)); slow = 0; ema = 16.7; }
-    }
   }
   gsap.ticker.add(tick);
 
-  const ro = new ResizeObserver(() => { stage.resize(); last = -1; });
+  const ro = new ResizeObserver(() => { stage.resize(); stage.setProgress(state.current); last = state.current; });
   ro.observe(el);
   ScrollTrigger.refresh();
 
@@ -151,7 +141,7 @@ async function mount({ createStage }, mode, reduce) {
 export function initStage() {
   if (!root.classList.contains('stage-ok')) return;
   let modPromise;
-  const load = () => (modPromise ??= import('./stage.js'));
+  const load = () => (modPromise ??= import('./photo.js'));
 
   // 'all' garante que o callback rode mesmo quando só uma condição muda.
   gsap.matchMedia().add({ all: '(min-width: 0px)', col: COL_MQ, band: BAND_MQ, reduce: REDUCE }, ({ conditions }) => {

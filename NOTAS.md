@@ -101,7 +101,16 @@ Como a responsividade foi resolvida:
 - Texto do "Sobre" alinhado à esquerda (sem justificar); negrito em 700.
 - Botão "Fale conosco" do rodapé agora usa o mesmo componente WhatsApp dos demais (componente único).
 
-## Fase 3 — Motion: o móvel 3D montado ao longo da página
+## Fase 3b — Montagem por fotos (versão atual)
+
+A pedido do cliente, a animação passou a ser feita a partir de 9 fotos das etapas (base → laterais → tampo → fundo → prateleiras → gavetas → portas abertas → fechadas → aberto com roupas e luz), em `assets/montagem/`. O 3D em three.js (abaixo) foi removido; está no histórico (commit 3041c03).
+
+- As fotos vieram com enquadramentos diferentes. `scripts/montagem.py` alinha todas pelo móvel (mesma largura, centro e linha do chão) num quadro 1200×1200, reconstrói a parede/chão que falta nas bordas, gera a sala vazia (etapa 0) e recorta as peças que entram em cada etapa.
+- Movimento (função pura do progresso, com a mesma mola criticamente amortecida): base, laterais e tampo descem de fora do quadro, desaceleram e assentam (base e tampo com balanço amortecido); fundo e portas abertas entram por dissolve; prateleiras e gavetas vêm da frente e são empurradas para dentro; as folhas das portas giram nas dobradiças para fechar e abrem de novo revelando o interior arrumado e iluminado. Aproximação lenta da câmera ao longo de toda a montagem.
+- Peso: AVIF 1200 px ≈ 136 KB para as 10 fotos + peças (WebP de reserva); 720 px em celulares de baixa densidade. Sem WebGL: só imagens com transform/opacity na GPU, então roda igual em qualquer celular. Fotos carregadas depois do primeiro scroll e decodificadas antes de aparecer.
+- Celular: faixa sob a navbar com o móvel inteiro na parte sólida; desktop: coluna à direita com bordas que se dissolvem no fundo da seção.
+
+## Fase 3 — Motion: o móvel 3D montado ao longo da página (substituído pela 3b)
 
 Histórico: (1) ilustração 2D num rail lateral (commit 75dfdc8) → (2) abertura 3D fixada no hero (99c4552) → (3) a pedido do cliente: o hero volta a ser a foto (aparece de imediato) e o móvel é montado em 3D do "Sobre" até o rodapé, ficando pronto na última dobra (85d6c17) → (4) **versão atual**, a pedido do cliente ("não tá fluido… mais realista… está aparecendo um desenho"): sem as linhas de projeto, sem a etapa de MDF cru, madeira realista desde a primeira peça, montagem contínua e rolagem com inércia no desktop.
 
