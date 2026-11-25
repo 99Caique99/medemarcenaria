@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { defineConfig } from 'vite';
 import tailwindcss from '@tailwindcss/vite';
 import * as site from './src/config.js';
@@ -81,6 +82,8 @@ function medeHtml() {
       handler: (html) =>
         html
           .replace('<!-- @seo -->', seo())
+          // <!-- @include src/partials/x.svg --> → conteúdo do arquivo (SVG inline)
+          .replace(/<!-- @include (\S+) -->/g, (_, file) => readFileSync(new URL(file, import.meta.url), 'utf8'))
           .replace(/<mede-img\s([^>]*)><\/mede-img>/g, (_, a) => picture(parseAttrs(a)))
           .replace(/\{\{(\w+)\}\}/g, (m, k) => vars[k] ?? m),
     },

@@ -22,6 +22,7 @@ Testes (com o `preview` rodando; usam o Google Chrome instalado):
 npm run test:text    # texto visível idêntico ao original (baseline/texto-original.json)
 npm run test:qa      # overflow horizontal 320→1920, erros de console, acessibilidade (axe)
 npm run test:shots -- screenshots/nome   # screenshots 375/768/1280/1920
+node tests/record-motion.mjs docs        # GIFs do motion (desktop e mobile)
 ```
 
 ## Onde mudar o quê
@@ -32,6 +33,9 @@ npm run test:shots -- screenshots/nome   # screenshots 375/768/1280/1920
 | Cores, fontes, espaçamentos, sombras, durações e easings (tokens) | `@theme` em `src/styles/main.css` |
 | Componentes (botões, navbar, reveals) | `src/styles/components.css` |
 | Conteúdo | `index.html` |
+| Desenho do móvel (SVG) | `src/partials/movel.svg` (+ gradientes em `movel-defs.svg`) |
+| Etapas da montagem | `src/js/motion/timeline.js` (animação) e `furniture.js` (seções/checkpoints) |
+| Quando o rail aparece | `src/styles/layout.css` + `RAIL_MQ` em `src/js/breakpoints.js` (manter iguais) |
 
 ## Deploy
 

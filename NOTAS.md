@@ -101,8 +101,32 @@ Como a responsividade foi resolvida:
 - Texto do "Sobre" alinhado à esquerda (sem justificar); negrito em 700.
 - Botão "Fale conosco" do rodapé agora usa o mesmo componente WhatsApp dos demais (componente único).
 
+## Fase 3 — Motion "o móvel que se monta"
+
+Móvel escolhido: armário de 3 módulos (porta | nicho com prateleiras e LED | porta).
+
+| Etapa | Seção | Animação |
+|---|---|---|
+| 01 Projeto | Hero | linhas-guia e cotas desenhadas (stroke-dashoffset); toca sozinha ao abrir |
+| 02 Estrutura | "Legado de Excelência" | rodapé, base, laterais e tampo sobem e assentam (back.out) |
+| 03 Interior | "Projetos que Contam Histórias" | divisórias descem; prateleiras deslizam uma a uma |
+| 04 Portas | "Vamos Realizar Seu Sonho?" | portas giram na dobradiça e fecham |
+| 05 Detalhes | Diferenciais | puxadores → dobradiças → parafusos (giram) → fita de LED acende |
+| 06 Acabamento | Depoimentos | madeira substitui o traço; reflexo de luz passa |
+| 07 Entrega | Rodapé | assenta no chão, sombra, brilho dourado; "respira" em loop |
+
+- **Desktop/paisagem (rail)**: cada etapa tem seu ScrollTrigger; a posição na montagem é a soma dos progressos (funciona com rolagem rápida, links de âncora e voltando).
+- **Mobile/tablet**: 5 checkpoints inline (pranchas) — cada um continua de onde o anterior parou — e barra de progresso de 2px sob a navbar.
+- **reduced-motion**: rail mostra o móvel pronto; checkpoints estáticos no estado de cada etapa. **Sem JS**: o SVG já é o móvel pronto.
+- Anima só `transform`, `opacity` e `stroke-dashoffset`. Portas: perspectiva simulada em 2D (scaleX + skewY a partir da dobradiça), porque transformações 3D em elementos SVG não são confiáveis no Safari/Firefox.
+- Desempenho medido (Chrome, CPU 4× mais lenta, rolagem contínua de 12 s): média 75 fps (limite do monitor), p95 13,4 ms, 0 quadros acima de 33 ms — em 375 px e 1440 px.
+- Os gradientes de madeira usam só tons da paleta (#5f5549, #85603f, #cba26b, #f9e4b7 e misturas).
+- **Atenção — números ilustrativos**: as cotas do desenho técnico mostram "1800" e "2400" (mm). São parte da ilustração pedida ("números de medida aparecendo"), não informação sobre a empresa. Trocar ou remover em `src/partials/movel.svg` se preferir.
+- Gravações: `docs/motion-desktop.gif` e `docs/motion-mobile.gif` (`node tests/record-motion.mjs docs`).
+
 ## Próximos passos
 
 - ~~Fase 2 — Redesign editorial seção por seção.~~ ✅
+- ~~Fase 3 — Motion do móvel.~~ ✅
 - Fase 3 — Motion do móvel (SVG + ScrollTrigger).
 - Fase 4 — Polimento, Lighthouse, Firefox/WebKit, gravação do motion.

@@ -1,0 +1,151 @@
+<!-- Armário planejado de 3 módulos (porta | nicho com prateleiras e LED | porta).
+     O markup é o ESTADO FINAL (móvel entregue): sem JS ou com reduced-motion ele
+     aparece pronto. O GSAP leva cada peça ao estado inicial e anima por etapas.
+     Cada peça tem uma camada "pc" (peça de projeto: papel + traço dourado) e uma
+     camada "wd" (madeira), revelada na etapa de acabamento. -->
+<svg class="movel" viewBox="0 0 400 600" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false">
+    <ellipse id="sombra" data-part="sombra" cx="200" cy="524" rx="160" ry="9" fill="url(#mv-shadow)"/>
+
+    <!-- 01 · Projeto: linhas-guia e cotas -->
+    <g id="guia" data-part="guia" style="opacity:0">
+        <path class="ghost" d="M66 104 H334 V518 H66 Z"/>
+        <path class="ghost" d="M80 114 V490"/>
+        <path class="ghost" d="M320 114 V490"/>
+        <path class="ghost" d="M160 114 V490"/>
+        <path class="ghost" d="M240 114 V490"/>
+        <path class="ghost" d="M80 490 H320"/>
+        <path class="ghost" d="M163 207 H237"/>
+        <path class="ghost" d="M163 302 H237"/>
+        <path class="ghost" d="M163 397 H237"/>
+    </g>
+    <g id="cotas" data-part="cotas" style="opacity:0">
+        <path class="cota" d="M66 80 H334"/>
+        <path class="cota" d="M66 73 V87 M334 73 V87"/>
+        <text class="cota-txt" x="200" y="71" text-anchor="middle">1800</text>
+        <path class="cota" d="M358 104 V518"/>
+        <path class="cota" d="M351 104 H365 M351 518 H365"/>
+        <text class="cota-txt" transform="translate(374 311) rotate(-90)" text-anchor="middle">2400</text>
+    </g>
+
+    <g id="movel" data-part="movel">
+        <!-- 02 · Estrutura -->
+        <g id="estrutura">
+            <g id="fundo" data-part="fundo">
+                <rect class="pc" x="80" y="114" width="240" height="376"/>
+                <rect class="wd" x="80" y="114" width="240" height="376" fill="url(#mv-wood-back)"/>
+            </g>
+            <g id="rodape" data-part="rodape">
+                <rect class="pc" x="78" y="500" width="244" height="16"/>
+                <rect class="wd" x="78" y="500" width="244" height="16" fill="url(#mv-wood-carcass)"/>
+            </g>
+            <g id="base" data-part="base">
+                <rect class="pc" x="70" y="490" width="260" height="10"/>
+                <rect class="wd" x="70" y="490" width="260" height="10" fill="url(#mv-wood-carcass)"/>
+            </g>
+            <g id="lateral-esq" data-part="lateral">
+                <rect class="pc" x="70" y="114" width="10" height="376"/>
+                <rect class="wd" x="70" y="114" width="10" height="376" fill="url(#mv-wood-carcass)"/>
+            </g>
+            <g id="lateral-dir" data-part="lateral">
+                <rect class="pc" x="320" y="114" width="10" height="376"/>
+                <rect class="wd" x="320" y="114" width="10" height="376" fill="url(#mv-wood-carcass)"/>
+            </g>
+            <g id="tampo" data-part="tampo">
+                <rect class="pc" x="66" y="104" width="268" height="10"/>
+                <rect class="wd" x="66" y="104" width="268" height="10" fill="url(#mv-wood-carcass)"/>
+            </g>
+        </g>
+
+        <!-- 03 · Interior -->
+        <g id="interior">
+            <g id="divisoria-1" data-part="divisoria">
+                <rect class="pc" x="157" y="114" width="6" height="376"/>
+                <rect class="wd" x="157" y="114" width="6" height="376" fill="url(#mv-wood-shelf)"/>
+            </g>
+            <g id="divisoria-2" data-part="divisoria">
+                <rect class="pc" x="237" y="114" width="6" height="376"/>
+                <rect class="wd" x="237" y="114" width="6" height="376" fill="url(#mv-wood-shelf)"/>
+            </g>
+            <g id="prateleira-1" data-part="prateleira-centro">
+                <rect class="pc" x="163" y="205" width="74" height="5"/>
+                <rect class="wd" x="163" y="205" width="74" height="5" fill="url(#mv-wood-shelf)"/>
+            </g>
+            <g id="prateleira-2" data-part="prateleira-centro">
+                <rect class="pc" x="163" y="300" width="74" height="5"/>
+                <rect class="wd" x="163" y="300" width="74" height="5" fill="url(#mv-wood-shelf)"/>
+            </g>
+            <g id="prateleira-3" data-part="prateleira-centro">
+                <rect class="pc" x="163" y="395" width="74" height="5"/>
+                <rect class="wd" x="163" y="395" width="74" height="5" fill="url(#mv-wood-shelf)"/>
+            </g>
+            <g id="prateleira-4" data-part="prateleira-esq">
+                <rect class="pc" x="80" y="250" width="77" height="5"/>
+                <rect class="wd" x="80" y="250" width="77" height="5" fill="url(#mv-wood-shelf)"/>
+            </g>
+            <g id="prateleira-5" data-part="prateleira-esq">
+                <rect class="pc" x="80" y="375" width="77" height="5"/>
+                <rect class="wd" x="80" y="375" width="77" height="5" fill="url(#mv-wood-shelf)"/>
+            </g>
+            <g id="prateleira-6" data-part="prateleira-dir">
+                <rect class="pc" x="243" y="250" width="77" height="5"/>
+                <rect class="wd" x="243" y="250" width="77" height="5" fill="url(#mv-wood-shelf)"/>
+            </g>
+            <g id="prateleira-7" data-part="prateleira-dir">
+                <rect class="pc" x="243" y="375" width="77" height="5"/>
+                <rect class="wd" x="243" y="375" width="77" height="5" fill="url(#mv-wood-shelf)"/>
+            </g>
+        </g>
+
+        <!-- 05 · Fita de LED do nicho (acende no 4º diferencial) -->
+        <g id="led" data-part="led">
+            <rect x="163" y="117" width="74" height="70" fill="url(#mv-led-glow)"/>
+            <rect x="166" y="114" width="68" height="3" rx="1.5" fill="#f9e4b7"/>
+        </g>
+
+        <!-- 04 · Portas (dobradiça na lateral externa) -->
+        <g id="portas">
+            <g id="porta-esq" data-part="porta-esq">
+                <rect class="pc" x="81" y="116" width="75" height="372"/>
+                <rect class="wd" x="81" y="116" width="75" height="372" fill="url(#mv-wood-door)"/>
+                <rect class="wd" x="81" y="116" width="75" height="372" fill="url(#mv-grain)"/>
+            </g>
+            <g id="porta-dir" data-part="porta-dir">
+                <rect class="pc" x="244" y="116" width="75" height="372"/>
+                <rect class="wd" x="244" y="116" width="75" height="372" fill="url(#mv-wood-door)"/>
+                <rect class="wd" x="244" y="116" width="75" height="372" fill="url(#mv-grain)"/>
+            </g>
+        </g>
+
+        <!-- 05 · Detalhes -->
+        <g id="detalhes">
+            <rect id="puxador-esq" data-part="puxador" x="145" y="270" width="3.5" height="64" rx="1.75" fill="url(#mv-gold)"/>
+            <rect id="puxador-dir" data-part="puxador" x="251.5" y="270" width="3.5" height="64" rx="1.75" fill="url(#mv-gold)"/>
+            <g id="dobradicas">
+                <rect data-part="dobradica" x="82" y="140" width="4" height="14" rx="1" fill="url(#mv-gold)"/>
+                <rect data-part="dobradica" x="82" y="450" width="4" height="14" rx="1" fill="url(#mv-gold)"/>
+                <rect data-part="dobradica" x="314" y="140" width="4" height="14" rx="1" fill="url(#mv-gold)"/>
+                <rect data-part="dobradica" x="314" y="450" width="4" height="14" rx="1" fill="url(#mv-gold)"/>
+            </g>
+            <g id="parafusos">
+                <g data-part="parafuso"><circle cx="75" cy="109" r="2.6" fill="url(#mv-gold)"/><path d="M73.4 109 H76.6" stroke="#5f5549" stroke-width="0.8"/></g>
+                <g data-part="parafuso"><circle cx="325" cy="109" r="2.6" fill="url(#mv-gold)"/><path d="M323.4 109 H326.6" stroke="#5f5549" stroke-width="0.8"/></g>
+                <g data-part="parafuso"><circle cx="75" cy="495" r="2.6" fill="url(#mv-gold)"/><path d="M73.4 495 H76.6" stroke="#5f5549" stroke-width="0.8"/></g>
+                <g data-part="parafuso"><circle cx="325" cy="495" r="2.6" fill="url(#mv-gold)"/><path d="M323.4 495 H326.6" stroke="#5f5549" stroke-width="0.8"/></g>
+            </g>
+        </g>
+
+        <!-- 06 · Reflexo de luz passando sobre a madeira -->
+        <g clip-path="url(#mv-clip-cabinet)">
+            <!-- Estado final: já passou (fora da área do móvel) -->
+            <g id="reflexo" data-part="reflexo" transform="translate(620 0)">
+                <rect x="-90" y="90" width="70" height="440" fill="url(#mv-sheen)" transform="skewX(-14)"/>
+            </g>
+        </g>
+
+        <!-- 07 · Brilho final nos puxadores -->
+        <g id="brilho">
+            <path data-part="brilho" d="M0 -8 L1.6 -1.6 L8 0 L1.6 1.6 L0 8 L-1.6 1.6 L-8 0 L-1.6 -1.6 Z" transform="translate(146.75 276)" fill="#f9e4b7"/>
+            <path data-part="brilho" d="M0 -6 L1.2 -1.2 L6 0 L1.2 1.2 L0 6 L-1.2 1.2 L-6 0 L-1.2 -1.2 Z" transform="translate(253.25 326)" fill="#f9e4b7"/>
+        </g>
+    </g>
+</svg>
