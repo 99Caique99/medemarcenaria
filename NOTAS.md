@@ -103,25 +103,26 @@ Como a responsividade foi resolvida:
 
 ## Fase 3 — Motion: o móvel 3D montado ao longo da página
 
-Histórico: (1) ilustração 2D num rail lateral (commit 75dfdc8) → (2) abertura 3D fixada no hero (99c4552) → (3) **versão atual**, a pedido do cliente: o hero volta a ser a foto (aparece de imediato) e o móvel é montado em 3D do "Sobre" até o rodapé, ficando pronto na última dobra.
+Histórico: (1) ilustração 2D num rail lateral (commit 75dfdc8) → (2) abertura 3D fixada no hero (99c4552) → (3) a pedido do cliente: o hero volta a ser a foto (aparece de imediato) e o móvel é montado em 3D do "Sobre" até o rodapé, ficando pronto na última dobra (85d6c17) → (4) **versão atual**, a pedido do cliente ("não tá fluido… mais realista… está aparecendo um desenho"): sem as linhas de projeto, sem a etapa de MDF cru, madeira realista desde a primeira peça, montagem contínua e rolagem com inércia no desktop.
 
 | Seção | Etapa | O que acontece |
 |---|---|---|
 | Hero | — | foto do hero, de imediato (sem 3D) |
-| Legado de Excelência | Projeto + Estrutura | linhas finas desenham o contorno; rodapé, base, laterais, fundo e tampo chegam em MDF cru e assentam |
+| Legado de Excelência | Estrutura | rodapé, base, laterais, fundo e tampo chegam já em madeira e assentam |
 | Projetos que Contam Histórias | Interior | divisórias e prateleiras são empurradas para dentro |
 | Vamos Realizar Seu Sonho? | Portas | dobradiças; portas penduradas abertas a 90° fecham com amortecimento |
 | Diferenciais | Detalhes | puxadores, parafusos (giram) e fita de LED |
-| Depoimentos | Acabamento | o MDF recebe a madeira (veios e poros em relevo, verniz nas portas); um brilho passa |
+| Depoimentos | Acabamento | um brilho passa pelo verniz das portas |
 | Rodapé | Entrega | móvel pronto, luz quente de contorno, ao lado de "Vamos criar algo único juntos?" |
 
 - **Desktop** (≥1280, ou ≥1024 em paisagem): palco fixo à direita (~42% da largura), canvas transparente sobre o fundo de cada seção, bordas em degradê. O conteúdo reserva o espaço desde o primeiro paint (classe `stage-ok` definida no `<head>`), sem salto de layout.
 - **Mobile/tablet em retrato**: faixa fixa sob a navbar (~34% da altura), fundo papel que escurece para o marrom no rodapé. Âncoras compensam a faixa (`scroll-padding-top`).
 - **Celular deitado** (altura < 500px): sem palco. **reduced-motion**: desktop mostra o móvel pronto e estático; mobile fica sem faixa. **Sem JS/WebGL**: layout original, nada reservado.
-- Tudo é função pura do progresso do scroll (soma ponderada do progresso de cada seção): funciona para frente, para trás, com rolagem rápida e com links de âncora.
-- Fade das peças com `alphaHash` (sem custo de ordenação de transparência). Só renderiza quando o progresso muda e o palco está visível.
-- three.js (~139 KB gzip) carregado depois do `load` + ocioso. Desempenho (CPU 4× mais lenta): 75 fps, 0 quadros > 33 ms.
-- Nenhuma imagem nova: madeira gerada em canvas com tons da paleta.
+- Tudo é função pura do progresso do scroll (um único gatilho contínuo, do "Sobre" até o rodapé; as etapas se sobrepõem, então sempre há uma peça em movimento; a câmera segue uma curva só, sem paradas): funciona para frente, para trás, com rolagem rápida e com links de âncora.
+- **Rolagem com inércia** (Lenis, ~4 KB) só no desktop com mouse/trackpad: a roda deixa de andar em "degraus". Toque e reduced-motion seguem com a rolagem nativa; âncoras usam a mesma rolagem descontando a navbar.
+- Fade das peças por transparência real, só durante a chegada (o `alphaHash` anterior deixava um pontilhado granulado). Texturas enviadas à GPU e shaders compilados durante a carga, com um quadro de aquecimento fora de vista. Só renderiza quando o progresso muda e o palco está visível.
+- three.js (~139 KB gzip) carregado depois do `load` + ocioso. Desempenho (rolagem com a roda do mouse, do topo ao fim, CPU 4× mais lenta): 75 fps (mediana 13,3 ms), 1 quadro > 33 ms na página inteira. No primeiro acesso (cache frio) há alguns quadros longos extras, a maioria da decodificação de fotos/vídeo (aparecem mesmo com o 3D desligado).
+- Nenhuma imagem nova: madeira gerada pixel a pixel em canvas (anéis com espaçamento irregular, catedral, fibras, poros, manchas no sentido do veio; veio vertical nas peças em pé; oclusão nas bordas do fundo).
 - Gravações: `docs/motion-desktop.gif` e `docs/motion-mobile.gif` (`node tests/record-motion.mjs docs`).
 
 ## Fase 4 — QA final (critérios de aceite)
