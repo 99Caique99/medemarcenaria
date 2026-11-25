@@ -1,0 +1,28 @@
+{
+  "name": "mede-marcenaria",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "images": "node scripts/build-images.mjs",
+    "build": "vite build",
+    "preview": "vite preview --port 4173 --strictPort",
+    "test:text": "node tests/text-diff.mjs",
+    "test:shots": "node tests/screenshots.mjs",
+    "test:qa": "node tests/qa.mjs"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.14.0",
+    "@fontsource-variable/montserrat": "5.3.0",
+    "@fontsource-variable/playfair-display": "5.3.0",
+    "@tailwindcss/vite": "4.3.5",
+    "playwright": "1.65.0",
+    "sharp": "0.35.5",
+    "tailwindcss": "4.3.5",
+    "vite": "8.3.8"
+  },
+  "dependencies": {
+    "gsap": "3.15.1"
+  }
+}
