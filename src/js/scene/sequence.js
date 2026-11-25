@@ -51,7 +51,7 @@ export async function createStage(container, { mobile }) {
   const firstBatch = Promise.all(order.splice(0, Math.ceil(N / 8) + 1).map(load));
   firstBatch.then(rest);
 
-  // ---------- enquadramento (cover, centrado no móvel) ----------
+  // ---------- enquadramento (contain, centrado no móvel) ----------
   let W = 1, H = 1, dpr = 1;
   function resize() {
     dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -74,12 +74,13 @@ export async function createStage(container, { mobile }) {
   function paint(i, alpha) {
     const img = imgs[i].img;
     const fw = canvas.width / img.naturalWidth, fh = canvas.height / img.naturalHeight;
-    // celular: cobre a faixa. Desktop (coluna em pé): cabe na largura, para as portas
-    // abertas não serem cortadas; as bordas se dissolvem no fundo da seção (CSS).
-    const s = mobile ? Math.max(fw, fh * 0.86) : Math.max(fw * 1.04, fh * 0.8);
+    // Quadros com fundo transparente (só o móvel e a sombra): o móvel inteiro cabe no
+    // palco, portas abertas incluídas, e pousa direto sobre a cor da seção. Pode cortar
+    // só a margem vazia do quadro (o móvel ocupa ~92% da largura e ~82% da altura).
+    const s = Math.min(fw / 0.92, fh / 0.82);
     const w = img.naturalWidth * s, h = img.naturalHeight * s;
     const x = (canvas.width - w) / 2;
-    const y = h > canvas.height ? clamp((canvas.height - h) * (mobile ? 0.62 : 0.5), canvas.height - h, 0) : (canvas.height - h) / 2;
+    const y = canvas.height / 2 - h * (mobile ? 0.5 : 0.48);
     ctx.globalAlpha = alpha;
     ctx.drawImage(img, x, y, w, h);
   }

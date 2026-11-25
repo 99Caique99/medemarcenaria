@@ -37,12 +37,12 @@
   /* Sequência renderizada (src/js/scene/sequence.js) */
   .montagem__canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
   .stage3d--col .montagem__canvas {
-    -webkit-mask-image: linear-gradient(to bottom, transparent 8%, #000 18%, #000 82%, transparent 92%);
-    mask-image: linear-gradient(to bottom, transparent 8%, #000 18%, #000 82%, transparent 92%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 5%, #000 95%, transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0, #000 5%, #000 95%, transparent 100%);
   }
   .stage3d--band .montagem__canvas {
-    -webkit-mask-image: linear-gradient(to bottom, #000 80%, transparent 92%);
-    mask-image: linear-gradient(to bottom, #000 80%, transparent 92%);
+    -webkit-mask-image: linear-gradient(to bottom, #000 88%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 88%, transparent 100%);
   }
 
   .stage3d--col {

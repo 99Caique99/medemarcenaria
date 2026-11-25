@@ -25,7 +25,7 @@ class Noise:
         return self(x, y) * 0.57 + self(x * 2.03, y * 2.03) * 0.29 + self(x * 4.1, y * 4.1) * 0.14
 
 
-def oak(size=2048, seed=7, rings=110, arch=0.22):
+def oak(size=2048, seed=7, rings=110, arch=0.22, palette=None):
     nz = Noise(seed)
     rng = np.random.default_rng(seed + 1)
     ox, oy = rng.random() * 50, rng.random() * 50
@@ -44,6 +44,8 @@ def oak(size=2048, seed=7, rings=110, arch=0.22):
     kL = np.clip(0.18 + streak * 0.9 - late * 0.5, 0, None)[..., None]
     kD = np.clip(late * 0.42 + np.maximum(0, -streak) * 0.35 + fiber * 0.12 + 0.03, 0, 1)[..., None]
     B = np.array([0.70, 0.52, 0.34]); D = np.array([0.46, 0.31, 0.18]); L = np.array([0.80, 0.64, 0.45])
+    if palette:  # (base, escuro, claro) em sRGB
+        B, D, L = (np.array(c) for c in palette)
     lit = B + (L - B) * kL
     col = lit + (D - lit) * kD
     # poros: traços curtos e escuros ao longo do veio

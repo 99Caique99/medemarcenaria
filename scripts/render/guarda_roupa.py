@@ -21,6 +21,8 @@ ap.add_argument('--samples', type=int, default=64)
 ap.add_argument('--only', default='')
 ap.add_argument('--threads', type=int, default=0)
 ap.add_argument('--closeup', action='store_true')
+# padrão: estúdio (fundo transparente, só o móvel e sua sombra, para pousar sobre o site)
+ap.add_argument('--room', action='store_true', help='cena antiga, com parede e chão')
 args = ap.parse_args()
 os.makedirs(args.out, exist_ok=True)
 
@@ -45,8 +47,12 @@ sc.render.resolution_x = sc.render.resolution_y = args.size
 sc.render.resolution_percentage = 100
 sc.render.image_settings.file_format = 'PNG'
 sc.render.image_settings.color_depth = '8'
+STUDIO = not args.room
+if STUDIO:
+    sc.render.film_transparent = True
+    sc.render.image_settings.color_mode = 'RGBA'
 sc.view_settings.view_transform = 'AgX'
-sc.view_settings.look = 'AgX - High Contrast'
+sc.view_settings.look = 'AgX - Medium High Contrast'
 sc.view_settings.exposure = -0.35
 coll = sc.collection
 
@@ -129,10 +135,10 @@ from madeira import oak as oak_texture  # noqa: E402
 TILE = 2.4  # a imagem da lâmina cobre 2,4 × 2,4 m
 
 
-def wood_images(seed, **kw):
+def wood_images(seed, tag='', **kw):
     """Gera (uma vez) a lâmina e o relevo, e carrega no Blender."""
-    cp = os.path.join(args.out, f'_carvalho-{seed}.png')
-    hp = os.path.join(args.out, f'_carvalho-{seed}-relevo.png')
+    cp = os.path.join(args.out, f'_carvalho-{seed}{tag}.png')
+    hp = os.path.join(args.out, f'_carvalho-{seed}{tag}-relevo.png')
     if not os.path.exists(cp):
         from PIL import Image
         import numpy as np
@@ -147,7 +153,11 @@ def wood_images(seed, **kw):
 
 def oak(name, seed, rough=0.42, coat=0.25, **kw):
     m, nt, bsdf = nodes_mat(name)
-    ci, hi = wood_images(seed, **kw)
+    if STUDIO:  # acabamento acetinado, não verniz brilhante
+        rough, coat = rough + 0.14, coat * 0.3
+    if STUDIO:  # nogueira/freijó escuro, como nos projetos da MEDE
+        kw.setdefault('palette', ((0.40, 0.30, 0.22), (0.22, 0.155, 0.105), (0.52, 0.40, 0.29)))
+    ci, hi = wood_images(seed, tag='-nogueira2' if kw.get('palette') else '', **kw)
     uv = nt.nodes.new('ShaderNodeUVMap')
     tc = nt.nodes.new('ShaderNodeTexImage')
     tc.image = ci
@@ -175,6 +185,10 @@ M['chrome'], _, b = nodes_mat('cromado')
 b.inputs['Base Color'].default_value = (0.86, 0.86, 0.88, 1)
 b.inputs['Metallic'].default_value = 1.0
 b.inputs['Roughness'].default_value = 0.16
+M['brass'], _, b = nodes_mat('latao')
+b.inputs['Base Color'].default_value = (0.80, 0.60, 0.34, 1)
+b.inputs['Metallic'].default_value = 1.0
+b.inputs['Roughness'].default_value = 0.3
 M['black'], _, b = nodes_mat('pe')
 b.inputs['Base Color'].default_value = (0.03, 0.03, 0.03, 1)
 b.inputs['Roughness'].default_value = 0.5
@@ -212,9 +226,11 @@ b.inputs['Base Color'].default_value = (0.2, 0.2, 0.2, 1)
 
 # ---------------------------------------------------------------- sala
 WALL_Y = 1.05
-box('chao', (14, 14, 0.02), (0, 3, -0.01), M['floor'], bevel=0)
-box('parede', (14, 0.1, 6), (0, WALL_Y + 0.05, 3), M['wall'], bevel=0)
-box('rodape-parede', (14, 0.012, 0.07), (0, WALL_Y - 0.006, 0.035), M['wall'], bevel=0.002)
+chao = box('chao', (14, 14, 0.02), (0, 3, -0.01), M['floor'], bevel=0)
+if STUDIO:
+    chao.is_shadow_catcher = True  # só a sombra do móvel aparece; o resto fica transparente
+parede = box('parede', (14, 0.1, 6), (0, WALL_Y + 0.05, 3), M['wall'], bevel=0)
+rodape = box('rodape-parede', (14, 0.012, 0.07), (0, WALL_Y - 0.006, 0.035), M['wall'], bevel=0.002)
 
 # Janela fora de quadro, à esquerda: a luz do sol entra por ela e desenha a grade na parede
 WX = -3.2
@@ -230,6 +246,9 @@ for z in (1.45, 2.15):
 for o in win_parts:
     o.visible_camera = False
     o.visible_glossy = False
+if STUDIO:
+    for o in [parede, rodape] + win_parts:
+        o.hide_render = True
 
 # ---------------------------------------------------------------- luz
 world = bpy.data.worlds.new('mundo')
@@ -241,7 +260,7 @@ bg.inputs['Strength'].default_value = 0.55
 
 sun_d = bpy.data.lights.new('sol', 'SUN')
 sun_d.energy = 5.0
-sun_d.angle = math.radians(1.6)
+sun_d.angle = math.radians(18 if STUDIO else 1.6)  # estúdio: sombra mais macia
 sun_d.color = (1.0, 0.86, 0.68)
 sun = bpy.data.objects.new('sol', sun_d)
 coll.objects.link(sun)
@@ -252,6 +271,7 @@ fill_d = bpy.data.lights.new('rebatedor', 'AREA')
 fill_d.energy = 160
 fill_d.size = 4
 fill_d.color = (1.0, 0.95, 0.9)
+fill_d.use_shadow = not STUDIO  # sem sombra do rebatedor: senão mancha o fundo transparente
 fill = bpy.data.objects.new('rebatedor', fill_d)
 coll.objects.link(fill)
 fill.location = (2.5, -4.5, 2.6)
@@ -317,7 +337,7 @@ for k, z in enumerate((0.03, 0.26)):
     box('frente', (gw, T, gh), (0, 0, gh / 2), M['oakD'], parent=g)
     box('caixa-l', (0.012, D - 0.08, gh - 0.04), (-gw / 2 + 0.03, D / 2 - 0.04, gh / 2 - 0.01), M['oakH'], parent=g)
     box('caixa-r', (0.012, D - 0.08, gh - 0.04), (gw / 2 - 0.03, D / 2 - 0.04, gh / 2 - 0.01), M['oakH'], parent=g)
-    p = cyl('puxador', 0.007, 0.14, (0, -0.03, gh * 0.62), M['chrome'], rot=(0, math.pi / 2, 0))
+    p = cyl('puxador', 0.007, 0.14, (0, -0.03, gh * 0.62), M['brass'] if STUDIO else M['chrome'], rot=(0, math.pi / 2, 0))
     p.parent = g
 # fita de LED sob o tampo, no vão direito
 add('led-fita', box('led-fita', (RX1 - RX0 - 0.06, 0.012, 0.004), ((RX0 + RX1) / 2, -D / 2 + 0.06, ZTOP - 0.004), M['led'], bevel=0))
@@ -329,7 +349,7 @@ led_d.size_y = 0.02
 # portas: lisas (18 mm), com frestas de 2 mm, dobradiças de caneco por dentro e
 # puxador longo de aço escovado perto do encontro das portas
 M['steel'], _, b_ = nodes_mat('aco-escovado')
-b_.inputs['Base Color'].default_value = (0.74, 0.74, 0.75, 1)
+b_.inputs['Base Color'].default_value = (0.80, 0.60, 0.34, 1) if STUDIO else (0.74, 0.74, 0.75, 1)  # latão escovado (dourado da marca)
 b_.inputs['Metallic'].default_value = 1.0
 b_.inputs['Roughness'].default_value = 0.28
 b_.inputs['Anisotropic'].default_value = 0.6
