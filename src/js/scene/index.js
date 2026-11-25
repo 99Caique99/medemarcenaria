@@ -141,7 +141,7 @@ async function mount({ createStage }, mode, reduce) {
 export function initStage() {
   if (!root.classList.contains('stage-ok')) return;
   let modPromise;
-  const load = () => (modPromise ??= import('./photo.js'));
+  const load = () => (modPromise ??= import('./sequence.js'));
 
   // 'all' garante que o callback rode mesmo quando só uma condição muda.
   gsap.matchMedia().add({ all: '(min-width: 0px)', col: COL_MQ, band: BAND_MQ, reduce: REDUCE }, ({ conditions }) => {

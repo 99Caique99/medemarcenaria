@@ -34,32 +34,15 @@
     transition: opacity 600ms var(--ease-luxe), visibility 0s linear 600ms, background-color 500ms ease;
   }
   .stage3d.is-on { opacity: 1; visibility: visible; transition-delay: 0s; }
-  /* Montagem por fotos (src/js/scene/photo.js): quadro de 1200×1200 escalado pelo JS */
-  .montagem { position: absolute; inset: 0; overflow: hidden; }
-  .montagem__scene {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 1200px;
-    height: 1200px;
-    transform-origin: 0 0;
-    /* bordas da foto se dissolvem no fundo da seção */
-    -webkit-mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent), linear-gradient(to bottom, transparent, #000 7%, #000 93%, transparent);
-    -webkit-mask-composite: source-in;
-    mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent), linear-gradient(to bottom, transparent, #000 7%, #000 93%, transparent);
-    mask-composite: intersect;
+  /* Sequência renderizada (src/js/scene/sequence.js) */
+  .montagem__canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .stage3d--col .montagem__canvas {
+    -webkit-mask-image: linear-gradient(to bottom, transparent 8%, #000 18%, #000 82%, transparent 92%);
+    mask-image: linear-gradient(to bottom, transparent 8%, #000 18%, #000 82%, transparent 92%);
   }
-  .montagem__frame, .montagem__piece { position: absolute; display: block; }
-  .montagem__frame { inset: 0; }
-  .montagem__piece { will-change: transform, opacity; backface-visibility: hidden; }
-  .montagem img { display: block; width: 100%; height: 100%; user-select: none; }
-  .stage3d--col .montagem {
-    -webkit-mask-image: linear-gradient(to bottom, transparent, #000 6%, #000 90%, transparent);
-    mask-image: linear-gradient(to bottom, transparent, #000 6%, #000 90%, transparent);
-  }
-  .stage3d--band .montagem {
-    -webkit-mask-image: linear-gradient(to bottom, #000 80%, transparent 90%);
-    mask-image: linear-gradient(to bottom, #000 80%, transparent 90%);
+  .stage3d--band .montagem__canvas {
+    -webkit-mask-image: linear-gradient(to bottom, #000 80%, transparent 92%);
+    mask-image: linear-gradient(to bottom, #000 80%, transparent 92%);
   }
 
   .stage3d--col {

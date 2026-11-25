@@ -101,16 +101,16 @@ Como a responsividade foi resolvida:
 - Texto do "Sobre" alinhado à esquerda (sem justificar); negrito em 700.
 - Botão "Fale conosco" do rodapé agora usa o mesmo componente WhatsApp dos demais (componente único).
 
-## Fase 3b — Montagem por fotos (versão atual)
+## Fase 3c — Montagem renderizada, estilo página de produto (versão atual)
 
-A pedido do cliente, a animação passou a ser feita a partir de 9 fotos das etapas (base → laterais → tampo → fundo → prateleiras → gavetas → portas abertas → fechadas → aberto com roupas e luz), em `assets/montagem/`. O 3D em three.js (abaixo) foi removido; está no histórico (commit 3041c03).
+Histórico desta fase: (a) 3D em tempo real melhorado (commit 3041c03); (b) montagem com as 9 fotos de referência enviadas pelo cliente (commit 406193e), reprovada ("amador"); (c) **atual**: o guarda-roupa foi modelado em 3D e a montagem é renderizada quadro a quadro no Blender (Cycles) e tocada num `<canvas>` conforme a rolagem, como nas páginas de produto da Apple. As fotos de referência guiaram o modelo (carvalho claro, pés metálicos, cabideiro e 2 gavetas à esquerda, prateleiras à direita, LED no topo, 2 portas com puxador longo, sala com luz de janela).
 
-- As fotos vieram com enquadramentos diferentes. `scripts/montagem.py` alinha todas pelo móvel (mesma largura, centro e linha do chão) num quadro 1200×1200, reconstrói a parede/chão que falta nas bordas, gera a sala vazia (etapa 0) e recorta as peças que entram em cada etapa.
-- Movimento (função pura do progresso, com a mesma mola criticamente amortecida): base, laterais e tampo descem de fora do quadro, desaceleram e assentam (base e tampo com balanço amortecido); fundo e portas abertas entram por dissolve; prateleiras e gavetas vêm da frente e são empurradas para dentro; as folhas das portas giram nas dobradiças para fechar e abrem de novo revelando o interior arrumado e iluminado. Aproximação lenta da câmera ao longo de toda a montagem.
-- Peso: AVIF 1200 px ≈ 136 KB para as 10 fotos + peças (WebP de reserva); 720 px em celulares de baixa densidade. Sem WebGL: só imagens com transform/opacity na GPU, então roda igual em qualquer celular. Fotos carregadas depois do primeiro scroll e decodificadas antes de aparecer.
-- Celular: faixa sob a navbar com o móvel inteiro na parte sólida; desktop: coluna à direita com bordas que se dissolvem no fundo da seção.
+- Cena: `scripts/render/guarda_roupa.py` (medidas, peças, materiais, luz, câmera e o tempo de cada etapa). Lâmina de carvalho gerada em `scripts/render/madeira.py`, mapeada em metros com o veio no sentido do comprimento de cada peça. Luz: sol entrando por uma janela fora de quadro (desenha a grade na parede) + rebatedor + céu.
+- Etapas: base desce e assenta → laterais → tampo → fundo corre no canal → divisória e prateleiras chegam pelo lado e são empurradas para dentro → prateleira das gavetas, cabideiro e gavetas → portas chegam pelo lado já abertas, encaixam nas dobradiças e fecham com amortecimento → abrem com o LED acendendo. Câmera num arco lento até ficar de frente.
+- Site: `src/js/scene/sequence.js`. 144 quadros WebP (960 px no desktop, 640 px no celular), carregados depois do primeiro scroll em ordem grossa→fina (1 a cada 8 primeiro, então a montagem inteira já funciona; os demais chegam por perto de onde o visitante está). Entre dois quadros há cruzamento suave. Mola criticamente amortecida no progresso (sem tranco).
+- Desktop: coluna fixa à direita, imagem cabe na largura (portas abertas não cortam), bordas dissolvidas no fundo da seção. Celular: faixa sob a navbar (44svh, até 420 px) cobrindo a largura.
 
-## Fase 3 — Motion: o móvel 3D montado ao longo da página (substituído pela 3b)
+## Fase 3 — Motion: o móvel 3D montado ao longo da página (substituído pela 3c)
 
 Histórico: (1) ilustração 2D num rail lateral (commit 75dfdc8) → (2) abertura 3D fixada no hero (99c4552) → (3) a pedido do cliente: o hero volta a ser a foto (aparece de imediato) e o móvel é montado em 3D do "Sobre" até o rodapé, ficando pronto na última dobra (85d6c17) → (4) **versão atual**, a pedido do cliente ("não tá fluido… mais realista… está aparecendo um desenho"): sem as linhas de projeto, sem a etapa de MDF cru, madeira realista desde a primeira peça, montagem contínua e rolagem com inércia no desktop.
 
