@@ -1,5 +1,5 @@
 // Rolagem com inércia (Lenis) no desktop com mouse/trackpad: a roda deixa de
-// andar em "degraus" e o móvel 3D, o parallax e os reveals acompanham sem tranco.
+// andar em "degraus" e a trena e as revelações acompanham sem tranco.
 // Toque e reduced-motion continuam com a rolagem nativa.
 import Lenis from 'lenis';
 import 'lenis/dist/lenis.css';
@@ -16,7 +16,7 @@ export function initSmoothScroll() {
   gsap.ticker.add((time) => lenis.raf(time * 1000));
   gsap.ticker.lagSmoothing(0);
 
-  // Âncoras internas: mesma rolagem suave, descontando a navbar (e a faixa do 3D).
+  // Âncoras internas: mesma rolagem suave, descontando a navbar.
   document.addEventListener('click', (e) => {
     const a = e.target.closest('a[href^="#"]');
     const id = a?.getAttribute('href');

@@ -4,7 +4,7 @@ import { chromium, firefox, webkit } from 'playwright';
 
 export const engine = process.env.BROWSER ?? 'chrome';
 export const launch = () =>
-  engine === 'firefox' ? firefox.launch() : engine === 'webkit' ? webkit.launch() : chromium.launch({ channel: 'chrome' });
+  engine === 'firefox' ? firefox.launch() : engine === 'webkit' ? webkit.launch() : chromium.launch(process.env.CHROME_PATH ? { executablePath: process.env.CHROME_PATH } : { channel: 'chrome' });
 
 // Texto "de copy" da página: textContent normalizado (independe de CSS como
 // text-transform), sem scripts, estilos, SVGs e sem o conteúdo do widget Shapo

@@ -1,42 +1,34 @@
 @layer base {
   html {
-    /* Atualizado via JS com a altura real da navbar */
-    scroll-padding-top: var(--nav-h, 120px);
-    scrollbar-color: var(--color-mede-gold-deep) var(--color-mede-cream);
+    scroll-padding-top: calc(var(--nav-h) + 1rem);
+    scrollbar-color: var(--color-latao) var(--color-pedra);
+    -webkit-text-size-adjust: 100%;
   }
-
   @media (prefers-reduced-motion: no-preference) {
     html { scroll-behavior: smooth; }
-    html.lenis { scroll-behavior: auto; } /* a inércia já vem do Lenis (src/js/smooth.js) */
+    html.lenis { scroll-behavior: auto; }
   }
 
   body {
-    background-color: var(--color-mede-white);
-    color: var(--color-mede-brown);
+    background: var(--color-pedra);
+    color: var(--color-nogueira);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: 1.6;
     overflow-x: clip;
+    -webkit-font-smoothing: antialiased;
+    padding-left: var(--tape-w);
   }
 
-  button:not(:disabled),
-  [role="button"]:not(:disabled) {
-    cursor: pointer;
-  }
+  img, video { display: block; max-width: 100%; }
+
+  button:not(:disabled) { cursor: pointer; }
 
   :focus-visible {
-    outline: 2px solid var(--color-mede-highlight);
+    outline: 2px solid var(--color-latao-ink);
     outline-offset: 3px;
   }
-  .on-dark :focus-visible,
-  .on-dark:focus-visible {
-    outline-color: var(--color-mede-gold);
-  }
+  .on-dark :focus-visible { outline-color: var(--color-latao-claro); }
 
-  ::selection {
-    background-color: var(--color-mede-brown);
-    color: var(--color-mede-gold);
-  }
-
-  ::-webkit-scrollbar { width: 8px; }
-  ::-webkit-scrollbar-track { background: var(--color-mede-cream); }
-  ::-webkit-scrollbar-thumb { background: var(--color-mede-gold-deep); border-radius: 4px; }
-  ::-webkit-scrollbar-thumb:hover { background: var(--color-mede-highlight); }
+  ::selection { background: var(--color-nogueira); color: var(--color-latao-claro); }
 }

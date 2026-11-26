@@ -1,11 +1,12 @@
 # MEDE Marcenaria — site
 
-Site estático (HTML + Tailwind v4 + JS vanilla + GSAP + three.js), gerado com Vite.
-Do "Sobre" até o rodapé, um armário planejado em 3D vai sendo montado conforme o visitante rola a página.
+Site estático (HTML + Tailwind v4 + JS vanilla + GSAP + Lenis), gerado com Vite.
+Conceito visual: MEDE = medir. Uma trena (régua em centímetros) acompanha a rolagem: lateral no computador, fita sob o menu no celular.
+O site anterior está guardado na branch `backup-antes-redesign`. O prompt e a pesquisa de referências estão em `docs/redesign-prompt.md`.
 
 ## Requisitos
 
-Node.js 20+ e o Google Chrome instalado (usado pelos testes).
+Node.js 20+ e o Google Chrome instalado (usado pelos testes; ou aponte outro Chromium com `CHROME_PATH=/caminho/do/chrome`).
 
 ## Comandos
 
@@ -25,7 +26,6 @@ Com o `preview` rodando:
 npm run test:text                         # texto visível idêntico ao original (baseline/)
 npm run test:qa                           # overflow 320→1920, erros de console, acessibilidade (axe)
 npm run test:shots -- docs/screenshots    # screenshots de página inteira 375/768/1280/1920
-node tests/record-motion.mjs docs         # GIFs do motion (desktop e mobile)
 ```
 
 Em outros motores (instale antes com `npx playwright install firefox webkit`):
@@ -48,12 +48,10 @@ npx lighthouse http://localhost:4173/ --preset=desktop --view
 |---|---|
 | Número/mensagem do WhatsApp, Instagram, domínio, URLs das imagens e do vídeo | `src/config.js` |
 | Cores, fontes, espaçamentos, sombras, durações e easings (tokens) | `@theme` em `src/styles/main.css` |
-| Componentes (botões, navbar, reveals) | `src/styles/components.css` |
-| Seções (hero, sobre, diferenciais, depoimentos, rodapé) | `src/styles/sections.css` |
+| Componentes (botões, navbar, menu, trena) | `src/styles/components.css` |
+| Seções (início, histórias, diferenciais, depoimentos, rodapé) | `src/styles/sections.css` |
 | Conteúdo | `index.html` |
-| Móvel 3D (peças, materiais, câmera, luzes, etapas) | `src/js/scene/stage.js` |
-| Seção que conduz cada etapa, coluna/faixa e fallbacks | `src/js/scene/index.js` + `src/styles/scene.css` |
-| Textura de madeira | `src/js/scene/wood.js` |
+| Trena, abertura do Início e fotos que se revelam | `src/js/motion.js` + `.tape` em `src/styles/components.css` |
 
 ## Deploy
 

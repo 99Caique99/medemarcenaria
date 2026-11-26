@@ -1,97 +1,56 @@
 @import "tailwindcss";
-@import "@fontsource-variable/montserrat/wght.css";
-@import "@fontsource-variable/playfair-display/wght.css";
-@import "@fontsource-variable/playfair-display/wght-italic.css";
+@import "@fontsource-variable/bodoni-moda/opsz.css";
+@import "@fontsource-variable/hanken-grotesk/wght.css";
 
 /* ==========================================================================
-   DESIGN TOKENS — único lugar para cores, tipografia, espaços, sombras e motion.
-   Viram utilitários do Tailwind (bg-mede-brown, ease-luxe, animate-float…) e
-   variáveis CSS (var(--color-mede-gold)…).
+   TOKENS — único lugar para cores, tipografia, espaços e motion.
+   Conceito: MEDE = medir. Uma trena acompanha a rolagem; o resto é contido.
    ========================================================================== */
 @theme {
-  /* Paleta da marca */
-  --color-mede-cream: #f1e3d3;
-  --color-mede-gold: #f9e4b7;
-  --color-mede-gold-deep: #cba26b;
-  --color-mede-brown: #5f5549;
-  --color-mede-highlight: #85603f;
-  --color-mede-white: #ffffff;
+  /* Paleta */
+  --color-pedra: #ebe8e2;        /* fundo principal, pedra clara fria */
+  --color-pedra-2: #e1ddd5;      /* faixas alternadas */
+  --color-papel: #f7f5f1;        /* superfícies claras */
+  --color-nogueira: #2a201a;     /* texto e seções escuras */
+  --color-nogueira-2: #3a2e26;   /* nogueira mais clara (bordas no escuro) */
+  --color-grafite: #5a534c;      /* texto secundário (7:1 na pedra) */
+  --color-latao: #b08a55;        /* latão: trena, filetes, detalhes grandes */
+  --color-latao-ink: #7a5a30;    /* latão para texto pequeno (5,3:1 na pedra) */
+  --color-latao-claro: #d6b884;  /* latão sobre a nogueira (8:1) */
 
-  /* Derivados (mistura/opacidade da paleta — não são cores novas) */
-  --color-mede-gold-mid: color-mix(in srgb, var(--color-mede-highlight) 50%, var(--color-mede-gold-deep)); /* 3.5:1 no branco */
-  --color-mede-ink-soft: color-mix(in srgb, var(--color-mede-cream) 85%, var(--color-mede-brown));          /* 4.7:1 no marrom */
-  --color-mede-gold-soft: color-mix(in srgb, var(--color-mede-gold) 85%, var(--color-mede-brown));          /* 4.8:1 no marrom */
-  --color-mede-paper: color-mix(in srgb, var(--color-mede-cream) 35%, white);                               /* papel de projeto */
-  --color-mede-line: color-mix(in srgb, var(--color-mede-gold-deep) 45%, transparent);                      /* filetes dourados */
-
-  /* WhatsApp: apenas nos botões de WhatsApp */
   --color-whatsapp: #25d366;
-  --color-whatsapp-hover: color-mix(in srgb, var(--color-whatsapp) 88%, black);
-  --color-whatsapp-ink: color-mix(in srgb, var(--color-whatsapp) 25%, black);                                /* 6.9:1 */
 
   /* Tipografia */
-  --font-sans: "Montserrat Variable", "Montserrat", ui-sans-serif, system-ui, sans-serif;
-  --font-serif: "Playfair Display Variable", "Playfair Display", ui-serif, Georgia, serif;
+  --font-sans: "Hanken Grotesk Variable", "Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Bodoni Moda Variable", "Bodoni Moda", "Didot", ui-serif, Georgia, serif;
 
-  /* Escala fluida (320px → 1440px) */
-  --text-eyebrow: clamp(0.625rem, 0.58rem + 0.2vw, 0.75rem);
-  --text-body: clamp(0.875rem, 0.84rem + 0.18vw, 1rem);
-  --text-lead: clamp(0.95rem, 0.88rem + 0.35vw, 1.2rem);
-  --text-title: clamp(1.875rem, 1.6rem + 1.2vw, 2.75rem);
-  --text-title-lg: clamp(1.875rem, 1.45rem + 2vw, 3rem);
-  --text-display: clamp(1.8rem, 1.2rem + 3vw, 4.2rem);
+  /* Escala (razão ~1.333, fluida 375 → 1440) */
+  --text-small: 0.8125rem;
+  --text-body: clamp(1rem, 0.96rem + 0.18vw, 1.125rem);
+  --text-lead: clamp(1.0625rem, 0.98rem + 0.38vw, 1.3125rem);
+  --text-h3: clamp(1.3rem, 1.15rem + 0.6vw, 1.6rem);
+  --text-h2: clamp(2.2rem, 1.55rem + 2.8vw, 4rem);
+  --text-h2-xl: clamp(2.5rem, 1.6rem + 4vw, 5.25rem);
+  --text-h1: clamp(2.75rem, 1.7rem + 4.6vw, 5.75rem);
 
-  --text-hero-sm: clamp(1.8rem, 6.2cqi, 3.9rem);
-  --text-hero-num: clamp(4rem, 13cqi, 6.75rem);
-  --text-hero-em: clamp(1.6rem, 8.6cqi, 5rem);
-  --text-sec-num: clamp(2.75rem, 2rem + 3vw, 5rem);
-
-  /* Espaçamento */
-  --spacing-section: clamp(4.5rem, 3rem + 6vw, 9rem);
-  --spacing-gutter: clamp(1rem, 0.6rem + 2vw, 2rem);
-
-  /* Raios e sombras */
-  --radius-frame: 2px;
-  --shadow-frame: 0 25px 50px -12px rgb(95 85 73 / 0.35);
-  --shadow-whatsapp: 0 0 20px rgb(37 211 102 / 0.3);
+  /* Espaço */
+  --spacing-section: clamp(5rem, 3.4rem + 7vw, 10rem);
+  --spacing-gutter: clamp(1.25rem, 0.8rem + 2vw, 3rem);
 
   /* Motion */
-  --ease-luxe: cubic-bezier(0.23, 1, 0.32, 1);
-  --ease-expo: cubic-bezier(0.19, 1, 0.22, 1);
-  --ease-settle: cubic-bezier(0.34, 1.3, 0.64, 1);
-  --duration-fast: 200ms;
-  --duration-base: 500ms;
-  --duration-slow: 900ms;
-  --duration-reveal: 1200ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
+}
 
-  --animate-slow-zoom: slow-zoom 25s ease-in-out infinite alternate;
-  --animate-fade-up: fade-up 1.5s var(--ease-luxe) both;
-  --animate-float: float 2s ease-in-out infinite;
-  --animate-spin-slow: spin 60s linear infinite;
-  --animate-spin-reverse: spin 40s linear infinite reverse;
-  --animate-shimmer: shimmer 5s linear infinite;
-
-  @keyframes slow-zoom {
-    from { transform: scale(1); }
-    to { transform: scale(1.08); }
-  }
-  /* Só deslocamento: o texto do hero é visível desde o 1º quadro (não atrasa o LCP) */
-  @keyframes fade-up {
-    from { transform: translateY(24px); }
-    to { transform: none; }
-  }
-  @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(10px); }
-  }
-  @keyframes shimmer {
-    from { background-position: 0% 50%; }
-    to { background-position: 200% 50%; }
-  }
+:root {
+  --tape-w: 0px;            /* largura da trena lateral (só no desktop) */
+  --nav-h: 4.5rem;
+  --content-max: 76rem;
+}
+@media (width >= 64rem) {
+  :root { --tape-w: 2.75rem; --nav-h: 5.5rem; }
 }
 
 @import "./base.css";
-@import "./layout.css";
 @import "./components.css";
 @import "./sections.css";
-@import "./scene.css";
