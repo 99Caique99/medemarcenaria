@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>MEDE Marcenaria | Design & Excelência</title>
-    <script>/* .js: reveals; .stage-ok: reserva o espaço do móvel 3D antes do primeiro paint */(function(d){d.classList.add('js');try{if(window.WebGLRenderingContext&&(navigator.hardwareConcurrency||8)>2&&(navigator.deviceMemory||8)>=2)d.classList.add('stage-ok')}catch(e){}})(document.documentElement)</script>
+    <script>/* .js: estados iniciais das animações só existem com JS */document.documentElement.classList.add('js')</script>
     <!-- @seo -->
     {{HERO_PRELOAD}}
     <link rel="dns-prefetch" href="https://res.cloudinary.com">
@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="/src/styles/main.css">
     <script type="module" src="/src/js/main.js"></script>
 </head>
-<body class="antialiased font-sans">
+<body>
 
     <svg xmlns="http://www.w3.org/2000/svg" hidden>
         <symbol id="icon-whatsapp" viewBox="0 0 24 24">
@@ -27,238 +27,200 @@
         </symbol>
     </svg>
 
+
     <nav id="navbar" class="navbar">
-        <a href="#inicio" class="nav-brand">
-            <mede-img key="logo" alt="MEDE Marcenaria" sizes="(min-width: 768px) 80px, 62px" eager class="nav-logo"></mede-img>
-        </a>
-
-        <div class="nav-links">
-            <a href="#inicio" class="nav-link">Início</a>
-            <a href="#sobre" class="nav-link">Conheça-nos</a>
-            <a href="{{WHATSAPP_URL}}" target="_blank" rel="noopener noreferrer" class="nav-cta">
-                Orçamento
+        <div class="navbar-bar">
+            <a href="#inicio" class="nav-brand">
+                <mede-img key="logo" alt="MEDE Marcenaria" sizes="(min-width: 1024px) 76px, 56px" eager class="nav-logo"></mede-img>
             </a>
-        </div>
 
-        <button id="menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="mobile-menu" class="menu-btn">
-            <span class="line line-1"></span>
-            <span class="line line-2"></span>
-            <span class="line line-3"></span>
-        </button>
-    </nav>
-
-    <div id="mobile-menu" inert class="mobile-menu">
-        <a href="#inicio" class="mobile-link" data-num="01">Início</a>
-        <a href="#sobre" class="mobile-link" data-num="02">Conheça-nos</a>
-        <a href="{{WHATSAPP_URL}}" target="_blank" rel="noopener noreferrer" class="mobile-link" data-num="03">Orçamento</a>
-    </div>
-
-
-<main>
-<header id="inicio" class="hero on-dark">
-    <div class="hero-media">
-        <mede-img key="hero" alt="Interior MEDE Marcenaria" sizes="100vw" eager class="hero-image animate-slow-zoom"></mede-img>
-    </div>
-    <div class="hero-overlay"></div>
-
-    <div class="wrap hero-wrap">
-        <div class="hero-content animate-fade-up">
-            <div class="hero-eyebrow">
-                <span class="sec-num" data-num="01"></span>
-                <span class="hero-rule"></span>
-                <p class="eyebrow text-mede-gold">
-                    Design Sob Medida
-                </p>
+            <div class="nav-links">
+                <a href="#inicio" class="nav-link">Início</a>
+                <a href="#sobre" class="nav-link">Conheça-nos</a>
+                <a href="{{WHATSAPP_URL}}" target="_blank" rel="noopener noreferrer" class="nav-cta">
+                    Orçamento
+                </a>
             </div>
 
-            <h1 class="hero-title">
-                <span class="hero-title-row">
-                    <span class="hero-title-sm">Há mais de</span>
-                    <span class="luxury-30">30</span>
-                    <span class="hero-title-sm">anos</span>
-                </span>
-                <span class="hero-title-em gold-gradient-text">
-                    entregando excelência
-                </span>
-            </h1>
+            <button id="menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="mobile-menu" class="menu-btn">
+                <span class="line line-1"></span>
+                <span class="line line-2"></span>
+            </button>
+        </div>
+        <!-- Trena: régua que acompanha a rolagem (decorativa) -->
+        <div class="tape tape--x" aria-hidden="true" data-copy-ignore><div class="tape-scale"></div><span class="tape-mark"></span></div>
+    </nav>
 
-            <p class="hero-lead">
-                Transformamos ambientes com mobiliários de alto padrão que entregam exclusividade. Com sofisticação e personalização em cada detalhe!
+    <div id="mobile-menu" inert class="mobile-menu on-dark">
+        <a href="#inicio" class="mobile-link">Início</a>
+        <a href="#sobre" class="mobile-link">Conheça-nos</a>
+        <a href="{{WHATSAPP_URL}}" target="_blank" rel="noopener noreferrer" class="mobile-link">Orçamento</a>
+    </div>
+
+    <div class="tape tape--y" aria-hidden="true" data-copy-ignore><div class="tape-scale"></div><span class="tape-mark"><span class="tape-read"></span></span></div>
+
+<main>
+<header id="inicio" class="hero">
+    <div class="hero-text">
+        <p class="hero-eyebrow">
+            Design Sob Medida
+        </p>
+
+        <h1 class="hero-title">
+            <span class="hero-line"><span>Há mais de</span> <span class="nowrap"><span>30</span> <span>anos</span></span></span>
+            <span class="hero-line"><span>entregando excelência</span></span>
+        </h1>
+
+        <p class="hero-lead">
+            Transformamos ambientes com mobiliários de alto padrão que entregam exclusividade. Com sofisticação e personalização em cada detalhe!
+        </p>
+
+        <div class="hero-actions">
+            <a href="{{WHATSAPP_URL}}" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp">
+                <svg class="icon" aria-hidden="true"><use href="#icon-whatsapp"/></svg>
+                <span>Faça seu orçamento</span>
+            </a>
+            <a href="#sobre" class="scroll-cue" aria-hidden="true" tabindex="-1">
+                <span>Descubra</span>
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 5v14m-6-6 6 6 6-6"/></svg>
+            </a>
+        </div>
+    </div>
+
+    <div class="hero-media">
+        <mede-img key="hero" alt="Interior MEDE Marcenaria" sizes="(min-width: 64rem) 50vw, 100vw" eager class="hero-image"></mede-img>
+        <!-- cota (linha de dimensão de desenho técnico), decorativa -->
+        <span class="cota" aria-hidden="true"></span>
+    </div>
+</header>
+
+<section id="sobre" class="stories">
+
+    <article class="story">
+        <div class="story-media">
+            <div class="frame reveal-clip">
+                <mede-img key="sobre1" alt="Consultoria Exclusiva" sizes="(min-width: 64rem) 55vw, 100vw" class="frame-img"></mede-img>
+            </div>
+        </div>
+        <div class="story-text">
+            <h2 class="title">
+                Legado de <br><span>Excelência</span>
+            </h2>
+            <p class="body-copy">
+                Há mais de três décadas entregamos o que há de <strong>melhor em móveis planejados.</strong> Qualidade e personalização é a nossa <strong>tradição.</strong>
             </p>
-
-            <div class="hero-actions">
+            <div class="story-actions">
                 <a href="{{WHATSAPP_URL}}" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp">
                     <svg class="icon" aria-hidden="true"><use href="#icon-whatsapp"/></svg>
                     <span>Faça seu orçamento</span>
                 </a>
             </div>
         </div>
+    </article>
 
-    </div>
-
-    <a href="#sobre" class="scroll-cue" aria-hidden="true" tabindex="-1">
-        <span>Descubra</span>
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-    </a>
-</header>
-
-<section id="sobre" class="section section-sobre">
-    <div class="wrap stories">
-
-        <article class="story" data-stage="2">
-            <div class="story-media reveal-mask">
-                <span class="sec-num story-num" data-num="02"></span>
-                <div class="frame-box">
-                    <div class="frame parallax-frame">
-                        <mede-img key="sobre1" alt="Consultoria Exclusiva" sizes="(min-width: 1280px) 40vw, (min-width: 768px) 60vw, 100vw" class="parallax-img"></mede-img>
-                    </div>
-                </div>
+    <article class="story story--reverse">
+        <div class="story-text">
+            <h2 class="title">
+                Projetos que <br><span>Contam Histórias</span>
+            </h2>
+            <p class="body-copy">
+                Nossos mobiliários retratam a <strong>sua história, sua personalidade.</strong> Você tem parte em todos os processos, cada linha e medida é <strong>pensada para você.</strong>
+            </p>
+            <div class="story-actions">
+                <a href="#contato" class="btn btn-line">
+                    <span>
+                        Iniciar meu Projeto
+                    </span>
+                    <svg class="icon icon-arrow" aria-hidden="true"><use href="#icon-arrow-right"/></svg>
+                </a>
             </div>
-            <div class="story-text reveal">
-                <h2 class="title">
-                    Legado de <br><span class="title-em gold-gradient-text">Excelência</span>
-                </h2>
-                <div class="line-reveal"></div>
-                <p class="body-copy">
-                    Há mais de três décadas entregamos o que há de <strong>melhor em móveis planejados.</strong> Qualidade e personalização é a nossa <strong>tradição.</strong>
-                </p>
-                <div class="story-actions">
-                    <a href="{{WHATSAPP_URL}}" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp">
-                        <svg class="icon" aria-hidden="true"><use href="#icon-whatsapp"/></svg>
-                        <span>Faça seu orçamento</span>
-                    </a>
-                </div>
+        </div>
+        <div class="story-media story-media--video">
+            <div class="frame frame--video reveal-clip">
+                <video class="lazy-video frame-img" loop muted playsinline preload="none" poster="{{POSTER}}" width="464" height="832">
+                    <source data-src="{{VIDEO_URL}}" type="video/mp4">
+                    Seu navegador não suporta vídeos.
+                </video>
             </div>
-        </article>
+        </div>
+    </article>
 
-        <article class="story story--reverse" data-stage="3">
-            <div class="story-text reveal">
-                <h2 class="title">
-                    Projetos que <br><span class="title-em gold-gradient-text">Contam Histórias</span>
-                </h2>
-                <div class="line-reveal"></div>
-                <p class="body-copy">
-                    Nossos mobiliários retratam a <strong>sua história, sua personalidade.</strong> Você tem parte em todos os processos, cada linha e medida é <strong>pensada para você.</strong>
-                </p>
-                <div class="story-actions">
-                    <a href="#contato" class="btn btn-gold">
-                        <span>
-                            Iniciar meu Projeto
-                        </span>
-                        <svg class="icon icon-arrow" aria-hidden="true"><use href="#icon-arrow-right"/></svg>
-                    </a>
-                </div>
+    <article class="story">
+        <div class="story-media">
+            <div class="frame reveal-clip">
+                <mede-img key="sobre3" alt="Atendimento Personalizado MEDE" sizes="(min-width: 64rem) 55vw, 100vw" class="frame-img"></mede-img>
             </div>
-            <div class="story-media reveal-mask">
-                <span class="sec-num story-num" data-num="03"></span>
-                <div class="frame-box">
-                    <div class="frame">
-                        <video class="lazy-video" loop muted playsinline preload="none" poster="{{POSTER}}" width="464" height="832">
-                            <source data-src="{{VIDEO_URL}}" type="video/mp4">
-                            Seu navegador não suporta vídeos.
-                        </video>
-                    </div>
-                </div>
+        </div>
+        <div class="story-text">
+            <h2 class="title">
+                Vamos Realizar <br><span>Seu Sonho?</span>
+            </h2>
+            <p class="body-copy">
+                Cada detalhe do seu lar merece ser <strong>único.</strong> Nossa equipe é preparada para transformar seu projeto em <strong>ambientes funcionais e sofisticados.</strong>
+                Com atendimento <strong>exclusivo</strong> do início ao fim.
+            </p>
+            <div class="story-actions">
+                <a href="{{WHATSAPP_URL}}" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp">
+                    <svg class="icon" aria-hidden="true"><use href="#icon-whatsapp"/></svg>
+                    <span>Faça seu orçamento</span>
+                </a>
             </div>
-        </article>
+        </div>
+    </article>
 
-        <article class="story" data-stage="4">
-            <div class="story-media reveal-mask">
-                <span class="sec-num story-num" data-num="04"></span>
-                <div class="frame-box">
-                    <div class="frame parallax-frame">
-                        <mede-img key="sobre3" alt="Atendimento Personalizado MEDE" sizes="(min-width: 1280px) 40vw, (min-width: 768px) 60vw, 100vw" class="parallax-img"></mede-img>
-                    </div>
-                </div>
-            </div>
-            <div class="story-text reveal">
-                <h2 class="title">
-                    Vamos Realizar <br><span class="title-em gold-gradient-text">Seu Sonho?</span>
-                </h2>
-                <div class="line-reveal"></div>
-                <p class="body-copy">
-                    Cada detalhe do seu lar merece ser <strong>único.</strong> Nossa equipe é preparada para transformar seu projeto em <strong>ambientes funcionais e sofisticados.</strong>
-                    Com atendimento <strong>exclusivo</strong> do início ao fim.
-                </p>
-                <div class="story-actions">
-                    <a href="{{WHATSAPP_URL}}" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp">
-                        <svg class="icon" aria-hidden="true"><use href="#icon-whatsapp"/></svg>
-                        <span>Faça seu orçamento</span>
-                    </a>
-                </div>
-            </div>
-        </article>
-
-    </div>
 </section>
 
-<section id="features-section" class="section section-features">
+<section id="features-section" class="spec on-dark">
     <div class="wrap">
-        <span class="sec-num sec-num--center" data-num="05"></span>
-        <div class="features-grid">
-
-            <div class="feature-item" style="--i: 0">
-                <div class="feature-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <ul class="spec-list" role="list">
+            <li class="spec-item">
+                <span class="spec-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                         <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                    </svg>
-                </div>
-                <h3 class="feature-title">Exclusividade</h3>
-                <p class="feature-copy">
+                    </svg></span>
+                <h3 class="spec-title">Exclusividade</h3>
+                <p class="spec-copy">
                     Somos especialistas em produzir mobiliários exclusivos e personalizados de alto padrão.
                 </p>
-            </div>
-
-            <div class="feature-item" style="--i: 1">
-                <div class="feature-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            </li>
+            <li class="spec-item">
+                <span class="spec-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                         <path d="M5 3H19C20.1046 3 21 3.89543 21 5V8C21 10.2974 19.4684 12.2339 17.3741 12.8187C16.2618 15.305 14.3263 17.37 12 18.5635V21H16V23H8V21H12V18.5635C9.67374 17.37 7.73821 15.305 6.62592 12.8187C4.53165 12.2339 3 10.2974 3 8V5C3 3.89543 3.89543 3 5 3ZM17 11.2202C18.1834 10.6968 19 9.45632 19 8V5H17V11.2202ZM7 11.2202V5H5V8C5 9.45632 5.81664 10.6968 7 11.2202ZM12 16.8301C14.3362 15.7572 15.8915 13.4838 16.4786 11H7.5214C8.1085 13.4838 9.6638 15.7572 12 16.8301Z"/>
-                    </svg>
-                </div>
-                <h3 class="feature-title">+ De 30 Anos de História</h3>
-                <p class="feature-copy">
+                    </svg></span>
+                <h3 class="spec-title">+ De 30 Anos de História</h3>
+                <p class="spec-copy">
                     Tradição e excelência em cada projeto executado no Rio de Janeiro.
                 </p>
-            </div>
-
-            <div class="feature-item" style="--i: 2">
-                <div class="feature-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            </li>
+            <li class="spec-item">
+                <span class="spec-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                         <path d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"/>
-                    </svg>
-                </div>
-                <h3 class="feature-title">3 Anos de Garantia</h3>
-                <p class="feature-copy">
+                    </svg></span>
+                <h3 class="spec-title">3 Anos de Garantia</h3>
+                <p class="spec-copy">
                     Segurança total na tecnologia de construção, com materiais de excelência e acabamento perfeito.
                 </p>
-            </div>
-
-            <div class="feature-item" style="--i: 3">
-                <div class="feature-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            </li>
+            <li class="spec-item">
+                <span class="spec-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                         <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/>
-                    </svg>
-                </div>
-                <h3 class="feature-title">Transparência</h3>
-                <p class="feature-copy">
+                    </svg></span>
+                <h3 class="spec-title">Transparência</h3>
+                <p class="spec-copy">
                     Aqui você acompanha o andamento do seu projeto em todas as etapas de fabricação. Do projeto à entrega.
                 </p>
-            </div>
-
-        </div>
+            </li>
+        </ul>
     </div>
 </section>
 
-<section id="depoimentos" class="section section-depoimentos">
+<section id="depoimentos" class="reviews">
     <div class="wrap">
-        <div class="section-head reveal">
-            <span class="sec-num sec-num--center" data-num="06"></span>
-            <p class="eyebrow text-mede-highlight">Depoimentos</p>
+        <div class="reviews-head">
+            <p class="kicker">Depoimentos</p>
             <h2 class="title">O que dizem nossos clientes</h2>
-            <div class="rule-center"></div>
         </div>
 
-        <div class="shapo-slot reveal" style="--reveal-delay: 100ms">
+        <div class="shapo-slot">
             <div id="shapo-widget-90902cd202d1d30c8685"></div>
         </div>
     </div>
@@ -266,15 +228,11 @@
 </main>
 
 <footer id="contato" class="footer on-dark">
-    <div class="hero-noise"></div>
-    <div class="footer-rings" aria-hidden="true"><span></span><span></span></div>
-
     <div class="wrap footer-wrap">
-        <div class="footer-head reveal">
-            <span class="sec-num sec-num--center" data-num="07"></span>
-            <p class="eyebrow text-mede-gold">Atendimento Exclusivo</p>
+        <div class="footer-head">
+            <p class="kicker">Atendimento Exclusivo</p>
             <h2 class="title title--xl">
-                Vamos criar algo <br> <span class="title-em gold-gradient-text">único juntos?</span>
+                Vamos criar algo <br> <span>único juntos?</span>
             </h2>
             <p class="footer-lead">
                 Entre em contato para agendar um atendimento ou acompanhe nosso dia a dia e inspirações nas redes sociais.
@@ -282,30 +240,25 @@
         </div>
 
         <div class="footer-actions">
-            <a href="{{WHATSAPP_URL}}" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp btn-wide">
+            <a href="{{WHATSAPP_URL}}" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp btn-whatsapp--light">
                 <svg class="icon" aria-hidden="true"><use href="#icon-whatsapp"/></svg>
                 <span>Fale conosco</span>
             </a>
-            <a href="{{INSTAGRAM_URL}}" target="_blank" rel="noopener noreferrer" class="btn btn-outline-gold btn-wide">
+            <a href="{{INSTAGRAM_URL}}" target="_blank" rel="noopener noreferrer" class="btn btn-line btn-line--light">
                 <svg class="icon" aria-hidden="true"><use href="#icon-instagram"/></svg>
                 <span>Siga no Instagram</span>
             </a>
         </div>
 
         <div class="footer-meta">
-            <div class="footer-meta-row">
-                <div class="footer-meta-legal">
-                    <p>&copy; <span data-year>{{YEAR}}</span> MEDE Marcenaria. Todos os direitos reservados.</p>
-                    <span>CNPJ: 16.813.885/0001-88</span>
-                </div>
-                <span>Rio de Janeiro, Brasil</span>
+            <div class="footer-meta-legal">
+                <p>&copy; <span data-year>{{YEAR}}</span> MEDE Marcenaria. Todos os direitos reservados.</p>
+                <span>CNPJ: 16.813.885/0001-88</span>
             </div>
-
-            <div class="footer-credit">
-                <span>
-                    Desenvolvido por Caíque Alonso
-                </span>
-            </div>
+            <span>Rio de Janeiro, Brasil</span>
+            <span class="footer-credit">
+                Desenvolvido por Caíque Alonso
+            </span>
         </div>
     </div>
 
